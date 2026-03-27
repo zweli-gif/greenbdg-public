@@ -24,6 +24,8 @@ import BuildingDashboard from "./pages/BuildingDashboard";
 import TenantPortal from "./pages/TenantPortal";
 import TenantFaultReporting from "./pages/TenantFaultReporting";
 import Roadmap from "./pages/Roadmap";
+import PlatformHome from "./pages/PlatformHome";
+import PlatformSignIn from "./pages/PlatformSignIn";
 import NotFound from "./pages/NotFound";
 
 function Router() {
@@ -34,8 +36,12 @@ function Router() {
       <Route path="/demo" component={DemoRequest} />
       <Route path="/roadmap" component={Roadmap} />
 
-      {/* ── Admin sign-in ── */}
-      <Route path="/signin" component={SignIn} />
+      {/* ── Platform entry ── */}
+      <Route path="/platform" component={PlatformHome} />
+      <Route path="/platform/signin" component={PlatformSignIn} />
+
+      {/* ── Admin sign-in (legacy) ── */}
+      <Route path="/signin" component={PlatformSignIn} />
 
       {/* ── Post-purchase org setup flow ── */}
       {/* Welcome → Buildings → Staff → Magic Links Sent */}
