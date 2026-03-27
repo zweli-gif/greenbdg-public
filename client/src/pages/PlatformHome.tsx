@@ -69,7 +69,7 @@ export default function PlatformHome() {
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: "0 48px", height: 68,
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }} onClick={() => navigate("/")}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <div style={{ width: 36, height: 36, background: ACCENT, borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <svg viewBox="0 0 24 24" fill="none" style={{ width: 20, height: 20 }}>
               <path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill={DEEP} opacity="0.95" />

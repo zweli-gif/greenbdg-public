@@ -1,43 +1,43 @@
 /**
- * PUBLIC HOMEPAGE — "GreenBDG Africa"
- * Design: Brian's HTML — Playfair Display serif + Sora sans + DM Mono
- * Colors: --forest:#1B4332 --clay:#B85042 --sage:#8AB89A --cream:#F5F0E8
- * Layout: Asymmetric two-column hero, cream background, forest green authority
- * Sections: Nav → Hero (with live Portfolio Check widget) → Ticker → How it works → Platform features → Dashboard preview → Why GreenBDG → Case study → Final CTA → Footer
- * CTA: Only "See the platform →" connects to /signin (platform site)
+ * PUBLIC HOMEPAGE — GreenBDG Africa
+ * Design: PLUSH — deep forest green #002117, crisp white, aerial photography heroes
+ * Typography: Libre Baskerville (display) + Work Sans (body) + DM Mono (labels)
+ * Wording: Brian's original copy exactly
+ * Platform connection: ONLY via "Request demo" button → /demo
+ * NO nav links to the platform. NO "See the platform". NO "Client login".
  */
 import { useState } from "react";
 import { useLocation } from "wouter";
 
-const F = "#1B4332";
-const FL = "#2D6A4F";
-const FXL = "#52796F";
-const CLAY = "#B85042";
-const CLAY_LT = "#D4826E";
-const SAGE = "#8AB89A";
-const SAGE_LT = "#D8EDE0";
-const SAGE_XLT = "#EBF5EE";
-const CREAM = "#F5F0E8";
-const CREAM2 = "#EDE6D8";
-const CREAM3 = "#E4DDD0";
-const INK = "#1A1A18";
-const MID = "#4A4A46";
-const MUTED = "#8A8880";
+const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663328168552/7LFaJoytji6z7JBaxftKtH/hero-landing_5e31e2a7.jpg";
+const PORTFOLIO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663328168552/7LFaJoytji6z7JBaxftKtH/hero-portfolio_7d046ce4.jpg";
+const SUSTAIN_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663328168552/7LFaJoytji6z7JBaxftKtH/hero-sustainability_8900d205.jpg";
+const DASH_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663328168552/7LFaJoytji6z7JBaxftKtH/dashboard-bg_781e4042.jpg";
 
-const serif = "'Playfair Display', Georgia, serif";
-const sans = "'Sora', sans-serif";
+// Plush colour tokens
+const FOREST = "#002117";
+const FOREST2 = "#064E3B";
+const FOREST3 = "#065F46";
+const EMERALD = "#10B981";
+const GOLD = "#E8A838";
+const WHITE = "#FFFFFF";
+const OFF_WHITE = "#F8FAF9";
+const CLAY = "#B85042";
+const MUTED = "rgba(255,255,255,0.55)";
+const DARK_MUTED = "#4A5568";
+
+const serif = "'Libre Baskerville', Georgia, serif";
+const sans = "'Work Sans', sans-serif";
 const mono = "'DM Mono', monospace";
 
 export default function Home() {
   const [, navigate] = useLocation();
 
-  // Portfolio Intelligence Check widget state
+  // Portfolio Intelligence Check widget
   const [buildings, setBuildings] = useState(21);
   const [gla, setGla] = useState(3500);
   const [energy, setEnergy] = useState<"eskom" | "solar" | "mixed">("eskom");
-  const [showReport, setShowReport] = useState(false);
 
-  // Computed results
   const totalGla = buildings * gla;
   const annualKwh = totalGla * (energy === "eskom" ? 180 : energy === "solar" ? 95 : 140);
   const carbonTons = annualKwh * 0.00092;
@@ -53,7 +53,6 @@ export default function Home() {
   const [bmType, setBmType] = useState<"office-a" | "office-b" | "retail" | "industrial">("office-a");
   const [bmKwh, setBmKwh] = useState(1800000);
   const [bmResult, setBmResult] = useState<null | { intensity: number; benchmark: number; rating: string; color: string }>(null);
-
   const benchmarks: Record<string, number> = { "office-a": 142, "office-b": 175, retail: 210, industrial: 95 };
   const typeLabels: Record<string, string> = { "office-a": "Office A-Grade", "office-b": "Office B-Grade", retail: "Retail Centre", industrial: "Industrial" };
 
@@ -61,57 +60,52 @@ export default function Home() {
     const intensity = Math.round(bmKwh / bmGla);
     const benchmark = benchmarks[bmType];
     const ratio = intensity / benchmark;
-    let rating = "Excellent"; let color = "#2D6A4F";
-    if (ratio > 1.5) { rating = "Critical"; color = "#B85042"; }
-    else if (ratio > 1.2) { rating = "Poor"; color = "#D4826E"; }
-    else if (ratio > 1.0) { rating = "Below average"; color = "#B8860B"; }
-    else if (ratio > 0.85) { rating = "Average"; color = "#52796F"; }
+    let rating = "Excellent"; let color = "#10B981";
+    if (ratio > 1.5) { rating = "Poor"; color = "#EF4444"; }
+    else if (ratio > 1.2) { rating = "Below Average"; color = "#F59E0B"; }
+    else if (ratio > 1.0) { rating = "Average"; color = "#F59E0B"; }
+    else if (ratio > 0.85) { rating = "Good"; color = "#3B82F6"; }
     setBmResult({ intensity, benchmark, rating, color });
   };
 
   // Building simulator
   const [simBuildings, setSimBuildings] = useState([
     { name: "Sandton Towers", type: "office-a", gla: 18500, year: 2008 },
-    { name: "Rosebank Square", type: "office-b", gla: 12200, year: 2001 },
-    { name: "Menlyn Park Retail", type: "retail", gla: 45000, year: 1995 },
+    { name: "Rosebank Square", type: "retail", gla: 32000, year: 2012 },
+    { name: "Menlyn Park Office", type: "office-b", gla: 11200, year: 2001 },
   ]);
-  const [simGenerated, setSimGenerated] = useState(false);
+  const [simResult, setSimResult] = useState<null | { totalGla: number; avgIntensity: number; carbonLiability: number; epcRisk: number; gresbScore: number }>(null);
 
-  const addSimBuilding = () => {
-    if (simBuildings.length < 10) {
-      setSimBuildings([...simBuildings, { name: `Building ${simBuildings.length + 1}`, type: "office-b", gla: 8000, year: 2005 }]);
-    }
+  const runSimulator = () => {
+    const totalGlaCalc = simBuildings.reduce((s, b) => s + b.gla, 0);
+    const avgIntensity = Math.round(simBuildings.reduce((s, b) => {
+      const base = benchmarks[b.type as keyof typeof benchmarks] || 142;
+      const age = 2025 - b.year;
+      return s + base * (1 + age * 0.008);
+    }, 0) / simBuildings.length);
+    const carbonLiability = Math.round(totalGlaCalc * avgIntensity * 0.00092 * 236 / 1000);
+    const epcRisk = simBuildings.filter(b => (2025 - b.year) > 15).length;
+    const gresbScore = Math.max(28, Math.min(68, 65 - simBuildings.length * 1.2 - epcRisk * 3));
+    setSimResult({ totalGla: totalGlaCalc, avgIntensity, carbonLiability, epcRisk, gresbScore: Math.round(gresbScore) });
   };
-
-  const generateSim = () => setSimGenerated(true);
-
-  const simResults = simBuildings.map(b => {
-    const bench = benchmarks[b.type] || 142;
-    const intensity = bench * (0.85 + Math.random() * 0.6);
-    const carbonTons = (b.gla * intensity * 0.00092);
-    const tax = Math.round(carbonTons * 236);
-    const age = 2025 - b.year;
-    const epcRisk = age > 20 ? "High" : age > 10 ? "Medium" : "Low";
-    return { ...b, intensity: Math.round(intensity), carbonTons: Math.round(carbonTons), tax, epcRisk };
-  });
 
   const navItems = ["About us", "The platform", "Solutions", "Free tools", "Resources"];
 
   return (
-    <div style={{ fontFamily: sans, background: CREAM, color: INK, minHeight: "100vh" }}>
+    <div style={{ fontFamily: sans, background: WHITE, color: FOREST, overflowX: "hidden" }}>
 
       {/* ── NAV ── */}
       <nav style={{
         position: "sticky", top: 0, zIndex: 50,
-        background: "rgba(245,240,232,0.96)", backdropFilter: "blur(12px)",
-        borderBottom: `1px solid ${CREAM3}`,
+        background: "rgba(0,33,23,0.97)", backdropFilter: "blur(16px)",
+        borderBottom: "1px solid rgba(255,255,255,0.08)",
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: "0 48px", height: 66,
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 36 }}>
           {/* Logo */}
           <a href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-            <div style={{ width: 34, height: 34, background: F, borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 34, height: 34, background: EMERALD, borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <svg width="18" height="18" viewBox="0 0 19 19" fill="none">
                 <rect x="2" y="7.5" width="3.5" height="11" fill="white" rx="0.4"/>
                 <rect x="7" y="3" width="3.5" height="15.5" fill="white" rx="0.4"/>
@@ -120,8 +114,8 @@ export default function Home() {
               </svg>
             </div>
             <div>
-              <span style={{ fontFamily: serif, fontSize: "1rem", fontWeight: 700, color: F, display: "block", lineHeight: 1.15 }}>GreenBDG Africa</span>
-              <span style={{ fontFamily: mono, fontSize: "0.5rem", color: MUTED, textTransform: "uppercase", letterSpacing: "0.14em", display: "block" }}>Green Building Design Group</span>
+              <span style={{ fontFamily: serif, fontSize: "0.95rem", fontWeight: 700, color: WHITE, display: "block", lineHeight: 1.15 }}>GreenBDG Africa</span>
+              <span style={{ fontFamily: mono, fontSize: "0.48rem", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.14em", display: "block" }}>Green Building Design Group</span>
             </div>
           </a>
           {/* Nav links */}
@@ -131,132 +125,144 @@ export default function Home() {
                 key={item}
                 onClick={() => item === "Free tools" ? setActiveTab("benchmark") : null}
                 style={{
-                  display: "flex", alignItems: "center", padding: "0 15px",
-                  fontSize: "0.82rem", fontWeight: 500, color: MID,
+                  display: "flex", alignItems: "center", padding: "0 14px",
+                  fontSize: "0.8rem", fontWeight: 500, color: "rgba(255,255,255,0.65)",
                   background: "none", border: "none",
-                  borderBottom: `2.5px solid transparent`,
+                  borderBottom: "2.5px solid transparent",
                   cursor: "pointer", transition: "color 0.2s",
                   fontFamily: sans,
                 }}
-                onMouseEnter={e => { e.currentTarget.style.color = F; e.currentTarget.style.borderBottomColor = F; }}
-                onMouseLeave={e => { e.currentTarget.style.color = MID; e.currentTarget.style.borderBottomColor = "transparent"; }}
+                onMouseEnter={e => { e.currentTarget.style.color = WHITE; e.currentTarget.style.borderBottomColor = EMERALD; }}
+                onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.65)"; e.currentTarget.style.borderBottomColor = "transparent"; }}
               >
                 {item}
               </button>
             ))}
           </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <button
-            onClick={() => navigate("/signin")}
-            style={{ background: F, color: "white", border: "none", padding: "9px 20px", borderRadius: 7, fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", fontFamily: sans, letterSpacing: "0.01em" }}
-            onMouseEnter={e => { e.currentTarget.style.background = FL; e.currentTarget.style.transform = "translateY(-1px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = F; e.currentTarget.style.transform = "none"; }}
-          >
-            See the platform →
-          </button>
-        </div>
+        {/* ONLY CTA on public site — Request demo */}
+        <button
+          onClick={() => navigate("/demo")}
+          style={{ background: EMERALD, color: WHITE, border: "none", padding: "9px 22px", borderRadius: 7, fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", fontFamily: sans, letterSpacing: "0.01em" }}
+          onMouseEnter={e => { e.currentTarget.style.background = "#059669"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+          onMouseLeave={e => { e.currentTarget.style.background = EMERALD; e.currentTarget.style.transform = "none"; }}
+        >
+          Request a demo →
+        </button>
       </nav>
 
       {/* ── HERO ── */}
       <section style={{
-        minHeight: "100vh", background: SAGE_XLT,
-        display: "grid", gridTemplateColumns: "1.05fr 0.95fr",
-        gap: 56, alignItems: "center",
-        padding: "130px 56px 90px",
-        position: "relative", overflow: "hidden",
+        position: "relative", minHeight: "92vh",
+        display: "grid", gridTemplateColumns: "1fr 1fr",
+        overflow: "hidden",
       }}>
-        {/* Ghost watermark */}
+        {/* Left — copy */}
         <div style={{
-          position: "absolute", bottom: -80, right: -40,
-          fontFamily: serif, fontSize: "clamp(150px,22vw,280px)", fontWeight: 900,
-          color: "rgba(27,67,50,0.035)", lineHeight: 1, pointerEvents: "none",
-          userSelect: "none", letterSpacing: "-0.04em",
-        }}>LEGACY</div>
-
-        {/* Left: copy */}
-        <div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: mono, fontSize: "0.65rem", fontWeight: 500, color: FL, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 26 }}>
-            <span style={{ display: "block", width: 22, height: 1, background: FL }} />
-            SA's green building intelligence platform
+          background: FOREST,
+          padding: "100px 64px 80px",
+          display: "flex", flexDirection: "column", justifyContent: "center",
+          position: "relative", zIndex: 2,
+        }}>
+          {/* Ghost text */}
+          <div style={{
+            position: "absolute", top: 40, left: 56,
+            fontFamily: serif, fontSize: "clamp(80px,10vw,140px)", fontWeight: 900,
+            color: "rgba(255,255,255,0.04)", lineHeight: 1, userSelect: "none", pointerEvents: "none",
+          }}>LEGACY</div>
+          <div style={{ position: "relative", zIndex: 2 }}>
+            <div style={{ fontFamily: mono, fontSize: "0.62rem", color: EMERALD, textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: 28 }}>
+              — SA's green building intelligence platform
+            </div>
+            <h1 style={{ fontFamily: serif, fontSize: "clamp(38px,4.5vw,62px)", fontWeight: 900, color: WHITE, lineHeight: 1.08, margin: 0 }}>
+              Every building is either
+            </h1>
+            <h1 style={{ fontFamily: serif, fontSize: "clamp(38px,4.5vw,62px)", fontWeight: 900, fontStyle: "italic", color: CLAY, lineHeight: 1.08, margin: "4px 0" }}>
+              a liability
+            </h1>
+            <h1 style={{ fontFamily: serif, fontSize: "clamp(38px,4.5vw,62px)", fontWeight: 900, color: WHITE, lineHeight: 1.08, margin: 0 }}>
+              or a legacy.
+            </h1>
+            <p style={{ fontSize: "1rem", color: "rgba(255,255,255,0.75)", lineHeight: 1.75, marginTop: 28, maxWidth: 480 }}>
+              <strong style={{ color: WHITE }}>GreenBDG helps you choose.</strong><br/>
+              FM operations · ESG reporting · Carbon compliance · Green Star certification — one platform, built for SA's regulatory reality.
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 40, flexWrap: "wrap" }}>
+              <button
+                onClick={() => setActiveTab("benchmark")}
+                style={{ display: "inline-flex", alignItems: "center", gap: 9, background: EMERALD, color: WHITE, border: "none", padding: "14px 28px", borderRadius: 8, fontSize: "0.88rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}
+                onMouseEnter={e => e.currentTarget.style.background = "#059669"}
+                onMouseLeave={e => e.currentTarget.style.background = EMERALD}
+              >
+                Try free portfolio check
+                <svg viewBox="0 0 16 16" fill="none" style={{ width: 14, height: 14 }}><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
+              <button
+                onClick={() => navigate("/demo")}
+                style={{ display: "inline-flex", alignItems: "center", gap: 9, background: "transparent", color: "rgba(255,255,255,0.8)", border: "1.5px solid rgba(255,255,255,0.25)", padding: "14px 28px", borderRadius: 8, fontSize: "0.88rem", fontWeight: 500, cursor: "pointer", fontFamily: sans }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.6)"; e.currentTarget.style.color = WHITE; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.color = "rgba(255,255,255,0.8)"; }}
+              >
+                Request a demo
+              </button>
+            </div>
+            <p style={{ fontFamily: mono, fontSize: "0.6rem", color: "rgba(255,255,255,0.35)", marginTop: 16 }}>
+              Free check = 4 min, no sign-up &nbsp;·&nbsp; Demo = 30-min guided walkthrough with a GreenBDG consultant
+            </p>
           </div>
-          <h1 style={{ fontFamily: serif, fontSize: "clamp(40px,5.2vw,68px)", fontWeight: 900, lineHeight: 1.08, letterSpacing: "-0.028em", color: F, marginBottom: 4 }}>
-            Every building is either
-          </h1>
-          <h1 style={{ fontFamily: serif, fontSize: "clamp(40px,5.2vw,68px)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.08, letterSpacing: "-0.028em", color: CLAY, marginBottom: 4 }}>
-            a liability
-          </h1>
-          <h1 style={{ fontFamily: serif, fontSize: "clamp(28px,3.5vw,44px)", fontWeight: 300, fontStyle: "italic", lineHeight: 1.1, letterSpacing: "-0.02em", color: FXL, marginBottom: 32 }}>
-            or a legacy.
-          </h1>
-          <p style={{ fontSize: "0.95rem", fontWeight: 300, color: MID, lineHeight: 1.85, maxWidth: 440, marginBottom: 36 }}>
-            GreenBDG helps you choose. <strong style={{ color: F, fontWeight: 600 }}>FM operations · ESG reporting · Carbon compliance · Green Star certification</strong> — one platform, built for SA's regulatory reality.
-          </p>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-            <button
-              onClick={() => setActiveTab("benchmark")}
-              style={{ display: "inline-flex", alignItems: "center", gap: 9, background: F, color: "white", border: "none", padding: "14px 26px", borderRadius: 8, fontSize: "0.86rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}
-              onMouseEnter={e => { e.currentTarget.style.background = FL; e.currentTarget.style.transform = "translateY(-2px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = F; e.currentTarget.style.transform = "none"; }}
-            >
-              Try free portfolio check →
-            </button>
-            <button
-              onClick={() => navigate("/signin")}
-              style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", color: F, border: `1.5px solid rgba(27,67,50,0.28)`, padding: "14px 26px", borderRadius: 8, fontSize: "0.86rem", fontWeight: 500, cursor: "pointer", fontFamily: sans }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = F; e.currentTarget.style.background = "rgba(27,67,50,0.05)"; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(27,67,50,0.28)"; e.currentTarget.style.background = "transparent"; }}
-            >
-              See the platform
-            </button>
-          </div>
-          <p style={{ fontFamily: mono, fontSize: "0.6rem", color: MUTED, marginTop: 12, lineHeight: 1.7 }}>
-            Free check = 4 min, no sign-up &nbsp;·&nbsp; Platform = full interactive demo, no account needed
-          </p>
         </div>
 
-        {/* Right: Portfolio Intelligence Check card */}
-        <div style={{ position: "relative", zIndex: 2 }}>
+        {/* Right — Portfolio Intelligence Check card over aerial photo */}
+        <div style={{ position: "relative", overflow: "hidden" }}>
+          <img src={HERO_IMG} alt="Aerial view of African city" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0,33,23,0.65) 0%, rgba(0,33,23,0.2) 100%)" }} />
+          {/* Intelligence card */}
           <div style={{
-            background: "white", borderRadius: 16, padding: 28,
-            boxShadow: "0 24px 64px rgba(27,67,50,0.13), 0 4px 16px rgba(0,0,0,0.06)",
-            border: `1px solid ${SAGE_LT}`, overflow: "hidden", position: "relative",
+            position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
+            width: "min(420px, 90%)",
+            background: "rgba(255,255,255,0.97)", backdropFilter: "blur(20px)",
+            borderRadius: 20, padding: "28px 28px 24px",
+            boxShadow: "0 32px 80px rgba(0,0,0,0.35)",
           }}>
-            {/* Top accent bar */}
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(to right, ${F}, ${CLAY})` }} />
-
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 18, gap: 10 }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20 }}>
               <div>
-                <div style={{ fontFamily: mono, fontSize: "0.63rem", fontWeight: 500, color: FL, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 5 }}>Portfolio Intelligence Check</div>
-                <div style={{ fontFamily: serif, fontSize: "1.05rem", fontWeight: 700, color: F, lineHeight: 1.3 }}>3 inputs → your full risk picture</div>
+                <div style={{ fontFamily: mono, fontSize: "0.58rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 4 }}>Portfolio Intelligence Check</div>
+                <div style={{ fontFamily: serif, fontSize: "1.05rem", fontWeight: 700, color: FOREST, lineHeight: 1.3 }}>3 inputs → your full risk picture</div>
               </div>
-              <span style={{ background: SAGE_XLT, color: F, fontFamily: mono, fontSize: "0.58rem", padding: "4px 9px", borderRadius: 20, border: `1px solid ${SAGE}`, whiteSpace: "nowrap", flexShrink: 0 }}>Free · No sign-up</span>
+              <span style={{ background: "#ECFDF5", color: FOREST3, fontFamily: mono, fontSize: "0.58rem", padding: "4px 10px", borderRadius: 20, whiteSpace: "nowrap", fontWeight: 600 }}>Free · No sign-up</span>
             </div>
 
-            {/* Sliders */}
-            {[
-              { label: "Buildings in portfolio", value: buildings, min: 1, max: 100, display: `${buildings} buildings`, onChange: (v: number) => setBuildings(v) },
-              { label: "Average GLA per building (m²)", value: gla, min: 500, max: 50000, display: `${gla.toLocaleString()} m²`, onChange: (v: number) => setGla(v) },
-            ].map(sl => (
-              <div key={sl.label} style={{ marginBottom: 15 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 7 }}>
-                  <span style={{ fontSize: "0.76rem", fontWeight: 500, color: MID }}>{sl.label}</span>
-                  <span style={{ fontFamily: mono, fontSize: "0.72rem", fontWeight: 500, color: FL }}>{sl.display}</span>
-                </div>
-                <input type="range" min={sl.min} max={sl.max} value={sl.value}
-                  onChange={e => sl.onChange(Number(e.target.value))}
-                  style={{ width: "100%", accentColor: F, cursor: "pointer" }}
-                />
+            {/* Slider: Buildings */}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                <span style={{ fontFamily: sans, fontSize: "0.75rem", color: DARK_MUTED }}>Buildings in portfolio</span>
+                <span style={{ fontFamily: mono, fontSize: "0.75rem", color: FOREST, fontWeight: 600 }}>{buildings} buildings</span>
               </div>
-            ))}
+              <input type="range" min={1} max={100} value={buildings} onChange={e => setBuildings(+e.target.value)}
+                style={{ width: "100%", accentColor: FOREST2, cursor: "pointer" }} />
+            </div>
+
+            {/* Slider: GLA */}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                <span style={{ fontFamily: sans, fontSize: "0.75rem", color: DARK_MUTED }}>Average GLA per building (m²)</span>
+                <span style={{ fontFamily: mono, fontSize: "0.75rem", color: FOREST, fontWeight: 600 }}>{gla.toLocaleString()} m²</span>
+              </div>
+              <input type="range" min={500} max={50000} step={500} value={gla} onChange={e => setGla(+e.target.value)}
+                style={{ width: "100%", accentColor: FOREST2, cursor: "pointer" }} />
+            </div>
 
             {/* Energy source */}
-            <div style={{ marginBottom: 18 }}>
-              <div style={{ fontSize: "0.76rem", fontWeight: 500, color: MID, marginBottom: 8 }}>Primary energy source</div>
-              <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ marginBottom: 20 }}>
+              <span style={{ fontFamily: sans, fontSize: "0.75rem", color: DARK_MUTED, display: "block", marginBottom: 8 }}>Primary energy source</span>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
                 {(["eskom", "solar", "mixed"] as const).map(e => (
                   <button key={e} onClick={() => setEnergy(e)}
-                    style={{ flex: 1, padding: "8px 4px", borderRadius: 8, fontSize: "0.72rem", fontWeight: 500, cursor: "pointer", fontFamily: sans, border: `1.5px solid ${energy === e ? F : CREAM3}`, background: energy === e ? F : "white", color: energy === e ? "white" : MID, transition: "all 0.15s" }}>
+                    style={{ padding: "8px 4px", borderRadius: 8, fontSize: "0.72rem", fontWeight: 600, fontFamily: sans, cursor: "pointer", border: "1.5px solid", transition: "all 0.15s",
+                      background: energy === e ? FOREST : "white",
+                      color: energy === e ? WHITE : DARK_MUTED,
+                      borderColor: energy === e ? FOREST : "#E2E8F0",
+                    }}>
                     {e === "eskom" ? "Eskom grid" : e === "solar" ? "Solar mix" : "Mixed"}
                   </button>
                 ))}
@@ -264,478 +270,358 @@ export default function Home() {
             </div>
 
             {/* Results */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 18 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 16 }}>
               {[
-                { label: "Carbon tax exposure / yr", value: `R${(carbonTax / 1000000).toFixed(1)}M`, sub: `SARS · R236/tCO₂e`, color: CLAY },
-                { label: "ESG readiness score", value: `${Math.round(esgScore)}/100`, sub: "Below SA peer avg", color: FL },
-                { label: "Certification risk", value: `${certRisk} bldgs`, sub: "No current EPC", color: "#B8860B" },
+                { label: "Carbon tax / yr", value: `R${(carbonTax / 1000000).toFixed(1)}M`, sub: `SARS · R236/tCO₂e`, color: CLAY },
+                { label: "ESG readiness", value: `${esgScore}/100`, sub: "Below SA peer avg", color: FOREST2 },
+                { label: "Certification risk", value: `${certRisk} bldgs`, sub: "No current EPC", color: "#F59E0B" },
               ].map(r => (
-                <div key={r.label} style={{ background: SAGE_XLT, borderRadius: 10, padding: "12px 10px", border: `1px solid ${SAGE_LT}` }}>
-                  <div style={{ fontFamily: mono, fontSize: "0.6rem", color: MUTED, marginBottom: 4, lineHeight: 1.3 }}>{r.label}</div>
-                  <div style={{ fontFamily: serif, fontSize: "1.1rem", fontWeight: 700, color: r.color, marginBottom: 2 }}>{r.value}</div>
-                  <div style={{ fontFamily: mono, fontSize: "0.58rem", color: MUTED }}>{r.sub}</div>
+                <div key={r.label} style={{ background: "#F8FAFC", borderRadius: 10, padding: "12px 10px" }}>
+                  <div style={{ fontFamily: mono, fontSize: "0.55rem", color: DARK_MUTED, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>{r.label}</div>
+                  <div style={{ fontFamily: serif, fontSize: "1.1rem", fontWeight: 700, color: r.color, lineHeight: 1 }}>{r.value}</div>
+                  <div style={{ fontFamily: mono, fontSize: "0.55rem", color: DARK_MUTED, marginTop: 3 }}>{r.sub}</div>
                 </div>
               ))}
             </div>
 
             <button
-              onClick={() => setShowReport(true)}
-              style={{ width: "100%", padding: "13px", background: F, color: "white", border: "none", borderRadius: 9, fontSize: "0.84rem", fontWeight: 600, cursor: "pointer", fontFamily: sans, marginBottom: 8 }}
-              onMouseEnter={e => { e.currentTarget.style.background = FL; }}
-              onMouseLeave={e => { e.currentTarget.style.background = F; }}
+              onClick={() => navigate("/demo")}
+              style={{ width: "100%", padding: "13px", background: FOREST, color: WHITE, border: "none", borderRadius: 10, fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}
+              onMouseEnter={e => e.currentTarget.style.background = FOREST2}
+              onMouseLeave={e => e.currentTarget.style.background = FOREST}
             >
               Get my full portfolio report →
             </button>
-            <p style={{ fontFamily: mono, fontSize: "0.58rem", color: MUTED, textAlign: "center" }}>Full report in 4 minutes · PDF delivered to your inbox</p>
-
-            {showReport && (
-              <div style={{ marginTop: 16, padding: "14px 16px", background: SAGE_XLT, borderRadius: 10, border: `1px solid ${SAGE}` }}>
-                <div style={{ fontFamily: mono, fontSize: "0.65rem", color: FL, fontWeight: 500 }}>✓ Report queued — check your inbox in 4 minutes</div>
-              </div>
-            )}
-          </div>
-
-          {/* Trusted by */}
-          <div style={{ marginTop: 20, padding: "14px 20px", background: "rgba(255,255,255,0.7)", borderRadius: 12, border: `1px solid ${CREAM3}` }}>
-            <div style={{ fontFamily: mono, fontSize: "0.6rem", color: MUTED, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10 }}>Trusted by</div>
-            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-              {["Growthpoint", "Redefine", "Liberty Two Degrees", "Momentum", "Eris Property"].map(name => (
-                <span key={name} style={{ fontFamily: serif, fontSize: "0.78rem", fontWeight: 700, color: F, opacity: 0.7 }}>{name}</span>
-              ))}
-            </div>
+            <p style={{ fontFamily: mono, fontSize: "0.57rem", color: DARK_MUTED, textAlign: "center", marginTop: 8 }}>
+              Full report in 4 minutes · PDF delivered to your inbox
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ── FREE TOOLS TABS (Benchmark + Simulator) ── */}
-      {(activeTab === "benchmark" || activeTab === "simulator") && (
-        <section style={{ background: "white", padding: "80px 56px", borderTop: `1px solid ${CREAM3}` }}>
-          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 48, borderBottom: `2px solid ${CREAM3}` }}>
-              {(["benchmark", "simulator"] as const).map(tab => (
-                <button key={tab} onClick={() => setActiveTab(tab)}
-                  style={{ padding: "12px 28px", fontSize: "0.88rem", fontWeight: 600, fontFamily: sans, background: "none", border: "none", cursor: "pointer", color: activeTab === tab ? F : MID, borderBottom: `2.5px solid ${activeTab === tab ? F : "transparent"}`, marginBottom: -2, transition: "all 0.2s" }}>
-                  {tab === "benchmark" ? "🔬 ESG Benchmark Tool" : "🏗️ Building Simulator"}
-                </button>
+      {/* ── REGULATORY TICKER ── */}
+      <div style={{ background: FOREST2, padding: "12px 0", overflow: "hidden" }}>
+        <div style={{ display: "flex", gap: 48, animation: "ticker 30s linear infinite", whiteSpace: "nowrap", width: "max-content" }}>
+          {[...Array(3)].map((_, i) => (
+            <div key={i} style={{ display: "flex", gap: 48, alignItems: "center" }}>
+              {[
+                "Carbon Budget Act — R236/tCO₂e from 2024",
+                "SARS Carbon Tax Phase 2 — 2026 deadline",
+                "Green Star V2 — SA's new certification standard",
+                "SANS 10400-XA — mandatory energy compliance",
+                "GRESB 2025 — submissions open Q1",
+                "EPC certificates — mandatory for commercial buildings",
+                "B-BBEE ESG alignment — new scoring criteria 2025",
+              ].map((item, j) => (
+                <span key={j} style={{ fontFamily: mono, fontSize: "0.65rem", color: "rgba(255,255,255,0.75)", letterSpacing: "0.06em" }}>
+                  <span style={{ color: GOLD, marginRight: 8 }}>◆</span>{item}
+                </span>
               ))}
-              <button onClick={() => setActiveTab("home")} style={{ marginLeft: "auto", padding: "8px 16px", fontSize: "0.78rem", color: MUTED, background: "none", border: "none", cursor: "pointer", fontFamily: sans }}>✕ Close</button>
             </div>
+          ))}
+        </div>
+        <style>{`@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }`}</style>
+      </div>
 
-            {/* Benchmark Tool */}
-            {activeTab === "benchmark" && (
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }}>
+      {/* ── FREE TOOLS TAB BAR ── */}
+      {activeTab !== "home" && (
+        <div style={{ background: WHITE, borderBottom: "1px solid #E2E8F0", padding: "0 56px", display: "flex", gap: 0 }}>
+          {(["benchmark", "simulator"] as const).map(tab => (
+            <button key={tab} onClick={() => setActiveTab(tab)}
+              style={{ padding: "14px 20px", fontSize: "0.8rem", fontWeight: 600, fontFamily: sans, background: "none", border: "none", cursor: "pointer",
+                color: activeTab === tab ? FOREST : DARK_MUTED,
+                borderBottom: `2.5px solid ${activeTab === tab ? FOREST2 : "transparent"}`,
+              }}>
+              {tab === "benchmark" ? "ESG Benchmark Tool" : "Building Simulator"}
+            </button>
+          ))}
+          <button onClick={() => setActiveTab("home")} style={{ marginLeft: "auto", padding: "14px 16px", fontSize: "0.75rem", color: DARK_MUTED, background: "none", border: "none", cursor: "pointer", fontFamily: sans }}>
+            ← Back to homepage
+          </button>
+        </div>
+      )}
+
+      {/* ── BENCHMARK TOOL ── */}
+      {activeTab === "benchmark" && (
+        <section style={{ background: OFF_WHITE, padding: "80px 56px" }}>
+          <div style={{ maxWidth: 800, margin: "0 auto" }}>
+            <div style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 12 }}>Free tool · No sign-up</div>
+            <h2 style={{ fontFamily: serif, fontSize: "clamp(28px,3.5vw,42px)", fontWeight: 900, color: FOREST, lineHeight: 1.1, marginBottom: 12 }}>ESG Benchmark Tool</h2>
+            <p style={{ fontSize: "0.9rem", color: DARK_MUTED, lineHeight: 1.8, marginBottom: 40 }}>Enter your building's energy consumption and see how it stacks up against SAPOA benchmarks for your building type.</p>
+            <div style={{ background: WHITE, borderRadius: 16, padding: 36, boxShadow: "0 4px 24px rgba(0,0,0,0.06)", display: "flex", flexDirection: "column", gap: 24 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
                 <div>
-                  <div style={{ fontFamily: mono, fontSize: "0.65rem", color: FL, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 12 }}>Free · No sign-up required</div>
-                  <h2 style={{ fontFamily: serif, fontSize: "clamp(28px,3vw,40px)", fontWeight: 900, color: F, lineHeight: 1.1, marginBottom: 16 }}>How does your building rank?</h2>
-                  <p style={{ fontSize: "0.9rem", color: MID, lineHeight: 1.8, marginBottom: 32 }}>Enter your building's energy consumption and see how it stacks up against SAPOA benchmarks for your building type.</p>
-
-                  <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-                    <div>
-                      <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: INK, marginBottom: 8 }}>Building type</label>
-                      <select value={bmType} onChange={e => setBmType(e.target.value as typeof bmType)}
-                        style={{ width: "100%", padding: "12px 14px", borderRadius: 8, border: `1.5px solid ${CREAM3}`, fontSize: "0.88rem", fontFamily: sans, color: INK, background: "white", cursor: "pointer" }}>
-                        {Object.entries(typeLabels).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: INK, marginBottom: 8 }}>Total GLA (m²): <span style={{ fontFamily: mono, color: FL }}>{bmGla.toLocaleString()}</span></label>
-                      <input type="range" min={500} max={100000} step={500} value={bmGla} onChange={e => setBmGla(Number(e.target.value))} style={{ width: "100%", accentColor: F }} />
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: "0.8rem", fontWeight: 600, color: INK, marginBottom: 8 }}>Annual energy consumption (kWh): <span style={{ fontFamily: mono, color: FL }}>{bmKwh.toLocaleString()}</span></label>
-                      <input type="range" min={50000} max={10000000} step={50000} value={bmKwh} onChange={e => setBmKwh(Number(e.target.value))} style={{ width: "100%", accentColor: F }} />
-                    </div>
-                    <button onClick={runBenchmark}
-                      style={{ padding: "14px 28px", background: F, color: "white", border: "none", borderRadius: 8, fontSize: "0.88rem", fontWeight: 600, cursor: "pointer", fontFamily: sans, alignSelf: "flex-start" }}>
-                      Benchmark now →
-                    </button>
-                  </div>
+                  <label style={{ fontFamily: sans, fontSize: "0.78rem", fontWeight: 600, color: FOREST, display: "block", marginBottom: 8 }}>Building type</label>
+                  <select value={bmType} onChange={e => setBmType(e.target.value as typeof bmType)}
+                    style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #E2E8F0", borderRadius: 8, fontSize: "0.85rem", fontFamily: sans, color: FOREST, background: WHITE, cursor: "pointer" }}>
+                    <option value="office-a">Office A-Grade</option>
+                    <option value="office-b">Office B-Grade</option>
+                    <option value="retail">Retail Centre</option>
+                    <option value="industrial">Industrial</option>
+                  </select>
                 </div>
-
                 <div>
-                  {bmResult ? (
-                    <div style={{ background: SAGE_XLT, borderRadius: 16, padding: 32, border: `1px solid ${SAGE_LT}` }}>
-                      <div style={{ fontFamily: mono, fontSize: "0.65rem", color: FL, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>Your results</div>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }}>
-                        {[
-                          { label: "Your intensity", value: `${bmResult.intensity} kWh/m²/yr`, color: bmResult.color },
-                          { label: "SAPOA benchmark", value: `${bmResult.benchmark} kWh/m²/yr`, color: FL },
-                          { label: "Rating", value: bmResult.rating, color: bmResult.color },
-                          { label: "vs benchmark", value: `${bmResult.intensity > bmResult.benchmark ? "+" : ""}${Math.round(((bmResult.intensity - bmResult.benchmark) / bmResult.benchmark) * 100)}%`, color: bmResult.color },
-                        ].map(r => (
-                          <div key={r.label} style={{ background: "white", borderRadius: 10, padding: "16px 14px" }}>
-                            <div style={{ fontFamily: mono, fontSize: "0.6rem", color: MUTED, marginBottom: 6 }}>{r.label}</div>
-                            <div style={{ fontFamily: serif, fontSize: "1.3rem", fontWeight: 700, color: r.color }}>{r.value}</div>
-                          </div>
-                        ))}
-                      </div>
-                      <div style={{ padding: "16px", background: "white", borderRadius: 10, borderLeft: `4px solid ${bmResult.color}` }}>
-                        <div style={{ fontSize: "0.82rem", color: MID, lineHeight: 1.7 }}>
-                          {bmResult.rating === "Excellent" && "Your building is performing well above the SAPOA benchmark. Consider pursuing Green Star certification to formalise this performance."}
-                          {bmResult.rating === "Average" && "Your building is tracking close to the SAPOA benchmark. Targeted efficiency measures could move you into the top quartile."}
-                          {bmResult.rating === "Below average" && "Your building is consuming above the SAPOA benchmark. An energy audit would identify the highest-impact interventions."}
-                          {bmResult.rating === "Poor" && "Your building is significantly above benchmark. This represents a material carbon tax liability and Green Star certification risk."}
-                          {bmResult.rating === "Critical" && "Your building is in the critical range. Immediate action is required to manage SARS carbon tax exposure and avoid EPC non-compliance."}
-                        </div>
-                      </div>
-                      <button onClick={() => navigate("/signin")} style={{ marginTop: 20, width: "100%", padding: "13px", background: F, color: "white", border: "none", borderRadius: 9, fontSize: "0.84rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}>
-                        See full platform →
-                      </button>
-                    </div>
-                  ) : (
-                    <div style={{ background: SAGE_XLT, borderRadius: 16, padding: 32, border: `1px solid ${SAGE_LT}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 320, textAlign: "center" }}>
-                      <div style={{ fontSize: 48, marginBottom: 16 }}>🔬</div>
-                      <div style={{ fontFamily: serif, fontSize: "1.1rem", fontWeight: 700, color: F, marginBottom: 8 }}>Your benchmark results will appear here</div>
-                      <div style={{ fontSize: "0.82rem", color: MUTED }}>Adjust the inputs and click "Benchmark now"</div>
-                    </div>
-                  )}
+                  <label style={{ fontFamily: sans, fontSize: "0.78rem", fontWeight: 600, color: FOREST, display: "block", marginBottom: 8 }}>GLA (m²)</label>
+                  <input type="number" value={bmGla} onChange={e => setBmGla(+e.target.value)}
+                    style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #E2E8F0", borderRadius: 8, fontSize: "0.85rem", fontFamily: sans, color: FOREST, boxSizing: "border-box" }} />
                 </div>
               </div>
-            )}
-
-            {/* Building Simulator */}
-            {activeTab === "simulator" && (
               <div>
-                <div style={{ marginBottom: 40 }}>
-                  <div style={{ fontFamily: mono, fontSize: "0.65rem", color: FL, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 12 }}>Free · Up to 10 buildings</div>
-                  <h2 style={{ fontFamily: serif, fontSize: "clamp(28px,3vw,40px)", fontWeight: 900, color: F, lineHeight: 1.1, marginBottom: 16 }}>See your portfolio insights before you buy.</h2>
-                  <p style={{ fontSize: "0.9rem", color: MID, lineHeight: 1.8, maxWidth: 600 }}>Enter your buildings below and we'll generate a full portfolio risk picture — energy intensity, carbon liability, EPC risk, and GRESB readiness.</p>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 24 }}>
-                  {simBuildings.map((b, i) => (
-                    <div key={i} style={{ display: "grid", gridTemplateColumns: "2fr 1.5fr 1fr 1fr auto", gap: 12, alignItems: "center", background: "white", borderRadius: 12, padding: "16px 20px", border: `1px solid ${CREAM3}` }}>
-                      <input value={b.name} onChange={e => { const nb = [...simBuildings]; nb[i].name = e.target.value; setSimBuildings(nb); }}
-                        style={{ padding: "8px 12px", borderRadius: 7, border: `1.5px solid ${CREAM3}`, fontSize: "0.84rem", fontFamily: sans, color: INK }} />
-                      <select value={b.type} onChange={e => { const nb = [...simBuildings]; nb[i].type = e.target.value; setSimBuildings(nb); }}
-                        style={{ padding: "8px 12px", borderRadius: 7, border: `1.5px solid ${CREAM3}`, fontSize: "0.84rem", fontFamily: sans, color: INK }}>
-                        {Object.entries(typeLabels).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-                      </select>
-                      <input type="number" value={b.gla} onChange={e => { const nb = [...simBuildings]; nb[i].gla = Number(e.target.value); setSimBuildings(nb); }}
-                        placeholder="GLA m²" style={{ padding: "8px 12px", borderRadius: 7, border: `1.5px solid ${CREAM3}`, fontSize: "0.84rem", fontFamily: sans, color: INK }} />
-                      <input type="number" value={b.year} onChange={e => { const nb = [...simBuildings]; nb[i].year = Number(e.target.value); setSimBuildings(nb); }}
-                        placeholder="Year built" style={{ padding: "8px 12px", borderRadius: 7, border: `1.5px solid ${CREAM3}`, fontSize: "0.84rem", fontFamily: sans, color: INK }} />
-                      <button onClick={() => setSimBuildings(simBuildings.filter((_, j) => j !== i))}
-                        style={{ width: 28, height: 28, borderRadius: "50%", background: CREAM2, border: "none", cursor: "pointer", fontSize: 14, color: MUTED }}>×</button>
+                <label style={{ fontFamily: sans, fontSize: "0.78rem", fontWeight: 600, color: FOREST, display: "block", marginBottom: 8 }}>Annual electricity consumption (kWh)</label>
+                <input type="number" value={bmKwh} onChange={e => setBmKwh(+e.target.value)}
+                  style={{ width: "100%", padding: "10px 14px", border: "1.5px solid #E2E8F0", borderRadius: 8, fontSize: "0.85rem", fontFamily: sans, color: FOREST, boxSizing: "border-box" }} />
+              </div>
+              <button onClick={runBenchmark}
+                style={{ background: FOREST, color: WHITE, border: "none", padding: "14px", borderRadius: 10, fontSize: "0.88rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}
+                onMouseEnter={e => e.currentTarget.style.background = FOREST2}
+                onMouseLeave={e => e.currentTarget.style.background = FOREST}>
+                Benchmark now →
+              </button>
+              {bmResult && (
+                <div style={{ background: "#F0FDF4", borderRadius: 12, padding: 24, border: `1px solid #BBF7D0` }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: 16 }}>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontFamily: mono, fontSize: "0.58rem", color: DARK_MUTED, textTransform: "uppercase", marginBottom: 4 }}>Your intensity</div>
+                      <div style={{ fontFamily: serif, fontSize: "1.8rem", fontWeight: 900, color: bmResult.color }}>{bmResult.intensity}</div>
+                      <div style={{ fontFamily: mono, fontSize: "0.6rem", color: DARK_MUTED }}>kWh/m²/yr</div>
                     </div>
-                  ))}
-                </div>
-
-                <div style={{ display: "flex", gap: 12, marginBottom: 40 }}>
-                  {simBuildings.length < 10 && (
-                    <button onClick={addSimBuilding} style={{ padding: "12px 22px", background: "white", color: F, border: `1.5px solid ${CREAM3}`, borderRadius: 8, fontSize: "0.84rem", fontWeight: 500, cursor: "pointer", fontFamily: sans }}>
-                      + Add building
-                    </button>
-                  )}
-                  <button onClick={generateSim} style={{ padding: "12px 28px", background: F, color: "white", border: "none", borderRadius: 8, fontSize: "0.86rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}>
-                    Generate portfolio insights →
-                  </button>
-                </div>
-
-                {simGenerated && (
-                  <div>
-                    <div style={{ fontFamily: mono, fontSize: "0.65rem", color: FL, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 24 }}>Portfolio insights — {simBuildings.length} buildings</div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                      {simResults.map((b, i) => (
-                        <div key={i} style={{ background: "white", borderRadius: 12, padding: "20px 24px", border: `1px solid ${CREAM3}`, display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr", gap: 16, alignItems: "center" }}>
-                          <div>
-                            <div style={{ fontWeight: 600, fontSize: "0.9rem", color: INK, marginBottom: 2 }}>{b.name}</div>
-                            <div style={{ fontFamily: mono, fontSize: "0.65rem", color: MUTED }}>{typeLabels[b.type]} · {b.gla.toLocaleString()} m²</div>
-                          </div>
-                          <div>
-                            <div style={{ fontFamily: mono, fontSize: "0.65rem", color: MUTED, marginBottom: 3 }}>Energy intensity</div>
-                            <div style={{ fontFamily: serif, fontSize: "1rem", fontWeight: 700, color: b.intensity > benchmarks[b.type] ? CLAY : FL }}>{b.intensity} kWh/m²</div>
-                          </div>
-                          <div>
-                            <div style={{ fontFamily: mono, fontSize: "0.65rem", color: MUTED, marginBottom: 3 }}>Carbon (tCO₂e)</div>
-                            <div style={{ fontFamily: serif, fontSize: "1rem", fontWeight: 700, color: F }}>{b.carbonTons.toLocaleString()}</div>
-                          </div>
-                          <div>
-                            <div style={{ fontFamily: mono, fontSize: "0.65rem", color: MUTED, marginBottom: 3 }}>Carbon tax / yr</div>
-                            <div style={{ fontFamily: serif, fontSize: "1rem", fontWeight: 700, color: CLAY }}>R{(b.tax / 1000).toFixed(0)}k</div>
-                          </div>
-                          <div>
-                            <div style={{ fontFamily: mono, fontSize: "0.65rem", color: MUTED, marginBottom: 3 }}>EPC risk</div>
-                            <span style={{ padding: "3px 10px", borderRadius: 20, fontSize: "0.72rem", fontWeight: 600, background: b.epcRisk === "High" ? "#FDF0EB" : b.epcRisk === "Medium" ? "#FFF8E1" : SAGE_XLT, color: b.epcRisk === "High" ? CLAY : b.epcRisk === "Medium" ? "#B8860B" : FL }}>{b.epcRisk}</span>
-                          </div>
-                        </div>
-                      ))}
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontFamily: mono, fontSize: "0.58rem", color: DARK_MUTED, textTransform: "uppercase", marginBottom: 4 }}>SAPOA benchmark</div>
+                      <div style={{ fontFamily: serif, fontSize: "1.8rem", fontWeight: 900, color: FOREST }}>{bmResult.benchmark}</div>
+                      <div style={{ fontFamily: mono, fontSize: "0.6rem", color: DARK_MUTED }}>kWh/m²/yr</div>
                     </div>
-                    <div style={{ marginTop: 32, padding: "24px 28px", background: F, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <div>
-                        <div style={{ fontFamily: serif, fontSize: "1.1rem", fontWeight: 700, color: "white", marginBottom: 4 }}>Want the full platform experience?</div>
-                        <div style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.7)" }}>Live dashboards, automated reporting, FM ticketing — all in one place.</div>
-                      </div>
-                      <button onClick={() => navigate("/signin")} style={{ padding: "12px 24px", background: "white", color: F, border: "none", borderRadius: 8, fontSize: "0.86rem", fontWeight: 600, cursor: "pointer", fontFamily: sans, whiteSpace: "nowrap" }}>
-                        See the platform →
-                      </button>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontFamily: mono, fontSize: "0.58rem", color: DARK_MUTED, textTransform: "uppercase", marginBottom: 4 }}>Rating</div>
+                      <div style={{ fontFamily: serif, fontSize: "1.4rem", fontWeight: 900, color: bmResult.color }}>{bmResult.rating}</div>
+                      <div style={{ fontFamily: mono, fontSize: "0.6rem", color: DARK_MUTED }}>{typeLabels[bmType]}</div>
                     </div>
                   </div>
-                )}
+                  <button onClick={() => navigate("/demo")}
+                    style={{ width: "100%", padding: "12px", background: FOREST, color: WHITE, border: "none", borderRadius: 8, fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}>
+                    Get your full ESG report — request a demo →
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── BUILDING SIMULATOR ── */}
+      {activeTab === "simulator" && (
+        <section style={{ background: OFF_WHITE, padding: "80px 56px" }}>
+          <div style={{ maxWidth: 900, margin: "0 auto" }}>
+            <div style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 12 }}>Free tool · No sign-up</div>
+            <h2 style={{ fontFamily: serif, fontSize: "clamp(28px,3.5vw,42px)", fontWeight: 900, color: FOREST, lineHeight: 1.1, marginBottom: 12 }}>Building Simulator</h2>
+            <p style={{ fontSize: "0.9rem", color: DARK_MUTED, lineHeight: 1.8, marginBottom: 40 }}>Enter your buildings below and we'll generate a full portfolio risk picture — energy intensity, carbon liability, EPC risk, and GRESB readiness.</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 24 }}>
+              {simBuildings.map((b, i) => (
+                <div key={i} style={{ background: WHITE, borderRadius: 12, padding: "16px 20px", display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 12, alignItems: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+                  <input value={b.name} onChange={e => { const s = [...simBuildings]; s[i].name = e.target.value; setSimBuildings(s); }}
+                    style={{ padding: "8px 12px", border: "1.5px solid #E2E8F0", borderRadius: 7, fontSize: "0.82rem", fontFamily: sans, color: FOREST }} />
+                  <select value={b.type} onChange={e => { const s = [...simBuildings]; s[i].type = e.target.value; setSimBuildings(s); }}
+                    style={{ padding: "8px 10px", border: "1.5px solid #E2E8F0", borderRadius: 7, fontSize: "0.78rem", fontFamily: sans, color: FOREST, background: WHITE }}>
+                    <option value="office-a">Office A</option>
+                    <option value="office-b">Office B</option>
+                    <option value="retail">Retail</option>
+                    <option value="industrial">Industrial</option>
+                  </select>
+                  <input type="number" value={b.gla} onChange={e => { const s = [...simBuildings]; s[i].gla = +e.target.value; setSimBuildings(s); }}
+                    placeholder="GLA m²"
+                    style={{ padding: "8px 12px", border: "1.5px solid #E2E8F0", borderRadius: 7, fontSize: "0.82rem", fontFamily: sans, color: FOREST }} />
+                  <input type="number" value={b.year} onChange={e => { const s = [...simBuildings]; s[i].year = +e.target.value; setSimBuildings(s); }}
+                    placeholder="Year built"
+                    style={{ padding: "8px 12px", border: "1.5px solid #E2E8F0", borderRadius: 7, fontSize: "0.82rem", fontFamily: sans, color: FOREST }} />
+                </div>
+              ))}
+              <button onClick={() => setSimBuildings([...simBuildings, { name: `Building ${simBuildings.length + 1}`, type: "office-a", gla: 10000, year: 2010 }])}
+                style={{ background: "none", border: `1.5px dashed #CBD5E0`, borderRadius: 10, padding: "12px", fontSize: "0.8rem", color: DARK_MUTED, cursor: "pointer", fontFamily: sans }}>
+                + Add building
+              </button>
+            </div>
+            <button onClick={runSimulator}
+              style={{ background: FOREST, color: WHITE, border: "none", padding: "14px 32px", borderRadius: 10, fontSize: "0.88rem", fontWeight: 600, cursor: "pointer", fontFamily: sans, marginBottom: 32 }}>
+              Generate portfolio insights →
+            </button>
+            {simResult && (
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
+                {[
+                  { label: "Total GLA", value: `${(simResult.totalGla / 1000).toFixed(0)}k m²`, sub: "Portfolio gross leasable area", color: FOREST },
+                  { label: "Avg energy intensity", value: `${simResult.avgIntensity} kWh/m²`, sub: "vs SAPOA benchmark", color: FOREST2 },
+                  { label: "Carbon liability / yr", value: `R${simResult.carbonLiability}M`, sub: "SARS carbon tax exposure", color: CLAY },
+                  { label: "EPC risk buildings", value: `${simResult.epcRisk}`, sub: "Require urgent certification", color: "#F59E0B" },
+                  { label: "GRESB readiness", value: `${simResult.gresbScore}/100`, sub: "Below SA peer average", color: FOREST3 },
+                ].map(r => (
+                  <div key={r.label} style={{ background: WHITE, borderRadius: 14, padding: "20px 18px", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+                    <div style={{ fontFamily: mono, fontSize: "0.58rem", color: DARK_MUTED, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>{r.label}</div>
+                    <div style={{ fontFamily: serif, fontSize: "1.6rem", fontWeight: 900, color: r.color, lineHeight: 1 }}>{r.value}</div>
+                    <div style={{ fontFamily: mono, fontSize: "0.6rem", color: DARK_MUTED, marginTop: 6 }}>{r.sub}</div>
+                  </div>
+                ))}
+                <div style={{ gridColumn: "1 / -1", marginTop: 8 }}>
+                  <button onClick={() => navigate("/demo")}
+                    style={{ background: FOREST, color: WHITE, border: "none", padding: "14px 28px", borderRadius: 10, fontSize: "0.88rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}>
+                    Get your full portfolio report — request a demo →
+                  </button>
+                </div>
               </div>
             )}
           </div>
         </section>
       )}
 
-      {/* ── REGULATORY TICKER ── */}
-      <div style={{ background: F, padding: "14px 0", overflow: "hidden" }}>
-        <div style={{ display: "flex", gap: 48, animation: "none", padding: "0 48px", flexWrap: "wrap" }}>
-          {[
-            "Carbon Budget Act (2024) is now in force.",
-            "CIPC Notice 6 of 2025 mandates ESG disclosure.",
-            "JHB, CPT & Tshwane: net-zero for all new builds by 2030.",
-          ].map((item, i) => (
-            <span key={i} style={{ fontFamily: mono, fontSize: "0.72rem", color: "rgba(255,255,255,0.85)", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ width: 5, height: 5, borderRadius: "50%", background: CLAY, display: "inline-block", flexShrink: 0 }} />
-              {item}
-              {i < 2 && <span style={{ color: "rgba(255,255,255,0.3)", marginLeft: 8 }}>·</span>}
-            </span>
-          ))}
-          <a href="#" style={{ fontFamily: mono, fontSize: "0.72rem", color: SAGE_LT, textDecoration: "none", marginLeft: "auto", whiteSpace: "nowrap" }}>SA regulatory guide →</a>
-        </div>
-      </div>
-
       {/* ── HOW IT WORKS ── */}
-      <section style={{ background: CREAM, padding: "100px 56px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "0.4fr 1fr", gap: 80, alignItems: "start" }}>
-            <div>
-              <div style={{ fontFamily: mono, fontSize: "0.65rem", color: FL, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>How it works</div>
-              <h2 style={{ fontFamily: serif, fontSize: "clamp(32px,3.5vw,48px)", fontWeight: 900, color: F, lineHeight: 1.1, marginBottom: 20 }}>Four steps from liability to legacy.</h2>
-              <p style={{ fontSize: "0.88rem", color: MID, lineHeight: 1.8 }}>GreenBDG combines SA's deepest green building expertise with a platform built on 13 years of real project data.</p>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-              {[
-                { num: "01", icon: "🔍", title: "Audit & benchmark", body: "GreenBDG's consultants audit your portfolio. Energy consumption, carbon footprint, certification status, FM state. You see the full picture — many clients see it clearly for the first time." },
-                { num: "02", icon: "📊", title: "Onboard to the platform", body: "Your buildings go into the platform — tiered to your pace. One building in 20 minutes. A 50-building portfolio via GreenBDG-assisted migration. Dashboard live from day one." },
-                { num: "03", icon: "⚡", title: "Run your portfolio", body: "Your FM team manages tickets, PPM schedules, and utility anomalies daily. Carbon and ESG data updates automatically. You always know what's broken, where, and who's fixing it." },
-                { num: "04", icon: "📄", title: "Report with confidence", body: "The platform builds 70% of your ESG report. GreenBDG's sustainability team closes the 30%. GRI-aligned, TCFD-structured, GRESB-ready — delivered on time, every time." },
-              ].map((step, i) => (
-                <div key={i} style={{ display: "flex", gap: 24, padding: "28px 0", borderBottom: i < 3 ? `1px solid ${CREAM3}` : "none" }}>
-                  <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-                    <div style={{ fontFamily: mono, fontSize: "0.65rem", color: MUTED }}>{step.num} —</div>
-                    <div style={{ fontSize: 24 }}>{step.icon}</div>
-                  </div>
-                  <div>
-                    <div style={{ fontFamily: serif, fontSize: "1.05rem", fontWeight: 700, color: F, marginBottom: 8 }}>{step.title}</div>
-                    <div style={{ fontSize: "0.88rem", color: MID, lineHeight: 1.8 }}>{step.body}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── PLATFORM FEATURES ── */}
-      <section style={{ background: "white", padding: "100px 56px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ marginBottom: 56 }}>
-            <div style={{ fontFamily: mono, fontSize: "0.65rem", color: FL, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>The platform</div>
-            <h2 style={{ fontFamily: serif, fontSize: "clamp(32px,3.5vw,48px)", fontWeight: 900, color: F, lineHeight: 1.1 }}>What you actually get.</h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
-            {[
-              { num: "01", title: "FM & reactive maintenance", body: "Ticket management, PPM scheduling, contractor coordination, OHS compliance log — all in one place." },
-              { num: "02", title: "Energy & carbon tracking", body: "Scope 1, 2, 3 emissions, SARS carbon tax liability, anomaly detection, solar generation tracking." },
-              { num: "03", title: "Full ESG compliance suite", body: "Green Star V2, EDGE, SANS 10400-XA, B-BBEE, social impact — tracked at building level." },
-              { num: "04", title: "Automated ESG reporting", body: "70% of your annual ESG report generated by the platform. GRI, TCFD, GRESB-aligned." },
-              { num: "05", title: "Certification tracking", body: "Green Star V2, EDGE, LEED, EPC — status, expiry dates, and renewal alerts across your whole portfolio." },
-              { num: "06", title: "Multi-role dashboards", body: "CFO, Sustainability Manager, Portfolio Manager, Building Manager, FM, and Tenant — each with a tailored view." },
-            ].map((feat, i) => (
-              <div key={i} style={{ padding: "28px 24px", background: SAGE_XLT, borderRadius: 14, border: `1px solid ${SAGE_LT}`, transition: "transform 0.2s" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "none"; }}>
-                <div style={{ fontFamily: mono, fontSize: "0.65rem", color: FL, marginBottom: 12 }}>{feat.num}</div>
-                <div style={{ fontFamily: serif, fontSize: "1rem", fontWeight: 700, color: F, marginBottom: 10, lineHeight: 1.3 }}>{feat.title}</div>
-                <div style={{ fontSize: "0.84rem", color: MID, lineHeight: 1.75 }}>{feat.body}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── DASHBOARD PREVIEW ── */}
-      <section style={{ background: CREAM2, padding: "100px 56px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "0.5fr 1fr", gap: 64, alignItems: "center" }}>
-            <div>
-              <div style={{ fontFamily: mono, fontSize: "0.65rem", color: FL, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>Live dashboard</div>
-              <h2 style={{ fontFamily: serif, fontSize: "clamp(28px,3vw,40px)", fontWeight: 900, color: F, lineHeight: 1.1, marginBottom: 20 }}>Your portfolio at a glance.</h2>
-              <p style={{ fontSize: "0.88rem", color: MID, lineHeight: 1.8, marginBottom: 28 }}>Real-time KPIs, critical ticket alerts, and ESG scores — all on one screen. No spreadsheets. No waiting for monthly reports.</p>
-              <button onClick={() => navigate("/signin")} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 24px", background: F, color: "white", border: "none", borderRadius: 8, fontSize: "0.86rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}>
-                Enter your own buildings and see your dashboard →
-              </button>
-            </div>
-            {/* Mock dashboard card */}
-            <div style={{ background: "white", borderRadius: 16, padding: 28, boxShadow: "0 20px 60px rgba(27,67,50,0.1)", border: `1px solid ${SAGE_LT}`, position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(to right, ${F}, ${CLAY})` }} />
-              <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-                {["Dashboard", "FM", "ESG", "Carbon"].map(tab => (
-                  <span key={tab} style={{ padding: "5px 12px", borderRadius: 20, fontSize: "0.72rem", fontWeight: 500, background: tab === "Dashboard" ? F : SAGE_XLT, color: tab === "Dashboard" ? "white" : MID, fontFamily: sans }}>{tab}</span>
-                ))}
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+      {activeTab === "home" && (
+        <>
+          <section style={{ background: WHITE, padding: "100px 56px" }}>
+            <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+              <div style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>How it works</div>
+              <h2 style={{ fontFamily: serif, fontSize: "clamp(32px,3.5vw,48px)", fontWeight: 900, color: FOREST, lineHeight: 1.1, marginBottom: 16 }}>Four steps from liability to legacy.</h2>
+              <p style={{ fontSize: "0.95rem", color: DARK_MUTED, lineHeight: 1.8, maxWidth: 560, marginBottom: 64 }}>GreenBDG combines SA's deepest green building expertise with a platform built on 13 years of real project data.</p>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 32 }}>
                 {[
-                  { label: "Open tickets", value: "6", sub: "↑ 2 critical", color: CLAY },
-                  { label: "ESG score", value: "68/100", sub: "↑ +4 this qtr", color: FL },
-                  { label: "Carbon (tCO₂e)", value: "1,240", sub: "↓ 12% vs last yr", color: F },
-                  { label: "Cert expiring", value: "3", sub: "Within 90 days", color: "#B8860B" },
-                ].map(kpi => (
-                  <div key={kpi.label} style={{ background: SAGE_XLT, borderRadius: 10, padding: "12px 10px" }}>
-                    <div style={{ fontFamily: mono, fontSize: "0.58rem", color: MUTED, marginBottom: 4 }}>{kpi.label}</div>
-                    <div style={{ fontFamily: serif, fontSize: "1.2rem", fontWeight: 700, color: kpi.color, marginBottom: 2 }}>{kpi.value}</div>
-                    <div style={{ fontFamily: mono, fontSize: "0.58rem", color: MUTED }}>{kpi.sub}</div>
+                  { num: "01", icon: "🔍", title: "Audit & benchmark", body: "GreenBDG's consultants audit your portfolio. Energy consumption, carbon footprint, certification status, FM state. You see the full picture — many clients see it clearly for the first time." },
+                  { num: "02", icon: "📊", title: "Onboard to the platform", body: "Your buildings go into the platform — tiered to your pace. One building in 20 minutes. A 50-building portfolio via GreenBDG-assisted migration. Dashboard live from day one." },
+                  { num: "03", icon: "⚡", title: "Run your operations", body: "FM tickets, energy monitoring, ESG reporting, carbon tracking — all in one place. Your team works from a single source of truth. No more spreadsheets." },
+                  { num: "04", icon: "📈", title: "Report & improve", body: "70% of your annual ESG report generated automatically. GRESB, TCFD, GRI-aligned. Benchmark against peers. Track your net-zero trajectory." },
+                ].map(step => (
+                  <div key={step.num} style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 8 }}>
+                      <div style={{ fontFamily: mono, fontSize: "0.65rem", color: EMERALD, fontWeight: 600 }}>{step.num} — {step.icon}</div>
+                      <div style={{ width: "100%", height: 2, background: `linear-gradient(90deg, ${FOREST2} 0%, transparent 100%)`, marginBottom: 16 }} />
+                    </div>
+                    <h3 style={{ fontFamily: serif, fontSize: "1.15rem", fontWeight: 700, color: FOREST, marginBottom: 12 }}>{step.title}</h3>
+                    <p style={{ fontSize: "0.88rem", color: DARK_MUTED, lineHeight: 1.75 }}>{step.body}</p>
                   </div>
                 ))}
               </div>
-              <div style={{ marginBottom: 16 }}>
-                <div style={{ fontFamily: mono, fontSize: "0.62rem", color: MUTED, marginBottom: 10 }}>Portfolio health</div>
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                  {["Sandton HQ", "Rosebank B", "Midrand C", "Centurion 4", "Waterfall 1", "Fourways D"].map((b, i) => (
-                    <span key={b} style={{ padding: "4px 10px", borderRadius: 20, fontSize: "0.7rem", background: i === 0 ? "#FDF0EB" : i === 5 ? "#FFF3E0" : SAGE_XLT, color: i === 0 ? CLAY : i === 5 ? "#B8860B" : FL, fontFamily: mono }}>{b}</span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <div style={{ fontFamily: mono, fontSize: "0.62rem", color: MUTED, marginBottom: 10 }}>Critical tickets · 6 open</div>
+            </div>
+          </section>
+
+          {/* ── PLATFORM FEATURES ── */}
+          <section style={{ background: FOREST, padding: "100px 56px", position: "relative", overflow: "hidden" }}>
+            <img src={DASH_IMG} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.12 }} />
+            <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 2 }}>
+              <div style={{ fontFamily: mono, fontSize: "0.62rem", color: EMERALD, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>The platform</div>
+              <h2 style={{ fontFamily: serif, fontSize: "clamp(32px,3.5vw,48px)", fontWeight: 900, color: WHITE, lineHeight: 1.1, marginBottom: 64 }}>What you actually get.</h2>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24 }}>
                 {[
-                  { text: "HVAC fault — Sandton HQ B3", type: "HVAC" },
-                  { text: "Geyser burst — Rosebank P1", type: "Plumbing" },
-                  { text: "Elec anomaly — Fourways D", type: "Electrical" },
-                ].map(t => (
-                  <div key={t.text} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", borderBottom: `1px solid ${CREAM3}` }}>
-                    <span style={{ fontSize: "0.78rem", color: INK }}>{t.text}</span>
-                    <span style={{ padding: "2px 8px", borderRadius: 20, fontSize: "0.65rem", background: CREAM2, color: MID, fontFamily: mono }}>{t.type}</span>
+                  { num: "01", title: "FM & reactive maintenance", body: "Ticket management, PPM scheduling, contractor coordination, OHS compliance log — all in one place." },
+                  { num: "02", title: "Energy & carbon tracking", body: "Scope 1, 2, 3 emissions, SARS carbon tax liability, anomaly detection, solar generation tracking." },
+                  { num: "03", title: "Full ESG compliance suite", body: "Green Star V2, EDGE, SANS 10400-XA, B-BBEE, social impact — tracked at building level." },
+                  { num: "04", title: "Automated ESG reporting", body: "70% of your annual ESG report generated by the platform. GRI, TCFD, GRESB-aligned." },
+                  { num: "05", title: "Certification tracking", body: "Green Star V2, EDGE, LEED, EPC — status, expiry dates, renewal workflows, consultant coordination." },
+                  { num: "06", title: "Tenant portal", body: "Tenants log faults, view energy usage, access certifications, and engage with sustainability goals." },
+                ].map(f => (
+                  <div key={f.num} style={{ background: "rgba(255,255,255,0.07)", borderRadius: 14, padding: "28px 24px", border: "1px solid rgba(255,255,255,0.1)" }}>
+                    <div style={{ fontFamily: mono, fontSize: "0.6rem", color: EMERALD, marginBottom: 12 }}>{f.num}</div>
+                    <h3 style={{ fontFamily: serif, fontSize: "1.05rem", fontWeight: 700, color: WHITE, marginBottom: 10 }}>{f.title}</h3>
+                    <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.7 }}>{f.body}</p>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* ── WHY GREENBDG ── */}
-      <section style={{ background: F, padding: "100px 56px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ marginBottom: 56 }}>
-            <div style={{ fontFamily: mono, fontSize: "0.65rem", color: SAGE, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>Why GreenBDG</div>
-            <h2 style={{ fontFamily: serif, fontSize: "clamp(32px,3.5vw,48px)", fontWeight: 900, color: "white", lineHeight: 1.1, marginBottom: 16 }}>Not another European SaaS<br /><em style={{ fontWeight: 400 }}>adapted for Africa.</em></h2>
-            <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.8, maxWidth: 560 }}>Every global competitor was built for EU or US regulatory frameworks. GreenBDG was built from the ground up for SA's grid, certification systems, and legal environment.</p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
-            {[
-              { num: "01 —", title: "Built for SA's regulatory stack", body: "Green Star V2, SANS 10400-XA, SARS carbon tax, the Carbon Budget Act — not bolted on after the fact, but the foundation. Measurabl and Deepki don't know what Eskom peak demand charges are." },
-              { num: "02 —", title: "Software backed by real expertise", body: "GreenBDG's consultants have done 100+ energy audits and EPC certifications. The platform is built on that data. When the software doesn't cover something, a human expert does." },
-              { num: "03 —", title: "FM-first, not investor-first", body: "Global ESG platforms are built for institutional investors producing reports. GreenBDG is built for the facilities manager whose job it is to actually run the buildings. Reports are a byproduct." },
-              { num: "04 —", title: "Consulting + platform = the 30%", body: "Every ESG report has 30% that software can't automate. GreenBDG's team does that. No other SaaS provider offers this without a third-party consultant." },
-              { num: "05 —", title: "SA's data moat", body: "13 years of SA project data is not replicable. A European platform entering SA starts with zero local benchmarks. GreenBDG already has the SAPOA-comparable data layer. That's a 10-year head start." },
-              { num: "06 —", title: "Social impact built in", body: "B-BBEE, SMME supplier spend, women and youth employment, learnerships — tracked at building level. No global platform does this. It's uniquely African and uniquely GreenBDG." },
-            ].map((card, i) => (
-              <div key={i} style={{ padding: "28px 24px", background: "rgba(255,255,255,0.06)", borderRadius: 14, border: "1px solid rgba(255,255,255,0.1)" }}>
-                <div style={{ fontFamily: mono, fontSize: "0.65rem", color: SAGE, marginBottom: 12 }}>{card.num}</div>
-                <div style={{ fontFamily: serif, fontSize: "1rem", fontWeight: 700, color: "white", marginBottom: 10, lineHeight: 1.3 }}>{card.title}</div>
-                <div style={{ fontSize: "0.84rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.75 }}>{card.body}</div>
+          {/* ── WHY GREENBDG ── */}
+          <section style={{ background: OFF_WHITE, padding: "100px 56px" }}>
+            <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+              <div style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>Why GreenBDG</div>
+              <h2 style={{ fontFamily: serif, fontSize: "clamp(32px,3.5vw,48px)", fontWeight: 900, color: FOREST, lineHeight: 1.1, marginBottom: 12 }}>Not another European SaaS adapted for Africa.</h2>
+              <p style={{ fontSize: "0.95rem", color: DARK_MUTED, lineHeight: 1.8, maxWidth: 600, marginBottom: 64 }}>Every global competitor was built for EU or US regulatory frameworks. GreenBDG was built from the ground up for SA's grid, certification systems, and legal environment.</p>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 32 }}>
+                {[
+                  { num: "01", title: "Built for SA's regulatory stack", body: "Green Star V2, SANS 10400-XA, SARS carbon tax, the Carbon Budget Act — not bolted on after the fact, but the foundation. Measurabl and Deepki don't know what Eskom peak demand charges are." },
+                  { num: "02", title: "Software backed by real expertise", body: "GreenBDG's consultants have done 100+ energy audits and EPC certifications. The platform is built on that data. Not a generic SaaS with a green skin." },
+                  { num: "03", title: "One platform, not a patchwork", body: "FM, ESG, energy, certifications, tenant portal — one login, one data model, one source of truth. No integrations to manage, no data silos." },
+                  { num: "04", title: "Priced for SA portfolios", body: "Not priced for London or Amsterdam. GreenBDG is built for the SA market — accessible for a 5-building portfolio, scalable to 500." },
+                  { num: "05", title: "Onboarding in days, not months", body: "One building live in 20 minutes. A full portfolio migrated in a week with GreenBDG's assisted onboarding. No 6-month implementation projects." },
+                  { num: "06", title: "Your data, your control", body: "Hosted in SA. POPIA compliant. Your data never leaves the country. No vendor lock-in — export everything, anytime." },
+                ].map(w => (
+                  <div key={w.num}>
+                    <div style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST3, marginBottom: 8 }}>{w.num} —</div>
+                    <h3 style={{ fontFamily: serif, fontSize: "1.05rem", fontWeight: 700, color: FOREST, marginBottom: 10 }}>{w.title}</h3>
+                    <p style={{ fontSize: "0.88rem", color: DARK_MUTED, lineHeight: 1.75 }}>{w.body}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CASE STUDY ── */}
-      <section style={{ background: CREAM, padding: "100px 56px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
-            <div>
-              <div style={{ fontFamily: mono, fontSize: "0.65rem", color: FL, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>Case study · Sandton · Commercial office</div>
-              <h2 style={{ fontFamily: serif, fontSize: "clamp(28px,3vw,42px)", fontWeight: 900, color: F, lineHeight: 1.1, marginBottom: 20 }}>25% energy reduction.<br /><em style={{ fontWeight: 400, color: CLAY }}>14 months. One platform.</em></h2>
-              <p style={{ fontSize: "0.9rem", color: MID, lineHeight: 1.8, marginBottom: 32 }}>GreenBDG audited the building systems, deployed smart metering, and tracked performance in real time. Carbon intensity dropped year-on-year. Green Star rating upgraded.</p>
-              <a href="#" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: "0.86rem", fontWeight: 600, color: F, textDecoration: "none", borderBottom: `1.5px solid ${F}`, paddingBottom: 2 }}>Read full case study →</a>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
-              {[
-                { value: "25%", label: "Energy\nsavings" },
-                { value: "R58k", label: "Saved per\nmonth" },
-                { value: "38%", label: "Carbon\nreduction" },
-              ].map(stat => (
-                <div key={stat.label} style={{ background: "white", borderRadius: 14, padding: "28px 20px", textAlign: "center", boxShadow: "0 4px 20px rgba(27,67,50,0.08)", border: `1px solid ${SAGE_LT}` }}>
-                  <div style={{ fontFamily: serif, fontSize: "2.4rem", fontWeight: 900, color: F, lineHeight: 1, marginBottom: 8 }}>{stat.value}</div>
-                  <div style={{ fontFamily: mono, fontSize: "0.65rem", color: MUTED, textTransform: "uppercase", letterSpacing: "0.1em", whiteSpace: "pre-line", lineHeight: 1.5 }}>{stat.label}</div>
-                </div>
-              ))}
+          </section>
+
+          {/* ── FINAL CTA ── */}
+          <section style={{ background: FOREST, padding: "100px 56px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+            <img src={PORTFOLIO_IMG} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.15 }} />
+            <div style={{ maxWidth: 640, margin: "0 auto", position: "relative", zIndex: 2 }}>
+              <div style={{ fontFamily: mono, fontSize: "0.65rem", color: EMERALD, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 20 }}>Make the choice</div>
+              <h2 style={{ fontFamily: serif, fontSize: "clamp(32px,4vw,52px)", fontWeight: 900, color: WHITE, lineHeight: 1.1, marginBottom: 20 }}>
+                Every building is either a liability or a <em>legacy.</em>
+              </h2>
+              <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.8, marginBottom: 40 }}>
+                Start with your free portfolio check. Know your number before your next board meeting.
+              </p>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
+                <button onClick={() => setActiveTab("benchmark")}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 9, background: EMERALD, color: WHITE, border: "none", padding: "16px 32px", borderRadius: 9, fontSize: "0.9rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}>
+                  Get my free ESG score
+                  <svg viewBox="0 0 16 16" fill="none" style={{ width: 14, height: 14 }}><path d="M3 8h10M9 4l4 4-4 4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
+                <button onClick={() => navigate("/demo")}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 9, background: "transparent", color: "rgba(255,255,255,0.85)", border: "1.5px solid rgba(255,255,255,0.3)", padding: "16px 32px", borderRadius: 9, fontSize: "0.9rem", fontWeight: 500, cursor: "pointer", fontFamily: sans }}>
+                  Book a platform walkthrough
+                </button>
+              </div>
+              <p style={{ fontFamily: mono, fontSize: "0.62rem", color: "rgba(255,255,255,0.4)", marginTop: 16 }}>
+                Free score = 4-min self-serve, no sign-up &nbsp;·&nbsp; Walkthrough = 30-min guided demo of the SaaS dashboard with a GreenBDG consultant
+              </p>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* ── FINAL CTA ── */}
-      <section style={{ background: SAGE_XLT, padding: "100px 56px", textAlign: "center" }}>
-        <div style={{ maxWidth: 640, margin: "0 auto" }}>
-          <div style={{ fontFamily: mono, fontSize: "0.65rem", color: FL, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 20 }}>Make the choice</div>
-          <h2 style={{ fontFamily: serif, fontSize: "clamp(32px,4vw,52px)", fontWeight: 900, color: F, lineHeight: 1.1, marginBottom: 20 }}>Every building is either a liability or a legacy.</h2>
-          <p style={{ fontSize: "0.9rem", color: MID, lineHeight: 1.8, marginBottom: 40 }}>Start with your free portfolio check. Know your number before your next board meeting.</p>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
-            <button onClick={() => setActiveTab("benchmark")}
-              style={{ display: "inline-flex", alignItems: "center", gap: 9, background: F, color: "white", border: "none", padding: "16px 32px", borderRadius: 9, fontSize: "0.9rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}>
-              Get my free ESG score
-            </button>
-            <button onClick={() => navigate("/signin")}
-              style={{ display: "inline-flex", alignItems: "center", gap: 9, background: "white", color: F, border: `1.5px solid rgba(27,67,50,0.25)`, padding: "16px 32px", borderRadius: 9, fontSize: "0.9rem", fontWeight: 500, cursor: "pointer", fontFamily: sans }}>
-              Book a platform walkthrough
-            </button>
-          </div>
-          <p style={{ fontFamily: mono, fontSize: "0.62rem", color: MUTED, marginTop: 16 }}>
-            Free score = 4-min self-serve, no sign-up &nbsp;·&nbsp; Walkthrough = 30-min guided demo with a GreenBDG consultant
-          </p>
-        </div>
-      </section>
-
-      {/* ── FOOTER ── */}
-      <footer style={{ background: INK, padding: "60px 56px 32px", color: "rgba(255,255,255,0.6)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 48, marginBottom: 48 }}>
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                <div style={{ width: 32, height: 32, background: F, borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill="white" opacity="0.9" /></svg>
-                </div>
+          {/* ── FOOTER ── */}
+          <footer style={{ background: "#0A0A0A", padding: "60px 56px 32px", color: "rgba(255,255,255,0.5)" }}>
+            <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 48, marginBottom: 48 }}>
                 <div>
-                  <span style={{ fontFamily: serif, fontSize: "0.95rem", fontWeight: 700, color: "white", display: "block" }}>GreenBDG Africa</span>
-                  <span style={{ fontFamily: mono, fontSize: "0.5rem", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Green Building Design Group</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+                    <div style={{ width: 32, height: 32, background: FOREST2, borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="16" height="16" viewBox="0 0 19 19" fill="none">
+                        <rect x="2" y="7.5" width="3.5" height="11" fill="white" rx="0.4"/>
+                        <rect x="7" y="3" width="3.5" height="15.5" fill="white" rx="0.4"/>
+                        <rect x="12" y="5.5" width="3.5" height="13" fill="white" rx="0.4"/>
+                        <line x1="2" y1="3" x2="16" y2="3" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <span style={{ fontFamily: serif, fontSize: "0.95rem", fontWeight: 700, color: WHITE, display: "block" }}>GreenBDG Africa</span>
+                      <span style={{ fontFamily: mono, fontSize: "0.5rem", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Green Building Design Group</span>
+                    </div>
+                  </div>
+                  <p style={{ fontSize: "0.82rem", lineHeight: 1.7, maxWidth: 280 }}>The digital brain behind sustainable African assets.</p>
                 </div>
-              </div>
-              <p style={{ fontSize: "0.82rem", lineHeight: 1.7, maxWidth: 260 }}>The digital brain behind sustainable African assets.</p>
-            </div>
-            {[
-              { title: "Platform", links: ["FM Dashboard", "ESG Module", "Energy & Carbon", "Reporting"] },
-              { title: "Company", links: ["About GreenBDG", "Case studies", "Careers", "Contact"] },
-              { title: "Resources", links: ["ESG Benchmark Tool", "Carbon Calculator", "SA Regulatory Guide", "Blog"] },
-            ].map(col => (
-              <div key={col.title}>
-                <div style={{ fontFamily: mono, fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)", marginBottom: 16 }}>{col.title}</div>
-                {col.links.map(link => (
-                  <div key={link} style={{ marginBottom: 10 }}>
-                    <a href="#" style={{ fontSize: "0.84rem", color: "rgba(255,255,255,0.6)", textDecoration: "none" }}
-                      onMouseEnter={e => { e.currentTarget.style.color = "white"; }}
-                      onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.6)"; }}>
-                      {link}
-                    </a>
+                {[
+                  { title: "Platform", links: ["FM Dashboard", "ESG Module", "Energy & Carbon", "Reporting"] },
+                  { title: "Company", links: ["About GreenBDG", "Case studies", "Careers", "Contact"] },
+                  { title: "Resources", links: ["ESG Benchmark Tool", "Carbon Calculator", "SA Regulatory Guide", "Blog"] },
+                ].map(col => (
+                  <div key={col.title}>
+                    <div style={{ fontFamily: sans, fontSize: "0.72rem", fontWeight: 700, color: WHITE, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>{col.title}</div>
+                    <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+                      {col.links.map(l => (
+                        <li key={l}><a href="#" style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.5)", textDecoration: "none" }}
+                          onMouseEnter={e => e.currentTarget.style.color = WHITE}
+                          onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.5)"}>{l}</a></li>
+                      ))}
+                    </ul>
                   </div>
                 ))}
               </div>
-            ))}
-          </div>
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 24, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ fontSize: "0.78rem" }}>© 2025 Green Building Design Group Africa. All rights reserved.</span>
-            <div style={{ display: "flex", gap: 20 }}>
-              {["Privacy", "Terms", "Cookies"].map(l => (
-                <a key={l} href="#" style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>{l}</a>
-              ))}
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 24, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+                <span style={{ fontSize: "0.78rem" }}>© 2025 Green Building Design Group Africa. All rights reserved.</span>
+                <span style={{ fontFamily: mono, fontSize: "0.62rem", color: EMERALD }}>Built for SA's regulatory reality.</span>
+              </div>
             </div>
-          </div>
-        </div>
-      </footer>
+          </footer>
+        </>
+      )}
     </div>
   );
 }

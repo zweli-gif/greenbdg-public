@@ -107,7 +107,7 @@ export default function PlatformSignIn() {
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: "0 48px", height: 68,
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }} onClick={() => navigate("/")}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <div style={{ width: 36, height: 36, background: ACCENT, borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <svg viewBox="0 0 24 24" fill="none" style={{ width: 20, height: 20 }}>
               <path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill={DEEP} opacity="0.95" />
@@ -118,10 +118,7 @@ export default function PlatformSignIn() {
             <span style={{ fontFamily: mono, fontSize: 10, color: MUTED_WHITE, textTransform: "uppercase", letterSpacing: "0.14em" }}>Platform</span>
           </div>
         </div>
-        <button onClick={() => navigate("/")}
-          style={{ background: "none", border: "none", color: MUTED_WHITE, fontSize: 13, cursor: "pointer", fontFamily: sans }}>
-          ← Back to website
-        </button>
+        <div style={{ fontFamily: mono, fontSize: 11, color: MUTED_WHITE }}>Client platform</div>
       </header>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 68px)", padding: "48px 24px" }}>
