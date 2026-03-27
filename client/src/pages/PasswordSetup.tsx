@@ -9,8 +9,8 @@ import { ArrowRight, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 
 export default function PasswordSetup() {
   const [, navigate] = useLocation();
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
+  const [password, setPassword] = useState("GreenBDG@2026!");
+  const [confirm, setConfirm] = useState("GreenBDG@2026!");
   const [showPass, setShowPass] = useState(false);
 
   const strength = password.length === 0 ? "" : password.length < 8 ? "weak" : password.length < 12 ? "medium" : "strong";

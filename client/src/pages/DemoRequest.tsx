@@ -14,9 +14,9 @@ export default function DemoRequest() {
   const [, navigate] = useLocation();
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
-    firstName: "", lastName: "", email: "", phone: "",
-    company: "", role: "", portfolioSize: "", buildingTypes: [] as string[],
-    currentTool: "", message: "", preferredDate: "",
+    firstName: "Thabo", lastName: "Sibeko", email: "thabo.sibeko@growthpoint.co.za", phone: "+27 82 456 7890",
+    company: "Growthpoint Properties", role: "Chief Financial Officer", portfolioSize: "51–100 buildings", buildingTypes: ["Office A-Grade", "Retail Centre", "Industrial / Warehouse"] as string[],
+    currentTool: "None / Spreadsheets", message: "Interested in carbon tax modelling for our Sandton office portfolio and GRESB submission workflow for the 2026 reporting cycle.", preferredDate: "2026-04-10",
   });
 
   function update(field: string, value: string) {

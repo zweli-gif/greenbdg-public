@@ -65,8 +65,8 @@ const penalties = [
 
 // ── Sustainability Benchmarker Widget ──────────────────────────────────────────
 function BenchmarkWidget() {
-  const [gla, setGla] = useState("");
-  const [annualKwh, setAnnualKwh] = useState("");
+  const [gla, setGla] = useState("12500");
+  const [annualKwh, setAnnualKwh] = useState("1800000");
   const [buildingType, setBuildingType] = useState("office_a");
   const [result, setResult] = useState<null | { intensity: number; benchmark: number; label: string; rating: string; color: string; percentile: number }>(null);
 
@@ -148,8 +148,8 @@ function BenchmarkWidget() {
 
 // ── Carbon Tax Calculator Widget ───────────────────────────────────────────────
 function CarbonCalcWidget() {
-  const [gla, setGla] = useState("");
-  const [annualKwh, setAnnualKwh] = useState("");
+  const [gla, setGla] = useState("12500");
+  const [annualKwh, setAnnualKwh] = useState("1800000");
   const [result, setResult] = useState<null | { tco2: number; liability2024: number; liability2030: number; perM2: number }>(null);
 
   function calculate() {
@@ -223,7 +223,9 @@ type SimBuilding = { id: number; name: string; type: string; gla: string; year: 
 
 function BuildingSimulator() {
   const [buildings, setBuildings] = useState<SimBuilding[]>([
-    { id: 1, name: "Building 1", type: "office_a", gla: "", year: "", kwh: "" },
+    { id: 1, name: "Sandton Towers", type: "office_a", gla: "18500", year: "2001", kwh: "2590000" },
+    { id: 2, name: "Rosebank Square", type: "office_b", gla: "12200", year: "1998", kwh: "2050000" },
+    { id: 3, name: "Menlyn Park Retail", type: "retail", gla: "32000", year: "2005", kwh: "6720000" },
   ]);
   const [results, setResults] = useState<null | SimBuilding[]>(null);
 

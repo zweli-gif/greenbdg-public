@@ -30,8 +30,8 @@ type Phase = "upload" | "assign" | "send";
 
 export default function OnboardingStaff() {
   const [, navigate] = useLocation();
-  const [phase, setPhase] = useState<Phase>("upload");
-  const [uploaded, setUploaded] = useState(false);
+  const [phase, setPhase] = useState<Phase>("assign");
+  const [uploaded, setUploaded] = useState(true);
   const [sending, setSending] = useState(false);
   const [sentCount, setSentCount] = useState(0);
   const [allSent, setAllSent] = useState(false);

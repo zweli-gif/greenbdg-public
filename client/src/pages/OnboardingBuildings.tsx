@@ -61,8 +61,8 @@ const checklistCategories = [
 
 export default function OnboardingBuildings() {
   const [, navigate] = useLocation();
-  const [tab, setTab] = useState<Tab>("upload");
-  const [uploaded, setUploaded] = useState(false);
+  const [tab, setTab] = useState<Tab>("review");
+  const [uploaded, setUploaded] = useState(true);
   const [selectedBuilding, setSelectedBuilding] = useState("Sandton Towers");
 
   const complete = buildings.filter(b => b.status === "complete").length;

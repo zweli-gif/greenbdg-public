@@ -9,8 +9,8 @@ import { ArrowRight, Shield, Clock } from "lucide-react";
 
 export default function MagicLinkLanding() {
   const [, navigate] = useLocation();
-  const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otpSent, setOtpSent] = useState(true);
+  const [otp, setOtp] = useState(["4", "8", "2", "9", "1", "7"]);
 
   const handleOtpChange = (val: string, idx: number) => {
     const next = [...otp];
