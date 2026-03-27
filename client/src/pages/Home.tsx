@@ -112,11 +112,16 @@ export default function Home() {
           {/* Logo */}
           <a href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
             <div style={{ width: 34, height: 34, background: F, borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg viewBox="0 0 24 24" fill="none" style={{ width: 19, height: 19 }}><path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill="white" opacity="0.9" /></svg>
+              <svg width="18" height="18" viewBox="0 0 19 19" fill="none">
+                <rect x="2" y="7.5" width="3.5" height="11" fill="white" rx="0.4"/>
+                <rect x="7" y="3" width="3.5" height="15.5" fill="white" rx="0.4"/>
+                <rect x="12" y="5.5" width="3.5" height="13" fill="white" rx="0.4"/>
+                <line x1="2" y1="3" x2="16" y2="3" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
             </div>
             <div>
-              <span style={{ fontFamily: serif, fontSize: "1rem", fontWeight: 700, color: F, display: "block", lineHeight: 1.15 }}>GreenBDG</span>
-              <span style={{ fontFamily: mono, fontSize: "0.5rem", color: MUTED, textTransform: "uppercase", letterSpacing: "0.14em", display: "block" }}>Africa</span>
+              <span style={{ fontFamily: serif, fontSize: "1rem", fontWeight: 700, color: F, display: "block", lineHeight: 1.15 }}>GreenBDG Africa</span>
+              <span style={{ fontFamily: mono, fontSize: "0.5rem", color: MUTED, textTransform: "uppercase", letterSpacing: "0.14em", display: "block" }}>Green Building Design Group</span>
             </div>
           </a>
           {/* Nav links */}
@@ -142,14 +147,6 @@ export default function Home() {
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <button
-            onClick={() => navigate("/signin")}
-            style={{ background: "transparent", color: MID, border: `1.5px solid ${CREAM3}`, padding: "8px 18px", borderRadius: 7, fontSize: "0.8rem", fontWeight: 500, cursor: "pointer", fontFamily: sans }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = F; e.currentTarget.style.color = F; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = CREAM3; e.currentTarget.style.color = MID; }}
-          >
-            Client login
-          </button>
           <button
             onClick={() => navigate("/signin")}
             style={{ background: F, color: "white", border: "none", padding: "9px 20px", borderRadius: 7, fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", fontFamily: sans, letterSpacing: "0.01em" }}
