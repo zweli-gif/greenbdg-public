@@ -140,15 +140,26 @@ export default function Home() {
             ))}
           </div>
         </div>
-        {/* ONLY CTA on public site — Request demo */}
-        <button
-          onClick={() => navigate("/demo")}
-          style={{ background: EMERALD, color: WHITE, border: "none", padding: "9px 22px", borderRadius: 7, fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", fontFamily: sans, letterSpacing: "0.01em" }}
-          onMouseEnter={e => { e.currentTarget.style.background = "#059669"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-          onMouseLeave={e => { e.currentTarget.style.background = EMERALD; e.currentTarget.style.transform = "none"; }}
-        >
-          Request a demo →
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {/* Subtle client login — platform entry */}
+          <button
+            onClick={() => navigate("/signin")}
+            style={{ background: "none", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.15)", padding: "8px 18px", borderRadius: 7, fontSize: "0.78rem", fontWeight: 500, cursor: "pointer", fontFamily: sans }}
+            onMouseEnter={e => { e.currentTarget.style.color = WHITE; e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)"; }}
+            onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.5)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}
+          >
+            Client login
+          </button>
+          {/* Primary CTA */}
+          <button
+            onClick={() => navigate("/demo")}
+            style={{ background: EMERALD, color: WHITE, border: "none", padding: "9px 22px", borderRadius: 7, fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", fontFamily: sans, letterSpacing: "0.01em" }}
+            onMouseEnter={e => { e.currentTarget.style.background = "#059669"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = EMERALD; e.currentTarget.style.transform = "none"; }}
+          >
+            Request a demo →
+          </button>
+        </div>
       </nav>
 
       {/* ── HERO ── */}
