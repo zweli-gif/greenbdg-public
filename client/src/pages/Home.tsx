@@ -8,7 +8,7 @@ import { useLocation } from "wouter";
 import { ArrowRight, CheckCircle2, ChevronRight, Upload, Wifi, PenLine, Building2, Leaf, TrendingUp, Shield, FileText, Users } from "lucide-react";
 
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663328168552/7LFaJoytji6z7JBaxftKtH/hero-landing-8seFcF2qiNuDz9kZrpcgfa.webp";
-const SUSTAINABILITY_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663328168552/7LFaJoytji6z7JBaxftKtH/hero-sustainability-jskySYAbc4ZEh7pr9VxGG2.webp";
+const SUSTAINABILITY_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663328168552/7LFaJoytji6z7JBaxftKtH/hero-sustainability_dd5b65c0.jpg";
 const PORTFOLIO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663328168552/7LFaJoytji6z7JBaxftKtH/hero-portfolio-jskySYAbc4ZEh7pr9VxGG2.webp";
 
 const benefits = [
@@ -78,12 +78,12 @@ const dataPathways = [
 ];
 
 const personas = [
-  { initials: "AD", name: "Amahle Dube", role: "CFO", teaser: "Carbon tax liability, green premiums & CapEx modelling", path: "/dashboard/cfo", accent: "#E8A838" },
-  { initials: "LN", name: "Lerato Ndlovu", role: "Sustainability Manager", teaser: "ESG scores, carbon trajectory & automated GRESB reporting", path: "/dashboard/sustainability", accent: "#2DAF85" },
-  { initials: "JM", name: "James Molefe", role: "Portfolio Manager", teaser: "Building performance vs SAPOA benchmarks & EPC compliance", path: "/dashboard/portfolio", accent: "#0A6B4F" },
-  { initials: "SK", name: "Sipho Khumalo", role: "Building Manager", teaser: "Live systems monitoring, tenant management & tickets", path: "/dashboard/building", accent: "#064E3B" },
-  { initials: "MP", name: "Maria Peters", role: "Facilities Manager", teaser: "Critical tickets, PPM schedules & contractor management", path: "/dashboard/fm", accent: "#1A8C6A" },
-  { initials: "DK", name: "David Kgosi", role: "Tenant Admin", teaser: "Energy usage, fault reporting & building certifications", path: "/dashboard/tenant", accent: "#2DAF85" },
+  { initials: "CFO", name: "Chief Financial Officer", role: "Executive", teaser: "Carbon tax liability, green premiums, CapEx scenario modelling & income statement impact", path: "/dashboard/cfo", accent: "#E8A838" },
+  { initials: "ESG", name: "Sustainability Manager", role: "ESG & Reporting", teaser: "Portfolio ESG scores, carbon trajectory to net zero & automated GRESB/TCFD reporting", path: "/dashboard/sustainability", accent: "#2DAF85" },
+  { initials: "PM", name: "Portfolio Manager", role: "Asset Management", teaser: "Building performance vs SAPOA benchmarks, EPC compliance & portfolio heat maps", path: "/dashboard/portfolio", accent: "#0A6B4F" },
+  { initials: "BM", name: "Building Manager", role: "Operations", teaser: "Live systems monitoring, tenant management, fault tickets & compliance tracking", path: "/dashboard/building", accent: "#064E3B" },
+  { initials: "FM", name: "Facilities Manager", role: "Maintenance", teaser: "Critical work orders, PPM schedules, contractor management & equipment status", path: "/dashboard/fm", accent: "#1A8C6A" },
+  { initials: "TEN", name: "Tenant Admin", role: "Tenant Portal", teaser: "Floor-level energy usage, 3-tap fault reporting & building certifications", path: "/dashboard/tenant", accent: "#2DAF85" },
 ];
 
 const penalties = [
@@ -262,8 +262,8 @@ export default function Home() {
                 style={{ borderRadius: 2, boxShadow: "0 8px 32px rgba(0,33,23,0.12)", border: "1px solid rgba(6,78,59,0.08)" }}
               >
                 <div className="text-[11px] font-semibold text-[#6BAF8A] uppercase tracking-wider mb-1" style={{ fontFamily: "'Work Sans', sans-serif" }}>Day 1 onboarding</div>
-                <div className="text-[#002117] font-bold" style={{ fontFamily: "'Work Sans', sans-serif", fontSize: 22 }}>34 buildings</div>
-                <div className="text-[#5A6B5A] text-[12px]" style={{ fontFamily: "'Work Sans', sans-serif" }}>loaded in under 20 minutes</div>
+                <div className="text-[#002117] font-bold" style={{ fontFamily: "'Work Sans', sans-serif", fontSize: 22 }}>Under 20 mins</div>
+                <div className="text-[#5A6B5A] text-[12px]" style={{ fontFamily: "'Work Sans', sans-serif" }}>from CSV upload to live dashboards</div>
               </div>
             </div>
           </div>
@@ -297,7 +297,7 @@ export default function Home() {
                     {p.initials}
                   </div>
                   <div>
-                    <div className="font-semibold text-[#002117] text-[14px]" style={{ fontFamily: "'Work Sans', sans-serif" }}>{p.name}</div>
+                    <div className="font-semibold text-[#002117] text-[14px]" style={{ fontFamily: "'Work Sans', sans-serif", letterSpacing: "-0.01em" }}>{p.name}</div>
                     <div className="text-[11px] text-[#6BAF8A] font-medium" style={{ fontFamily: "'Work Sans', sans-serif" }}>{p.role}</div>
                   </div>
                 </div>
