@@ -78,7 +78,7 @@ export default function SignIn() {
             </button>
           </div>
           <button
-            onClick={() => navigate("/onboarding/checklist")}
+            onClick={() => navigate("/setup")}
             className="bot-btn mt-2"
           >
             Sign in to portal
@@ -86,9 +86,9 @@ export default function SignIn() {
         </div>
 
         <div className="mt-8 pt-6 border-t border-[#84A98C]/15">
-          <p className="text-[12px] text-[#84A98C] mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Or jump straight to a dashboard:
-          </p>
+        <p className="text-[12px] text-[#84A98C] mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          Demo shortcut — jump to a dashboard:
+        </p>
           <div className="grid grid-cols-2 gap-2">
             {[
               { label: "CFO Dashboard", path: "/dashboard/cfo" },

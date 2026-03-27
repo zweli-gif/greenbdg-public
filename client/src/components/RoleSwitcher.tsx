@@ -51,11 +51,11 @@ export default function RoleSwitcher({ currentPath }: RoleSwitcherProps) {
           </div>
           <div className="border-t border-[#E8F0EC] px-4 py-2.5">
             <button
-              onClick={() => { navigate("/"); setOpen(false); }}
+              onClick={() => { navigate("/hub"); setOpen(false); }}
               className="text-[11px] text-[#6BAF8A] hover:text-[#064E3B] transition-colors"
               style={{fontFamily:"'Work Sans',sans-serif"}}
             >
-              ← Back to landing page
+              ← Back to Home Hub
             </button>
           </div>
         </div>

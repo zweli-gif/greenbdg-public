@@ -1,6 +1,6 @@
 /**
  * Password Setup — Botanical dark design
- * Sipho Khumalo sets his password and lands on Building Manager dashboard
+ * Sipho Khumalo sets his password and lands on the Home Hub role selector
  * Dark forest green background, strength bar, confirm match indicator
  */
 import { useState } from "react";
@@ -104,10 +104,10 @@ export default function PasswordSetup() {
           </div>
 
           <button
-            onClick={() => navigate("/dashboard/building")}
+            onClick={() => navigate("/hub")}
             style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "14px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer" }}
           >
-            Access my dashboard
+            Enter GreenBDG
             <ArrowRight size={15} />
           </button>
         </div>

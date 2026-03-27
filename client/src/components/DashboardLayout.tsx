@@ -42,7 +42,7 @@ export default function DashboardLayout({ children, role, user, initials }: Dash
       {/* Header */}
       <header style={{ background: C.white, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 3px rgba(0,0,0,0.05)", position: "sticky", top: 0, zIndex: 100, height: 64 }}>
         {/* Logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", color: "inherit", cursor: "pointer" }} onClick={() => navigate("/")}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", color: "inherit", cursor: "pointer" }} onClick={() => navigate("/hub")}>
           <div style={{ width: 42, height: 42, background: C.green, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: 18, fontWeight: 700 }}>G</div>
           <div>
             <div style={{ fontSize: 16, fontWeight: 700 }}>GreenBDG</div>
