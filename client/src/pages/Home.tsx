@@ -91,6 +91,22 @@ export default function Home() {
 
   const navItems = ["About us", "Solutions", "Free tools", "Resources"];
 
+  const handleNavClick = (item: string) => {
+    if (item === "Free tools") {
+      setActiveTab("benchmark");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    setActiveTab("home");
+    const idMap: Record<string, string> = {
+      "About us": "about",
+      "Solutions": "solutions",
+      "Resources": "resources",
+    };
+    const el = document.getElementById(idMap[item]);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <div style={{ fontFamily: sans, background: WHITE, color: FOREST, overflowX: "hidden" }}>
 
@@ -123,7 +139,7 @@ export default function Home() {
             {navItems.map(item => (
               <button
                 key={item}
-                onClick={() => item === "Free tools" ? setActiveTab("benchmark") : null}
+                onClick={() => handleNavClick(item)}
                 style={{
                   display: "flex", alignItems: "center", padding: "0 14px",
                   fontSize: "0.8rem", fontWeight: 500, color: "rgba(255,255,255,0.65)",
@@ -154,6 +170,7 @@ export default function Home() {
       </nav>
 
       {/* ── HERO ── */}
+      <div id="home" />
       <section style={{
         position: "relative", minHeight: "92vh",
         display: "grid", gridTemplateColumns: "1fr 1fr",
@@ -475,6 +492,165 @@ export default function Home() {
       {/* ── HOW IT WORKS ── */}
       {activeTab === "home" && (
         <>
+
+          {/* ── ABOUT US ── */}
+          <section id="about" style={{ background: OFF_WHITE, padding: "100px 56px" }}>
+            <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+              <div style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>About GreenBDG</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "start" }}>
+                <div>
+                  <h2 style={{ fontFamily: serif, fontSize: "clamp(28px,3.5vw,46px)", fontWeight: 900, color: FOREST, lineHeight: 1.1, marginBottom: 24 }}>Building Resilient,<br/><em style={{ fontStyle: "italic", color: CLAY }}>Sustainable Futures.</em></h2>
+                  <p style={{ fontSize: "0.93rem", color: DARK_MUTED, lineHeight: 1.85, marginBottom: 20 }}>Green Building Design Group is a technology-powered sustainability partner, founded in South Africa and working across Africa to advance resilient, inclusive, and resource-efficient development.</p>
+                  <p style={{ fontSize: "0.93rem", color: DARK_MUTED, lineHeight: 1.85, marginBottom: 20 }}>Inspired by the Protea flower, we thrive in complexity and challenge. We support infrastructure, real estate, and manufacturing clients to meet sustainability regulations, improve energy and water performance, and align with ESG goals through practical advisory services and digital solutions.</p>
+                  <p style={{ fontSize: "0.93rem", color: DARK_MUTED, lineHeight: 1.85, marginBottom: 32 }}>Through the <strong style={{ color: FOREST }}>GreenBDG Foundation</strong> — a 100% black women-managed non-profit — we reinvest in skills development and inclusive growth in Africa's green economy.</p>
+                  <div style={{ display: "flex", gap: 32 }}>
+                    {[
+                      { n: "13", unit: "+", label: "Years of SA project data" },
+                      { n: "100", unit: "+", label: "Energy audits & EPCs" },
+                      { n: "40", unit: "yr", label: "Combined team experience" },
+                    ].map(s => (
+                      <div key={s.n}>
+                        <div style={{ fontFamily: serif, fontSize: "2.2rem", fontWeight: 900, color: FOREST, lineHeight: 1 }}>{s.n}<span style={{ color: CLAY }}>{s.unit}</span></div>
+                        <div style={{ fontFamily: mono, fontSize: "0.6rem", color: DARK_MUTED, textTransform: "uppercase", letterSpacing: "0.08em", marginTop: 4, lineHeight: 1.5 }}>{s.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+                  <div style={{ background: FOREST, borderRadius: 16, padding: "28px 32px", color: WHITE }}>
+                    <div style={{ fontFamily: mono, fontSize: "0.58rem", color: EMERALD, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 12 }}>Recognition</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                      {[
+                        { year: "2022", award: "Africa's Energy Manager of the Year", body: "Association of Energy Engineers" },
+                        { year: "2019", award: "Sub-Saharan Africa's Energy Innovator of the Year", body: "Association of Energy Engineers" },
+                      ].map(a => (
+                        <div key={a.year} style={{ borderLeft: `3px solid ${EMERALD}`, paddingLeft: 16 }}>
+                          <div style={{ fontFamily: mono, fontSize: "0.6rem", color: EMERALD, marginBottom: 4 }}>{a.year}</div>
+                          <div style={{ fontFamily: serif, fontSize: "0.95rem", fontWeight: 700, color: WHITE, lineHeight: 1.3, marginBottom: 4 }}>{a.award}</div>
+                          <div style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.55)" }}>{a.body}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{ background: WHITE, borderRadius: 16, padding: "28px 32px", border: "1px solid #E2E8F0" }}>
+                    <div style={{ fontFamily: mono, fontSize: "0.58rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 20 }}>Management Team</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                      {[
+                        { name: "Songo Didiza", role: "Co-Founder & Group CEO" },
+                        { name: "Sumaya Mahomed", role: "Partner — Rest of Africa Projects" },
+                        { name: "Zadok Olinga", role: "Partner — M&V, Technology Services" },
+                      ].map(p => (
+                        <div key={p.name} style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                          <div style={{ width: 40, height: 40, borderRadius: "50%", background: FOREST2, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            <span style={{ fontFamily: serif, fontSize: "0.9rem", fontWeight: 700, color: WHITE }}>{p.name.split(" ").map(w => w[0]).join("")}</span>
+                          </div>
+                          <div>
+                            <div style={{ fontFamily: serif, fontSize: "0.9rem", fontWeight: 700, color: FOREST }}>{p.name}</div>
+                            <div style={{ fontFamily: sans, fontSize: "0.75rem", color: DARK_MUTED }}>{p.role}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── SOLUTIONS ── */}
+          <section id="solutions" style={{ background: WHITE, padding: "100px 56px" }}>
+            <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+              <div style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>Solutions</div>
+              <h2 style={{ fontFamily: serif, fontSize: "clamp(28px,3.5vw,46px)", fontWeight: 900, color: FOREST, lineHeight: 1.1, marginBottom: 16 }}>Advisory services<br/><em style={{ fontStyle: "italic", color: CLAY }}>backed by a platform.</em></h2>
+              <p style={{ fontSize: "0.93rem", color: DARK_MUTED, lineHeight: 1.8, maxWidth: 560, marginBottom: 56 }}>GreenBDG is the only provider in SA that combines deep sustainability consulting with a purpose-built SaaS platform. The consulting makes the platform smarter. The platform makes the consulting scalable.</p>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2, marginBottom: 56 }}>
+                {[
+                  { num: "01", title: "Sustainability Strategy", sub: "Advisory Services", body: "We work with your leadership team to define a credible, measurable sustainability roadmap — aligned to SA's regulatory stack, your sector's benchmarks, and your stakeholders' expectations." },
+                  { num: "02", title: "ESG Data Analytics", sub: "ESG Performance Tracking Technology", body: "Our platform ingests your building data and turns it into investor-grade ESG reporting. GRESB, GRI, TCFD, B-BBEE — automated, auditable, and updated in real time." },
+                  { num: "03", title: "Infrastructure Delivery", sub: "Green Building Project Implementation", body: "From Green Star certification to net-zero energy modelling to EPC compliance — GreenBDG's engineers and certifiers manage the full project lifecycle." },
+                ].map(s => (
+                  <div key={s.num} style={{ background: OFF_WHITE, padding: "36px 32px", borderRadius: 0, border: "1px solid #E8EDE8", transition: "all 0.3s" }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = FOREST; (e.currentTarget as HTMLDivElement).style.borderColor = FOREST; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = OFF_WHITE; (e.currentTarget as HTMLDivElement).style.borderColor = "#E8EDE8"; }}>
+                    <div style={{ fontFamily: mono, fontSize: "0.6rem", color: CLAY, letterSpacing: "0.1em", marginBottom: 12 }}>{s.num} —</div>
+                    <h3 style={{ fontFamily: serif, fontSize: "1.2rem", fontWeight: 700, color: FOREST, marginBottom: 6, lineHeight: 1.3, transition: "color 0.3s" }}>{s.title}</h3>
+                    <div style={{ fontFamily: mono, fontSize: "0.6rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16, transition: "color 0.3s" }}>{s.sub}</div>
+                    <p style={{ fontSize: "0.85rem", color: DARK_MUTED, lineHeight: 1.75, transition: "color 0.3s" }}>{s.body}</p>
+                  </div>
+                ))}
+              </div>
+              <div style={{ background: FOREST, borderRadius: 16, padding: "40px 48px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}>
+                <div>
+                  <div style={{ fontFamily: mono, fontSize: "0.6rem", color: EMERALD, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 12 }}>The platform — 6 modules</div>
+                  <h3 style={{ fontFamily: serif, fontSize: "1.5rem", fontWeight: 700, color: WHITE, lineHeight: 1.3, marginBottom: 16 }}>One platform for your entire green building operation.</h3>
+                  <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.75, marginBottom: 28 }}>FM & maintenance · Energy & carbon · ESG compliance · Automated reporting · Certification tracking · Tenant portal. All in one place. All built for SA.</p>
+                  <button onClick={() => navigate("/demo")} style={{ background: EMERALD, color: WHITE, border: "none", padding: "12px 28px", borderRadius: 8, fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", fontFamily: sans }}>See the platform — request a demo →</button>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  {[
+                    "FM & Reactive Maintenance",
+                    "Energy & Carbon Tracking",
+                    "Full ESG Compliance Suite",
+                    "Automated ESG Reporting",
+                    "Certification Tracking",
+                    "Tenant Portal",
+                  ].map((f, i) => (
+                    <div key={f} style={{ background: "rgba(255,255,255,0.07)", borderRadius: 10, padding: "14px 16px", border: "1px solid rgba(255,255,255,0.1)" }}>
+                      <div style={{ fontFamily: mono, fontSize: "0.55rem", color: EMERALD, marginBottom: 6 }}>0{i + 1}</div>
+                      <div style={{ fontFamily: serif, fontSize: "0.85rem", fontWeight: 700, color: WHITE, lineHeight: 1.3 }}>{f}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── CLIENTS ── */}
+          <section style={{ background: OFF_WHITE, padding: "60px 56px", borderTop: "1px solid #E8EDE8" }}>
+            <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+              <div style={{ fontFamily: mono, fontSize: "0.58rem", color: DARK_MUTED, textTransform: "uppercase", letterSpacing: "0.12em", textAlign: "center", marginBottom: 32 }}>Trusted by leading South African and Pan-African organisations</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", alignItems: "center" }}>
+                {["Dipula", "Pareto", "Momentum", "Broll", "Dube TradePort", "Enza Construction", "Ford", "SA Reserve Bank", "SolarAfrica", "The World Bank", "DUT", "False Bay College"].map(c => (
+                  <div key={c} style={{ background: WHITE, border: "1px solid #E2E8F0", borderRadius: 8, padding: "10px 20px", fontFamily: sans, fontSize: "0.78rem", fontWeight: 600, color: DARK_MUTED }}>{c}</div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* ── RESOURCES ── */}
+          <section id="resources" style={{ background: WHITE, padding: "100px 56px" }}>
+            <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+              <div style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>Resources & Insights</div>
+              <h2 style={{ fontFamily: serif, fontSize: "clamp(28px,3.5vw,46px)", fontWeight: 900, color: FOREST, lineHeight: 1.1, marginBottom: 16 }}>Thinking on SA's<br/><em style={{ fontStyle: "italic", color: CLAY }}>green building future.</em></h2>
+              <p style={{ fontSize: "0.93rem", color: DARK_MUTED, lineHeight: 1.8, maxWidth: 560, marginBottom: 56 }}>Practical insights on carbon tax, net-zero buildings, ESG compliance, and sustainable development in Africa — from GreenBDG's team of accredited experts.</p>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28, marginBottom: 48 }}>
+                {[
+                  { cat: "Sustainability Insights", title: "Embracing SDG & ESG Practices for SME Growth", body: "Songo Didiza in conversation with Retail Capital on how small and medium enterprises can embed sustainability into their growth strategy — and why it matters for access to finance.", date: "2024" },
+                  { cat: "Sustainability Insights", title: "Implications of Carbon Tax Law for SA Property", body: "Songo Didiza breaks down what South Africa's carbon tax legislation means for commercial property owners, facilities managers, and ESG reporting obligations.", date: "2019" },
+                  { cat: "Net Zero Carbon Buildings", title: "What are Net Zero Buildings in the context of South Africa?", body: "A practical explainer on net-zero carbon buildings for the South African context — covering Eskom's grid, SANS 10400-XA, Green Star V2, and what 'net zero' actually means for a local portfolio.", date: "2023" },
+                ].map(a => (
+                  <div key={a.title} style={{ background: OFF_WHITE, borderRadius: 14, overflow: "hidden", border: "1px solid #E8EDE8", transition: "all 0.3s", cursor: "pointer" }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)"; (e.currentTarget as HTMLDivElement).style.boxShadow = "0 16px 40px rgba(0,33,23,0.1)"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = "none"; (e.currentTarget as HTMLDivElement).style.boxShadow = "none"; }}>
+                    <div style={{ background: FOREST2, height: 6 }} />
+                    <div style={{ padding: "28px 28px 32px" }}>
+                      <div style={{ fontFamily: mono, fontSize: "0.58rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>{a.cat} · {a.date}</div>
+                      <h3 style={{ fontFamily: serif, fontSize: "1.05rem", fontWeight: 700, color: FOREST, lineHeight: 1.4, marginBottom: 12 }}>{a.title}</h3>
+                      <p style={{ fontSize: "0.82rem", color: DARK_MUTED, lineHeight: 1.75, marginBottom: 20 }}>{a.body}</p>
+                      <a href="https://www.greenbdgafrica.com/insights" target="_blank" rel="noopener noreferrer" style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST2, textDecoration: "none", borderBottom: `1px solid ${FOREST3}`, paddingBottom: 2 }}>Read on greenbdgafrica.com →</a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <a href="https://www.greenbdgafrica.com/insights" target="_blank" rel="noopener noreferrer"
+                  style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "none", border: `1.5px solid ${FOREST}`, color: FOREST, padding: "12px 28px", borderRadius: 8, fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", fontFamily: sans, textDecoration: "none" }}>
+                  View all insights on greenbdgafrica.com →
+                </a>
+              </div>
+            </div>
+          </section>
+
           <section style={{ background: WHITE, padding: "100px 56px" }}>
             <div style={{ maxWidth: 1100, margin: "0 auto" }}>
               <div style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>How it works</div>
