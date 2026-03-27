@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================================
+   GREENBDG AFRICA — CRISP PLUSH DESIGN SYSTEM
+   Design Philosophy: Crisp white canvas, deep forest green authority,
+   photography as atmosphere, data as the hero.
+   Typography: Liberation Serif (display) + Work Sans (UI) + system mono (data)
+   Colors: Forest green dominance, white canvas, amber accent
+   ============================================================ */
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -40,77 +48,77 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* GreenBDG Custom Tokens */
+  --color-forest-950: var(--forest-950);
+  --color-forest-900: var(--forest-900);
+  --color-forest-800: var(--forest-800);
+  --color-forest-700: var(--forest-700);
+  --color-forest-600: var(--forest-600);
+  --color-forest-500: var(--forest-500);
+  --color-forest-200: var(--forest-200);
+  --color-forest-100: var(--forest-100);
+  --color-forest-50: var(--forest-50);
+  --color-amber-brand: var(--amber-brand);
+  --color-coral-brand: var(--coral-brand);
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
-}
+  /* GreenBDG Forest Green Palette */
+  --forest-950: oklch(0.15 0.055 155);   /* #002117 */
+  --forest-900: oklch(0.19 0.065 155);   /* #003527 */
+  --forest-800: oklch(0.25 0.075 155);   /* #064E3B */
+  --forest-700: oklch(0.32 0.08 155);    /* #0A6B4F */
+  --forest-600: oklch(0.42 0.09 155);    /* #1A8C6A */
+  --forest-500: oklch(0.52 0.09 155);    /* #2DAF85 */
+  --forest-200: oklch(0.82 0.06 155);    /* #B0F0D6 */
+  --forest-100: oklch(0.92 0.035 155);   /* #CCE0D6 */
+  --forest-50:  oklch(0.97 0.015 155);   /* #F0F7F4 */
 
-.dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  /* Brand Accents */
+  --amber-brand: oklch(0.72 0.16 75);    /* #E8A838 */
+  --coral-brand: oklch(0.65 0.15 30);    /* #DF795F */
+
+  /* Semantic Tokens */
+  --primary: var(--forest-800);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: var(--forest-50);
+  --secondary-foreground: var(--forest-900);
+  --accent: var(--forest-100);
+  --accent-foreground: var(--forest-900);
+  --muted: oklch(0.97 0.005 155);
+  --muted-foreground: oklch(0.52 0.03 155);
+  --destructive: var(--coral-brand);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.9 0.015 155);
+  --input: oklch(0.92 0.01 155);
+  --ring: var(--forest-600);
+  --radius: 0.5rem;
+
+  /* Canvas */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.15 0.055 155);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.055 155);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.055 155);
+
+  /* Sidebar — Deep Forest */
+  --sidebar: var(--forest-950);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: var(--forest-600);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: var(--forest-900);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.25 0.04 155);
+  --sidebar-ring: var(--forest-500);
+
+  /* Charts */
+  --chart-1: var(--forest-800);
+  --chart-2: var(--forest-600);
+  --chart-3: var(--forest-500);
+  --chart-4: var(--amber-brand);
+  --chart-5: var(--coral-brand);
 }
 
 @layer base {
@@ -119,6 +127,13 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Work Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 {
+    font-family: 'Libre Baskerville', 'Georgia', serif;
+    letter-spacing: -0.02em;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -134,24 +149,11 @@
 }
 
 @layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
   .container {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
+    padding-left: 1rem;
     padding-right: 1rem;
   }
 
@@ -162,16 +164,93 @@
 
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
+      padding-left: 2rem;
       padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
+      max-width: 1440px;
     }
   }
+
+  /* GreenBDG Stat Card — large numeral display */
+  .stat-numeral {
+    font-family: 'Work Sans', system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  /* Sidebar nav item active state */
+  .nav-item-active {
+    border-left: 3px solid var(--forest-500);
+    background: var(--forest-900);
+  }
+
+  /* Green status badge */
+  .badge-optimal { background: oklch(0.25 0.075 155); color: var(--forest-200); }
+  .badge-good { background: oklch(0.32 0.08 155); color: var(--forest-100); }
+  .badge-warning { background: oklch(0.72 0.16 75 / 0.15); color: oklch(0.55 0.16 75); }
+  .badge-critical { background: oklch(0.65 0.15 30 / 0.15); color: oklch(0.5 0.15 30); }
+
+  /* Page transition */
+  .page-enter {
+    animation: pageEnter 0.2s ease-out forwards;
+  }
+
+  @keyframes pageEnter {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Staggered card animation */
+  .card-stagger > * {
+    animation: cardEnter 0.3s ease-out both;
+  }
+  .card-stagger > *:nth-child(1) { animation-delay: 0ms; }
+  .card-stagger > *:nth-child(2) { animation-delay: 50ms; }
+  .card-stagger > *:nth-child(3) { animation-delay: 100ms; }
+  .card-stagger > *:nth-child(4) { animation-delay: 150ms; }
+  .card-stagger > *:nth-child(5) { animation-delay: 200ms; }
+  .card-stagger > *:nth-child(6) { animation-delay: 250ms; }
+
+  @keyframes cardEnter {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Hero overlay gradient */
+  .hero-overlay {
+    background: linear-gradient(
+      to right,
+      oklch(0.15 0.055 155 / 0.88) 0%,
+      oklch(0.15 0.055 155 / 0.65) 50%,
+      oklch(0.15 0.055 155 / 0.2) 100%
+    );
+  }
+
+  /* Data table row hover */
+  .data-row:hover {
+    background: var(--forest-50);
+  }
+
+  /* Progress bar */
+  .progress-green {
+    background: var(--forest-800);
+    border-radius: 999px;
+    height: 6px;
+  }
+
+  /* EPC Rating badges */
+  .epc-a-plus { background: #00843D; color: white; }
+  .epc-a { background: #2E8B57; color: white; }
+  .epc-b { background: #7CB342; color: white; }
+  .epc-c { background: #FDD835; color: #333; }
+  .epc-d { background: #FB8C00; color: white; }
+  .epc-e { background: #E53935; color: white; }
 }
