@@ -89,7 +89,7 @@ export default function Home() {
     setSimResult({ totalGla: totalGlaCalc, avgIntensity, carbonLiability, epcRisk, gresbScore: Math.round(gresbScore) });
   };
 
-  const navItems = ["About us", "The platform", "Solutions", "Free tools", "Resources"];
+  const navItems = ["About us", "Solutions", "Free tools", "Resources"];
 
   return (
     <div style={{ fontFamily: sans, background: WHITE, color: FOREST, overflowX: "hidden" }}>
@@ -148,7 +148,7 @@ export default function Home() {
             onMouseEnter={e => { e.currentTarget.style.background = "#059669"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={e => { e.currentTarget.style.background = EMERALD; e.currentTarget.style.transform = "none"; }}
           >
-            See the platform →
+            Request a demo →
           </button>
         </div>
       </nav>
