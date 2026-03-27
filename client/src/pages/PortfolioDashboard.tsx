@@ -2,18 +2,9 @@
  * Portfolio Dashboard — Richard Patel, Portfolio Manager
  * Focus: Building performance vs SAPOA benchmarks, EPC compliance
  */
-import { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts";
 import { Building2, TrendingDown, AlertCircle, CheckCircle } from "lucide-react";
-
-const navItems = [
-  { icon: "⊞", label: "Overview" },
-  { icon: "🏢", label: "Buildings" },
-  { icon: "📊", label: "Benchmarks" },
-  { icon: "📋", label: "EPC Status" },
-  { icon: "📈", label: "Reports" },
-];
 
 const buildingPerformance = [
   { name: "Waterfall", energy: 128, water: 0.62, epc: "A", score: 88 },
@@ -42,18 +33,8 @@ const epcColors: Record<string, string> = {
 };
 
 export default function PortfolioDashboard() {
-  const [activeNav, setActiveNav] = useState("Overview");
-
   return (
-    <DashboardLayout
-      userName="Richard Patel"
-      userInitials="RP"
-      userRole="Portfolio Manager · 48 Buildings"
-      navItems={navItems}
-      activeNav={activeNav}
-      onNavChange={setActiveNav}
-      notificationCount={4}
-    >
+    <DashboardLayout role="Portfolio Manager" user="Richard Patel" initials="RP">
       <div className="p-6 lg:p-8">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-[#002117] mb-1" style={{fontFamily:"'Libre Baskerville',serif"}}>Good morning, Richard.</h2>

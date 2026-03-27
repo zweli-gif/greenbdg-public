@@ -41,15 +41,7 @@ export default function BuildingDashboard() {
   const [activeNav, setActiveNav] = useState("Overview");
 
   return (
-    <DashboardLayout
-      userName="Nkosi Dlamini"
-      userInitials="ND"
-      userRole="Building Manager · Sandton Heights"
-      navItems={navItems}
-      activeNav={activeNav}
-      onNavChange={setActiveNav}
-      notificationCount={2}
-    >
+    <DashboardLayout role="Building Manager" user="Nkosi Dlamini" initials="ND">
       <div className="p-6 lg:p-8">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-[#002117] mb-1" style={{fontFamily:"'Libre Baskerville',serif"}}>Good morning, Nkosi.</h2>

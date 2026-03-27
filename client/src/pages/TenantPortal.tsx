@@ -33,19 +33,10 @@ const statusStyles: Record<string, string> = {
 };
 
 export default function TenantPortal() {
-  const [activeNav, setActiveNav] = useState("My Space");
   const [showFaultForm, setShowFaultForm] = useState(false);
 
   return (
-    <DashboardLayout
-      userName="African Corp Holdings"
-      userInitials="AC"
-      userRole="Tenant · Floors 14–16"
-      navItems={navItems}
-      activeNav={activeNav}
-      onNavChange={setActiveNav}
-      notificationCount={1}
-    >
+    <DashboardLayout role="Tenant" user="African Corp Holdings" initials="AC">
       <div className="p-6 lg:p-8">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-[#002117] mb-1" style={{fontFamily:"'Libre Baskerville',serif"}}>Welcome, African Corp Holdings.</h2>

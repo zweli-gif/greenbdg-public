@@ -1,6 +1,11 @@
+/**
+ * Password Setup — Botanical dark design
+ * Sipho Khumalo sets his password and lands on Building Manager dashboard
+ * Dark forest green background, strength bar, confirm match indicator
+ */
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { ArrowRight, Eye, EyeOff, CheckCircle } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 
 export default function PasswordSetup() {
   const [, navigate] = useLocation();
@@ -8,76 +13,108 @@ export default function PasswordSetup() {
   const [confirm, setConfirm] = useState("");
   const [showPass, setShowPass] = useState(false);
 
-  const strength = password.length > 8 ? (password.length > 12 ? "strong" : "medium") : password.length > 0 ? "weak" : "";
+  const strength = password.length === 0 ? "" : password.length < 8 ? "weak" : password.length < 12 ? "medium" : "strong";
+  const strengthColor = strength === "strong" ? "#52796F" : strength === "medium" ? "#E8A838" : "#E07A5F";
+  const strengthWidth = strength === "strong" ? "100%" : strength === "medium" ? "66%" : "33%";
+  const match = confirm.length > 0 && confirm === password;
 
   return (
-    <div className="min-h-screen bg-[#F9F9F8] flex items-center justify-center px-6 py-12">
-      <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <div className="flex items-center gap-2.5 justify-center mb-6">
-            <div className="w-7 h-7 rounded bg-[#064E3B] flex items-center justify-center">
-              <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4"><path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill="white"/></svg>
-            </div>
-            <span className="text-[14px] font-semibold text-[#002117]" style={{fontFamily:"'Work Sans',sans-serif"}}>GreenBDG Africa</span>
+    <div style={{ minHeight: "100vh", background: "#2C3E33", fontFamily: "'DM Sans', sans-serif", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 24px" }}>
+      <div style={{ maxWidth: 440, width: "100%" }}>
+
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 36 }}>
+          <div style={{ width: 32, height: 32, background: "rgba(255,255,255,0.1)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill="white" opacity="0.9"/></svg>
           </div>
-          <h1 className="text-3xl font-bold text-[#002117] mb-2" style={{fontFamily:"'Libre Baskerville',serif"}}>Set your password.</h1>
-          <p className="text-[13px] text-[#5A8A6A]" style={{fontFamily:"'Work Sans',sans-serif"}}>Choose a strong password to secure your GreenBDG account.</p>
+          <span style={{ fontWeight: 700, fontSize: 14 }}>GreenBDG Africa</span>
         </div>
 
-        <div className="bg-white border border-[#E8F0EC] rounded-xl p-6 space-y-4">
+        {/* User context */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, background: "rgba(255,255,255,0.05)", borderRadius: 16, padding: "14px 18px", marginBottom: 28, border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#064E3B", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: "#fff" }}>SK</div>
           <div>
-            <label className="block text-[11px] font-semibold text-[#003527] uppercase tracking-wider mb-1.5" style={{fontFamily:"'Work Sans',sans-serif"}}>New password</label>
-            <div className="relative">
+            <div style={{ fontWeight: 600, fontSize: 14 }}>Sipho Khumalo</div>
+            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>Building Manager · Sandton Towers</div>
+          </div>
+          <div style={{ marginLeft: "auto", padding: "3px 10px", background: "rgba(82,121,111,0.3)", color: "#84A98C", fontSize: 11, fontWeight: 600, borderRadius: 20 }}>
+            Identity verified ✓
+          </div>
+        </div>
+
+        {/* Form card */}
+        <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 24, border: "1px solid rgba(255,255,255,0.09)", padding: "32px 28px" }}>
+          <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: 28, color: "#fff", marginBottom: 6 }}>
+            Set your password.
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, marginBottom: 28 }}>
+            Choose a strong password to secure your GreenBDG account.
+          </p>
+
+          <div style={{ marginBottom: 20 }}>
+            <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#84A98C", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>
+              New password
+            </label>
+            <div style={{ position: "relative" }}>
               <input
                 type={showPass ? "text" : "password"}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 placeholder="Minimum 8 characters"
-                className="w-full px-4 py-3 text-[13px] border border-[#CCE0D6] rounded bg-[#F9F9F8] text-[#002117] focus:outline-none focus:border-[#064E3B] focus:ring-1 focus:ring-[#064E3B] transition-colors pr-10"
-                style={{fontFamily:"'Work Sans',sans-serif"}}
+                style={{ width: "100%", padding: "13px 42px 13px 16px", background: "rgba(255,255,255,0.07)", border: "1.5px solid rgba(255,255,255,0.12)", borderRadius: 18, color: "#fff", fontSize: 14, outline: "none", boxSizing: "border-box" }}
               />
-              <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6BAF8A]">
+              <button
+                onClick={() => setShowPass(!showPass)}
+                style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer" }}
+              >
                 {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
               </button>
             </div>
             {strength && (
-              <div className="mt-2 flex items-center gap-2">
-                <div className="flex gap-1">
-                  {["weak","medium","strong"].map((s, i) => (
-                    <div key={s} className={`h-1 w-8 rounded-full ${i <= ["weak","medium","strong"].indexOf(strength) ? (strength === "strong" ? "bg-[#2DAF85]" : strength === "medium" ? "bg-[#E8A838]" : "bg-[#DF795F]") : "bg-[#E8F0EC]"}`} />
-                  ))}
+              <div style={{ marginTop: 10 }}>
+                <div style={{ height: 4, background: "rgba(255,255,255,0.1)", borderRadius: 2, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: strengthWidth, background: strengthColor, borderRadius: 2, transition: "width 0.3s ease" }} />
                 </div>
-                <span className="text-[10px] text-[#6BAF8A] capitalize" style={{fontFamily:"'Work Sans',sans-serif"}}>{strength}</span>
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
+                  <span style={{ fontSize: 11, color: strengthColor, fontWeight: 600, textTransform: "capitalize" }}>{strength}</span>
+                  {strength === "weak" && <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>Add numbers & symbols</span>}
+                  {strength === "medium" && <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>Add special characters</span>}
+                  {strength === "strong" && <span style={{ fontSize: 11, color: "#52796F" }}>Great password!</span>}
+                </div>
               </div>
             )}
           </div>
 
-          <div>
-            <label className="block text-[11px] font-semibold text-[#003527] uppercase tracking-wider mb-1.5" style={{fontFamily:"'Work Sans',sans-serif"}}>Confirm password</label>
-            <div className="relative">
+          <div style={{ marginBottom: 28 }}>
+            <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#84A98C", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>
+              Confirm password
+            </label>
+            <div style={{ position: "relative" }}>
               <input
                 type="password"
                 value={confirm}
-                onChange={(e) => setConfirm(e.target.value)}
+                onChange={e => setConfirm(e.target.value)}
                 placeholder="Repeat your password"
-                className="w-full px-4 py-3 text-[13px] border border-[#CCE0D6] rounded bg-[#F9F9F8] text-[#002117] focus:outline-none focus:border-[#064E3B] focus:ring-1 focus:ring-[#064E3B] transition-colors pr-10"
-                style={{fontFamily:"'Work Sans',sans-serif"}}
+                style={{ width: "100%", padding: "13px 42px 13px 16px", background: "rgba(255,255,255,0.07)", border: `1.5px solid ${match ? "rgba(82,121,111,0.6)" : "rgba(255,255,255,0.12)"}`, borderRadius: 18, color: "#fff", fontSize: 14, outline: "none", boxSizing: "border-box" }}
               />
-              {confirm && confirm === password && (
-                <CheckCircle size={15} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#2DAF85]" />
+              {match && (
+                <CheckCircle2 size={16} color="#52796F" style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)" }} />
               )}
             </div>
           </div>
 
           <button
-            onClick={() => navigate("/dashboard/fm")}
-            className="flex items-center justify-center gap-2 w-full py-3 bg-[#064E3B] text-white text-[13px] font-semibold rounded hover:bg-[#003527] transition-colors mt-2"
-            style={{fontFamily:"'Work Sans',sans-serif"}}
+            onClick={() => navigate("/dashboard/building")}
+            style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "14px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer" }}
           >
             Access my dashboard
             <ArrowRight size={15} />
           </button>
         </div>
+
+        <p style={{ textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.3)", marginTop: 20 }}>
+          By continuing, you agree to GreenBDG's Terms of Service and Privacy Policy.
+        </p>
       </div>
     </div>
   );

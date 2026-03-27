@@ -1,190 +1,94 @@
 /**
- * DashboardLayout — GreenBDG Africa
- * Crisp Plush Design System:
- * - Fixed left sidebar: deep forest green (#002117) with white text
- * - Main content: crisp white canvas
- * - 1px green border separating sidebar from content
+ * DashboardLayout — Operational Design System
+ * Source: cfo-dashboard.html, sustainability-dashboard.html etc.
+ * - White sticky header with logo + pill nav + user avatar
+ * - Sage light background (#E8EDE4)
+ * - No sidebar — horizontal nav matching the source HTML
+ * - RoleSwitcher floating bottom-right for demo navigation
  */
-import { useState } from "react";
 import { useLocation } from "wouter";
-import { Bell, ChevronDown, LogOut, Menu, X } from "lucide-react";
 import RoleSwitcher from "./RoleSwitcher";
-
-interface NavItem {
-  label: string;
-  icon: string;
-  path?: string;
-  active?: boolean;
-}
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  userName: string;
-  userInitials: string;
-  userRole: string;
-  navItems: NavItem[];
-  activeNav: string;
-  onNavChange: (label: string) => void;
-  notificationCount?: number;
+  role: string;        // "CFO" | "Sustainability" | "Portfolio" | "FM" | "Building" | "Tenant"
+  user: string;        // Full name
+  initials: string;    // 2-letter initials
 }
 
-const roleColors: Record<string, string> = {
-  "FM": "bg-[#2DAF85]",
-  "CFO": "bg-[#E8A838]",
-  "Sustainability": "bg-[#1A8C6A]",
-  "Portfolio": "bg-[#0A6B4F]",
-  "Building": "bg-[#064E3B]",
-  "Tenant": "bg-[#2DAF85]",
+const navLinks = [
+  { label: "CFO", path: "/dashboard/cfo" },
+  { label: "Sustainability", path: "/dashboard/sustainability" },
+  { label: "Portfolio", path: "/dashboard/portfolio" },
+  { label: "Building", path: "/dashboard/building" },
+  { label: "Facilities", path: "/dashboard/fm" },
+  { label: "Tenant", path: "/dashboard/tenant" },
+];
+
+const C = {
+  sageBg: "#E8EDE4",
+  white: "#FFFFFF",
+  green: "#5A9A6E",
+  text: "#2D3A2D",
+  textSec: "#5A6B5A",
+  border: "#D8E0D5",
 };
 
-export default function DashboardLayout({
-  children,
-  userName,
-  userInitials,
-  userRole,
-  navItems,
-  activeNav,
-  onNavChange,
-  notificationCount = 0,
-}: DashboardLayoutProps) {
-  const [, navigate] = useLocation();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const roleKey = userRole.split(" ")[0];
-  const avatarColor = roleColors[roleKey] || "bg-[#064E3B]";
+export default function DashboardLayout({ children, role, user, initials }: DashboardLayoutProps) {
+  const [location, navigate] = useLocation();
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#F9F9F8]">
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/40 z-20 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed lg:static inset-y-0 left-0 z-30
-          w-60 flex flex-col
-          bg-[#002117] text-white
-          border-r border-[#1A3D2E]
-          transition-transform duration-200
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-        `}
-      >
+    <div style={{ minHeight: "100vh", background: C.sageBg, fontFamily: "'Inter', sans-serif", color: C.text }}>
+      {/* Header */}
+      <header style={{ background: C.white, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 3px rgba(0,0,0,0.05)", position: "sticky", top: 0, zIndex: 100, height: 64 }}>
         {/* Logo */}
-        <div className="flex items-center gap-2.5 px-5 py-5 border-b border-[#1A3D2E]">
-          <div className="w-7 h-7 rounded bg-[#2DAF85] flex items-center justify-center flex-shrink-0">
-            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4">
-              <path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill="white" opacity="0.9"/>
-              <path d="M12 2v20M4 7l8 5 8-5" stroke="white" strokeWidth="1.5" strokeOpacity="0.5"/>
-            </svg>
-          </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", color: "inherit", cursor: "pointer" }} onClick={() => navigate("/")}>
+          <div style={{ width: 42, height: 42, background: C.green, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: 18, fontWeight: 700 }}>G</div>
           <div>
-            <div className="text-[13px] font-semibold tracking-wide text-white" style={{fontFamily:"'Work Sans',sans-serif"}}>GreenBDG</div>
-            <div className="text-[10px] text-[#6BAF8A] tracking-widest uppercase">Africa</div>
-          </div>
-          <button
-            className="ml-auto lg:hidden text-white/60 hover:text-white"
-            onClick={() => setSidebarOpen(false)}
-          >
-            <X size={16} />
-          </button>
-        </div>
-
-        {/* User profile */}
-        <div className="px-4 py-4 border-b border-[#1A3D2E]">
-          <div className="flex items-center gap-3">
-            <div className={`w-8 h-8 rounded-full ${avatarColor} flex items-center justify-center text-white text-xs font-semibold flex-shrink-0`}>
-              {userInitials}
-            </div>
-            <div className="min-w-0">
-              <div className="text-[12px] font-medium text-white truncate" style={{fontFamily:"'Work Sans',sans-serif"}}>{userName}</div>
-              <div className="text-[10px] text-[#6BAF8A] truncate">{userRole}</div>
-            </div>
+            <div style={{ fontSize: 16, fontWeight: 700 }}>GreenBDG</div>
+            <div style={{ fontSize: 11, color: C.textSec, letterSpacing: "0.15em", textTransform: "uppercase" }}>Africa</div>
           </div>
         </div>
 
-        {/* Nav items */}
-        <nav className="flex-1 overflow-y-auto py-3 px-2">
-          {navItems.map((item) => (
-            <button
-              key={item.label}
-              onClick={() => onNavChange(item.label)}
-              className={`
-                w-full flex items-center gap-3 px-3 py-2.5 rounded-sm mb-0.5
-                text-[12px] font-medium transition-all duration-150
-                ${activeNav === item.label
-                  ? "bg-[#003527] text-white border-l-2 border-[#2DAF85]"
-                  : "text-[#8BBFA0] hover:bg-[#003527] hover:text-white"
-                }
-              `}
-              style={{fontFamily:"'Work Sans',sans-serif"}}
-            >
-              <span className="text-base leading-none">{item.icon}</span>
-              {item.label}
-            </button>
-          ))}
+        {/* Pill nav */}
+        <nav style={{ display: "flex", gap: 6 }}>
+          {navLinks.map(n => {
+            const active = location === n.path;
+            return (
+              <button
+                key={n.label}
+                onClick={() => navigate(n.path)}
+                style={{
+                  padding: "8px 20px", borderRadius: 24, fontSize: 13, fontWeight: 500,
+                  cursor: "pointer", transition: "all 0.15s ease", border: "none",
+                  background: active ? C.green : "transparent",
+                  color: active ? "#fff" : C.textSec,
+                }}
+                onMouseEnter={e => { if (!active) e.currentTarget.style.background = C.sageBg; }}
+                onMouseLeave={e => { if (!active) e.currentTarget.style.background = "transparent"; }}
+              >
+                {n.label}
+              </button>
+            );
+          })}
         </nav>
 
-        {/* Sign out */}
-        <div className="px-2 py-3 border-t border-[#1A3D2E]">
-          <button
-            onClick={() => navigate("/")}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-sm text-[12px] text-[#8BBFA0] hover:bg-[#003527] hover:text-white transition-all duration-150"
-            style={{fontFamily:"'Work Sans',sans-serif"}}
-          >
-            <LogOut size={14} />
-            Sign out
-          </button>
+        {/* User avatar */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ textAlign: "right" }}>
+            <div style={{ fontSize: 13, fontWeight: 600 }}>{user}</div>
+            <div style={{ fontSize: 11, color: C.textSec }}>{role}</div>
+          </div>
+          <div style={{ width: 38, height: 38, background: "#D4E0D1", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 600 }}>{initials}</div>
         </div>
-      </aside>
+      </header>
 
-      {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top bar */}
-        <header className="flex items-center justify-between px-6 py-3.5 bg-white border-b border-[#E8F0EC] flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <button
-              className="lg:hidden text-[#003527] hover:text-[#064E3B]"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu size={20} />
-            </button>
-            <div>
-              <h1 className="text-[13px] font-semibold text-[#002117]" style={{fontFamily:"'Work Sans',sans-serif"}}>
-                {activeNav}
-              </h1>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <button className="relative p-2 rounded-full hover:bg-[#F0F7F4] transition-colors">
-              <Bell size={16} className="text-[#003527]" />
-              {notificationCount > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 bg-[#DF795F] rounded-full text-[9px] text-white flex items-center justify-center font-semibold">
-                  {notificationCount}
-                </span>
-              )}
-            </button>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <div className={`w-7 h-7 rounded-full ${avatarColor} flex items-center justify-center text-white text-[10px] font-semibold`}>
-                {userInitials}
-              </div>
-              <ChevronDown size={12} className="text-[#6BAF8A]" />
-            </div>
-          </div>
-        </header>
+      {/* Page content */}
+      <main>
+        {children}
+      </main>
 
-        {/* Page content */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="page-enter">
-            {children}
-          </div>
-        </main>
-      </div>
-      <RoleSwitcher currentPath={typeof window !== 'undefined' ? window.location.pathname : ''} />
+      <RoleSwitcher currentPath={location} />
     </div>
   );
 }

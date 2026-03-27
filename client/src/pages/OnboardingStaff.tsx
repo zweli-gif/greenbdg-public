@@ -1,130 +1,270 @@
+/**
+ * Staff Upload & Role Assignment — Botanical design system
+ * 6 staff members from source HTML: Thabo, Lerato, James, Sipho, Maria, David
+ * Roles: CFO, Sustainability Mgr, Portfolio Mgr, Building Mgr, FM, Tenant Admin
+ * Animated magic link send button
+ */
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { Upload, CheckCircle, ArrowRight, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, Upload, CheckCircle2, Users, Send, Mail } from "lucide-react";
 
-const steps = [
-  { num: 1, label: "Sign In", done: true },
-  { num: 2, label: "Upload Buildings", done: true },
-  { num: 3, label: "Add Team", active: true },
-  { num: 4, label: "Magic Links" },
-  { num: 5, label: "Go Live" },
+const staff = [
+  { name: "Amahle Dube", email: "a.dube@growthpoint.co.za", role: "CFO", building: "Portfolio-wide", initials: "AD", accent: "#E8A838", dashPath: "/dashboard/cfo" },
+  { name: "Lerato Ndlovu", email: "l.ndlovu@growthpoint.co.za", role: "Sustainability Manager", building: "Portfolio-wide", initials: "LN", accent: "#2DAF85", dashPath: "/dashboard/sustainability" },
+  { name: "James Molefe", email: "j.molefe@growthpoint.co.za", role: "Portfolio Manager", building: "Portfolio-wide", initials: "JM", accent: "#0A6B4F", dashPath: "/dashboard/portfolio" },
+  { name: "Sipho Khumalo", email: "s.khumalo@growthpoint.co.za", role: "Building Manager", building: "Sandton Towers", initials: "SK", accent: "#064E3B", dashPath: "/dashboard/building" },
+  { name: "Maria Peters", email: "m.peters@growthpoint.co.za", role: "Facilities Manager", building: "Sandton Towers", initials: "MP", accent: "#1A8C6A", dashPath: "/dashboard/fm" },
+  { name: "David Kgosi", email: "d.kgosi@africanholdings.co.za", role: "Tenant Admin", building: "African Corp Holdings", initials: "DK", accent: "#2DAF85", dashPath: "/dashboard/tenant" },
 ];
 
-const sampleStaff = [
-  { name: "Amahle Dube", email: "a.dube@growthpoint.co.za", role: "CFO", building: "Portfolio" },
-  { name: "Nomsa Khumalo", email: "n.khumalo@growthpoint.co.za", role: "Sustainability Manager", building: "Portfolio" },
-  { name: "Richard Patel", email: "r.patel@growthpoint.co.za", role: "Portfolio Manager", building: "Portfolio" },
-  { name: "Nkosi Dlamini", email: "n.dlamini@growthpoint.co.za", role: "Building Manager", building: "Sandton Heights" },
-  { name: "Sipho Mthembu", email: "s.mthembu@growthpoint.co.za", role: "Facilities Manager", building: "Waterfall Estate" },
-];
-
-const roleColors: Record<string, string> = {
-  "CFO": "bg-[#E8A838] text-white",
-  "Sustainability Manager": "bg-[#2DAF85] text-white",
-  "Portfolio Manager": "bg-[#0A6B4F] text-white",
-  "Building Manager": "bg-[#064E3B] text-white",
-  "Facilities Manager": "bg-[#1A8C6A] text-white",
+const roleAccess: Record<string, string[]> = {
+  "CFO": ["Carbon tax liability", "CapEx modelling", "Green premiums", "Financial reporting"],
+  "Sustainability Manager": ["ESG scores", "Carbon trajectory", "GRESB reporting", "Certifications"],
+  "Portfolio Manager": ["Building benchmarks", "EPC compliance", "SAPOA comparison", "Performance alerts"],
+  "Building Manager": ["Live systems", "Tenant management", "Fault tickets", "Compliance docs"],
+  "Facilities Manager": ["Work orders", "PPM schedules", "Equipment status", "Contractor management"],
+  "Tenant Admin": ["Energy usage", "Fault reporting", "Building certifications", "Lease documents"],
 };
+
+type Phase = "upload" | "assign" | "send";
 
 export default function OnboardingStaff() {
   const [, navigate] = useLocation();
+  const [phase, setPhase] = useState<Phase>("upload");
   const [uploaded, setUploaded] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sentCount, setSentCount] = useState(0);
+  const [allSent, setAllSent] = useState(false);
+
+  const handleSendLinks = () => {
+    setSending(true);
+    let count = 0;
+    const interval = setInterval(() => {
+      count++;
+      setSentCount(count);
+      if (count >= staff.length) {
+        clearInterval(interval);
+        setAllSent(true);
+        setTimeout(() => navigate("/onboarding/magic-link-sent"), 1200);
+      }
+    }, 400);
+  };
 
   return (
-    <div className="min-h-screen bg-[#F9F9F8] flex">
-      <aside className="hidden lg:flex flex-col w-72 bg-[#002117] text-white px-8 py-10">
-        <div className="flex items-center gap-2.5 mb-12">
-          <div className="w-7 h-7 rounded bg-[#2DAF85] flex items-center justify-center">
-            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4"><path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill="white"/></svg>
-          </div>
-          <span className="text-[14px] font-semibold" style={{fontFamily:"'Work Sans',sans-serif"}}>GreenBDG Africa</span>
-        </div>
-        <div>
-          <p className="text-[10px] text-[#6BAF8A] tracking-widest uppercase mb-6" style={{fontFamily:"'Work Sans',sans-serif"}}>Onboarding steps</p>
-          <div className="space-y-1">
-            {steps.map((s) => (
-              <div key={s.num} className={`flex items-center gap-3 px-3 py-2.5 rounded-sm ${s.active ? "bg-[#003527] border-l-2 border-[#2DAF85]" : ""}`}>
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${s.done || s.active ? "bg-[#2DAF85] text-white" : "bg-[#1A3D2E] text-[#6BAF8A]"}`}>
-                  {s.done ? "✓" : s.num}
-                </div>
-                <span className={`text-[12px] ${s.active ? "text-white font-medium" : s.done ? "text-[#8BBFA0]" : "text-[#4A7A5A]"}`} style={{fontFamily:"'Work Sans',sans-serif"}}>{s.label}</span>
-              </div>
-            ))}
+    <div style={{ minHeight: "100vh", background: "#F7FAF7", fontFamily: "'DM Sans', sans-serif", color: "#354F52" }}>
+      {/* Header */}
+      <header style={{ background: "#fff", borderBottom: "1px solid rgba(132,169,140,0.15)", padding: "14px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 40 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <button onClick={() => navigate("/onboarding/buildings")} style={{ display: "flex", alignItems: "center", gap: 6, color: "#52796F", background: "none", border: "none", fontSize: 13, fontWeight: 500, cursor: "pointer" }}>
+            <ArrowLeft size={14} /> Building upload
+          </button>
+          <div style={{ width: 1, height: 20, background: "rgba(132,169,140,0.2)" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ width: 32, height: 32, background: "#52796F", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill="white" opacity="0.9"/></svg>
+            </div>
+            <span style={{ fontWeight: 700, fontSize: 14 }}>GreenBDG Africa</span>
           </div>
         </div>
-      </aside>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ width: 28, height: 28, background: "rgba(132,169,140,0.2)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: "#52796F" }}>SD</div>
+          <span style={{ fontSize: 13, fontWeight: 500 }}>Songo Didiza</span>
+        </div>
+      </header>
 
-      <main className="flex-1 px-8 lg:px-16 py-12 overflow-y-auto">
-        <div className="max-w-2xl">
-          <div className="mb-8">
-            <p className="text-[11px] text-[#2DAF85] tracking-widest uppercase font-medium mb-2" style={{fontFamily:"'Work Sans',sans-serif"}}>Step 3 of 5</p>
-            <h1 className="text-3xl font-bold text-[#002117] mb-2" style={{fontFamily:"'Libre Baskerville',serif"}}>Add your team</h1>
-            <p className="text-[13px] text-[#5A8A6A]" style={{fontFamily:"'Work Sans',sans-serif"}}>
-              Upload your staff list. GreenBDG will assign each person to their role and building, then send personalised magic links.
-            </p>
-          </div>
-
-          {!uploaded ? (
-            <div
-              className="border-2 border-dashed border-[#CCE0D6] rounded-xl p-12 text-center bg-white hover:border-[#064E3B] hover:bg-[#F9F9F8] cursor-pointer transition-colors"
-              onClick={() => setUploaded(true)}
-            >
-              <div className="w-12 h-12 rounded-full bg-[#F0F7F4] flex items-center justify-center mx-auto mb-4">
-                <Users size={20} className="text-[#064E3B]" />
-              </div>
-              <p className="text-[14px] font-semibold text-[#002117] mb-1" style={{fontFamily:"'Work Sans',sans-serif"}}>Upload staff CSV</p>
-              <p className="text-[12px] text-[#6BAF8A]" style={{fontFamily:"'Work Sans',sans-serif"}}>Required: Name, Email, Role, Building Assignment</p>
-            </div>
-          ) : (
-            <div className="border border-[#CCE0D6] rounded-xl overflow-hidden bg-white">
-              <div className="flex items-center gap-3 px-5 py-4 bg-[#F0F7F4] border-b border-[#CCE0D6]">
-                <CheckCircle size={16} className="text-[#2DAF85]" />
-                <div>
-                  <div className="text-[13px] font-semibold text-[#002117]" style={{fontFamily:"'Work Sans',sans-serif"}}>growthpoint_staff.csv · 23 team members detected</div>
-                  <div className="text-[11px] text-[#6BAF8A]" style={{fontFamily:"'Work Sans',sans-serif"}}>Preview of key stakeholders</div>
-                </div>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-[12px]" style={{fontFamily:"'Work Sans',sans-serif"}}>
-                  <thead>
-                    <tr className="border-b border-[#E8F0EC]">
-                      {["Name", "Email", "Role", "Building"].map((h) => (
-                        <th key={h} className="px-4 py-3 text-left text-[10px] font-semibold text-[#6BAF8A] uppercase tracking-wider">{h}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {sampleStaff.map((s, i) => (
-                      <tr key={i} className="border-b border-[#F0F7F4] data-row">
-                        <td className="px-4 py-3 font-medium text-[#002117]">{s.name}</td>
-                        <td className="px-4 py-3 text-[#5A8A6A]">{s.email}</td>
-                        <td className="px-4 py-3">
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${roleColors[s.role] || "bg-[#F0F7F4] text-[#064E3B]"}`}>{s.role}</span>
-                        </td>
-                        <td className="px-4 py-3 text-[#5A8A6A]">{s.building}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="px-5 py-3 bg-[#F9F9F8] text-[11px] text-[#6BAF8A]" style={{fontFamily:"'Work Sans',sans-serif"}}>
-                + 18 more team members across 4 provinces
-              </div>
-            </div>
-          )}
-
-          <div className="flex items-center justify-between mt-8">
-            <button onClick={() => navigate("/onboarding/buildings")} className="text-[13px] text-[#6BAF8A] hover:text-[#064E3B] transition-colors" style={{fontFamily:"'Work Sans',sans-serif"}}>← Back</button>
+      {/* Progress steps */}
+      <div style={{ background: "#fff", borderBottom: "1px solid rgba(132,169,140,0.15)", padding: "0 32px" }}>
+        <div style={{ display: "flex", maxWidth: 900, margin: "0 auto" }}>
+          {([
+            { id: "upload" as Phase, label: "📤  Upload CSV" },
+            { id: "assign" as Phase, label: "🎯  Assign roles" },
+            { id: "send" as Phase, label: "✉️  Send magic links" },
+          ]).map(t => (
             <button
-              onClick={() => navigate("/onboarding/magic-link-sent")}
-              className="flex items-center gap-2 px-6 py-3 bg-[#064E3B] text-white text-[13px] font-semibold rounded hover:bg-[#003527] transition-colors"
-              style={{fontFamily:"'Work Sans',sans-serif"}}
+              key={t.id}
+              onClick={() => { if (uploaded || t.id === "upload") setPhase(t.id); }}
+              style={{
+                display: "flex", alignItems: "center", gap: 6,
+                padding: "14px 20px", fontSize: 13, fontWeight: 500,
+                color: phase === t.id ? "#354F52" : "#84A98C",
+                background: "none",
+                borderBottom: phase === t.id ? "2px solid #52796F" : "2px solid transparent",
+                cursor: "pointer", transition: "color 0.2s",
+              }}
             >
-              Send Magic Links
-              <ArrowRight size={15} />
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <main style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px" }}>
+
+        {/* ── UPLOAD PHASE ── */}
+        {phase === "upload" && (
+          <div>
+            <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: 28, color: "#354F52", marginBottom: 8 }}>Upload staff list</h1>
+            <p style={{ color: "#7A9A82", fontSize: 14, marginBottom: 28 }}>Upload your team CSV with names, emails, roles, and building assignments.</p>
+
+            {!uploaded ? (
+              <div>
+                <div
+                  onClick={() => setUploaded(true)}
+                  style={{ border: "2px dashed rgba(132,169,140,0.4)", borderRadius: 20, padding: "56px 32px", textAlign: "center", cursor: "pointer", marginBottom: 20 }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = "#52796F")}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(132,169,140,0.4)")}
+                >
+                  <div style={{ width: 56, height: 56, background: "rgba(82,121,111,0.1)", borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+                    <Users size={24} color="#52796F" />
+                  </div>
+                  <div style={{ fontWeight: 600, fontSize: 16, marginBottom: 6 }}>Drop staff CSV here or click to browse</div>
+                  <div style={{ color: "#84A98C", fontSize: 13 }}>Required: Name, Email, Role, Building Assignment</div>
+                </div>
+                <button onClick={() => setUploaded(true)} style={{ padding: "14px 28px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+                  Simulate upload (6 staff)
+                </button>
+              </div>
+            ) : (
+              <div>
+                <div style={{ background: "#fff", borderRadius: 20, border: "1px solid rgba(132,169,140,0.15)", padding: 24, marginBottom: 20, borderLeft: "4px solid #52796F" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+                    <CheckCircle2 size={18} color="#52796F" />
+                    <span style={{ fontWeight: 600, fontSize: 14 }}>growthpoint_staff.csv uploaded — 6 team members detected</span>
+                  </div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                    {staff.map(s => (
+                      <div key={s.name} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", background: "#F7FAF7", borderRadius: 20, border: "1px solid rgba(132,169,140,0.15)" }}>
+                        <div style={{ width: 24, height: 24, borderRadius: "50%", background: s.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: "#fff" }}>{s.initials}</div>
+                        <span style={{ fontSize: 12, fontWeight: 500 }}>{s.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <button onClick={() => setPhase("assign")} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+                  Review role assignments <ArrowRight size={15} />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── ASSIGN PHASE ── */}
+        {phase === "assign" && (
+          <div>
+            <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: 28, color: "#354F52", marginBottom: 8 }}>Confirm role assignments</h1>
+            <p style={{ color: "#7A9A82", fontSize: 14, marginBottom: 28 }}>Each role unlocks a specific dashboard view. Review and confirm before sending magic links.</p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
+              {staff.map(s => (
+                <div key={s.name} style={{ background: "#fff", borderRadius: 20, padding: "20px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", display: "flex", alignItems: "flex-start", gap: 16 }}>
+                  <div style={{ width: 44, height: 44, borderRadius: "50%", background: s.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: "#fff", flexShrink: 0 }}>
+                    {s.initials}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
+                      <span style={{ fontWeight: 700, fontSize: 14 }}>{s.name}</span>
+                      <span style={{ padding: "2px 10px", background: `${s.accent}20`, color: s.accent, fontSize: 11, fontWeight: 600, borderRadius: 20 }}>{s.role}</span>
+                    </div>
+                    <div style={{ fontSize: 12, color: "#84A98C", marginBottom: 8 }}>{s.email} · {s.building}</div>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                      {(roleAccess[s.role] || []).map(a => (
+                        <span key={a} style={{ padding: "3px 10px", background: "#F7FAF7", border: "1px solid rgba(132,169,140,0.2)", color: "#52796F", fontSize: 11, borderRadius: 20 }}>{a}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{ flexShrink: 0 }}>
+                    <CheckCircle2 size={18} color="#52796F" />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button onClick={() => setPhase("send")} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+              Confirm & send magic links <ArrowRight size={15} />
             </button>
           </div>
-        </div>
+        )}
+
+        {/* ── SEND PHASE ── */}
+        {phase === "send" && (
+          <div>
+            <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: 28, color: "#354F52", marginBottom: 8 }}>Send magic links</h1>
+            <p style={{ color: "#7A9A82", fontSize: 14, marginBottom: 28 }}>
+              Each team member receives a personalised email with a secure magic link. They click it, verify their identity, set a password, and land directly in their dashboard.
+            </p>
+
+            {/* Info card */}
+            <div style={{ background: "#fff", borderRadius: 20, border: "1px solid rgba(132,169,140,0.15)", padding: "20px 24px", marginBottom: 24 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+                {[
+                  { icon: "🔐", label: "Secure token", desc: "24-hour expiry, single-use" },
+                  { icon: "📱", label: "OTP verification", desc: "SMS or email 6-digit code" },
+                  { icon: "🎯", label: "Role-based landing", desc: "Direct to their dashboard" },
+                ].map(f => (
+                  <div key={f.label} style={{ textAlign: "center", padding: "12px 8px" }}>
+                    <div style={{ fontSize: 24, marginBottom: 6 }}>{f.icon}</div>
+                    <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>{f.label}</div>
+                    <div style={{ fontSize: 12, color: "#84A98C" }}>{f.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Staff rows with send status */}
+            <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", marginBottom: 24 }}>
+              {staff.map((s, i) => {
+                const isSent = sentCount > i;
+                return (
+                  <div key={s.name} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 24px", borderBottom: i < staff.length - 1 ? "1px solid rgba(132,169,140,0.08)" : "none" }}>
+                    <div style={{ width: 36, height: 36, borderRadius: "50%", background: s.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#fff" }}>
+                      {s.initials}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 600, fontSize: 13 }}>{s.name}</div>
+                      <div style={{ fontSize: 12, color: "#84A98C" }}>{s.email}</div>
+                    </div>
+                    <span style={{ padding: "2px 10px", background: `${s.accent}20`, color: s.accent, fontSize: 11, fontWeight: 600, borderRadius: 20 }}>{s.role}</span>
+                    <div style={{ width: 80, textAlign: "right" }}>
+                      {sending ? (
+                        isSent ? (
+                          <span style={{ display: "flex", alignItems: "center", gap: 4, justifyContent: "flex-end", color: "#52796F", fontSize: 12, fontWeight: 600 }}>
+                            <CheckCircle2 size={14} /> Sent
+                          </span>
+                        ) : (
+                          <span style={{ color: "#84A98C", fontSize: 12 }}>Queued…</span>
+                        )
+                      ) : (
+                        <span style={{ display: "flex", alignItems: "center", gap: 4, justifyContent: "flex-end", color: "#84A98C", fontSize: 12 }}>
+                          <Mail size={13} /> Ready
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {!sending ? (
+              <button
+                onClick={handleSendLinks}
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 15, fontWeight: 600, cursor: "pointer" }}
+              >
+                <Send size={16} />
+                Send 6 magic links
+              </button>
+            ) : allSent ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 24px", background: "#E8F5E9", borderRadius: 16, color: "#2E7D32", fontWeight: 600, fontSize: 14 }}>
+                <CheckCircle2 size={18} />
+                All 6 magic links sent! Redirecting…
+              </div>
+            ) : (
+              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 24px", background: "#F7FAF7", borderRadius: 16, color: "#52796F", fontWeight: 600, fontSize: 14 }}>
+                <div style={{ width: 18, height: 18, border: "2px solid #52796F", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+                Sending… {sentCount}/{staff.length}
+              </div>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );

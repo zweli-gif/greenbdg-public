@@ -1,70 +1,86 @@
+/**
+ * Magic Links Sent — Botanical design system (dark variant)
+ * Confirmation screen after all 6 magic links are dispatched
+ * Dark forest green background, white text
+ */
 import { useLocation } from "wouter";
-import { Mail, CheckCircle, ArrowRight } from "lucide-react";
+import { CheckCircle2, ArrowRight, Mail } from "lucide-react";
 
 const recipients = [
-  { initials: "AD", name: "Amahle Dube", email: "a.dube@growthpoint.co.za", role: "CFO", color: "bg-[#E8A838]" },
-  { initials: "NK", name: "Nomsa Khumalo", email: "n.khumalo@growthpoint.co.za", role: "Sustainability Manager", color: "bg-[#2DAF85]" },
-  { initials: "RP", name: "Richard Patel", email: "r.patel@growthpoint.co.za", role: "Portfolio Manager", color: "bg-[#0A6B4F]" },
-  { initials: "ND", name: "Nkosi Dlamini", email: "n.dlamini@growthpoint.co.za", role: "Building Manager", color: "bg-[#064E3B]" },
-  { initials: "SM", name: "Sipho Mthembu", email: "s.mthembu@growthpoint.co.za", role: "Facilities Manager", color: "bg-[#1A8C6A]" },
+  { initials: "AD", name: "Amahle Dube", email: "a.dube@growthpoint.co.za", role: "CFO", accent: "#E8A838" },
+  { initials: "LN", name: "Lerato Ndlovu", email: "l.ndlovu@growthpoint.co.za", role: "Sustainability Manager", accent: "#2DAF85" },
+  { initials: "JM", name: "James Molefe", email: "j.molefe@growthpoint.co.za", role: "Portfolio Manager", accent: "#0A6B4F" },
+  { initials: "SK", name: "Sipho Khumalo", email: "s.khumalo@growthpoint.co.za", role: "Building Manager", accent: "#064E3B" },
+  { initials: "MP", name: "Maria Peters", email: "m.peters@growthpoint.co.za", role: "Facilities Manager", accent: "#1A8C6A" },
+  { initials: "DK", name: "David Kgosi", email: "d.kgosi@africanholdings.co.za", role: "Tenant Admin", accent: "#2DAF85" },
 ];
 
 export default function MagicLinkSent() {
   const [, navigate] = useLocation();
 
   return (
-    <div className="min-h-screen bg-[#F9F9F8] flex items-center justify-center px-6 py-12">
-      <div className="max-w-lg w-full">
-        <div className="text-center mb-10">
-          <div className="w-16 h-16 rounded-full bg-[#F0F7F4] flex items-center justify-center mx-auto mb-5">
-            <Mail size={28} className="text-[#064E3B]" />
+    <div style={{ minHeight: "100vh", background: "#2C3E33", fontFamily: "'DM Sans', sans-serif", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 24px" }}>
+      <div style={{ maxWidth: 520, width: "100%" }}>
+
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 40 }}>
+          <div style={{ width: 32, height: 32, background: "rgba(255,255,255,0.1)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill="white" opacity="0.9"/></svg>
           </div>
-          <h1 className="text-3xl font-bold text-[#002117] mb-3" style={{fontFamily:"'Libre Baskerville',serif"}}>Magic links sent.</h1>
-          <p className="text-[13px] text-[#5A8A6A] leading-relaxed" style={{fontFamily:"'Work Sans',sans-serif"}}>
-            We've dispatched personalised, single-use magic links to your entire team. Each link routes them directly to their role-specific dashboard.
+          <span style={{ fontWeight: 700, fontSize: 14, color: "#fff" }}>GreenBDG Africa</span>
+        </div>
+
+        {/* Icon + heading */}
+        <div style={{ textAlign: "center", marginBottom: 32 }}>
+          <div style={{ width: 72, height: 72, background: "rgba(255,255,255,0.08)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+            <Mail size={32} color="#84A98C" />
+          </div>
+          <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: 32, color: "#fff", marginBottom: 10 }}>
+            Magic links sent.
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 1.7, maxWidth: 380, margin: "0 auto" }}>
+            6 personalised, single-use magic links have been dispatched. Each team member is routed directly to their role-specific dashboard.
           </p>
         </div>
 
-        <div className="bg-white border border-[#E8F0EC] rounded-xl overflow-hidden mb-6">
-          <div className="px-5 py-3 border-b border-[#E8F0EC]">
-            <p className="text-[11px] font-semibold text-[#6BAF8A] uppercase tracking-wider" style={{fontFamily:"'Work Sans',sans-serif"}}>23 links dispatched</p>
+        {/* Recipients list */}
+        <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", overflow: "hidden", marginBottom: 20 }}>
+          <div style={{ padding: "12px 20px", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: "#84A98C", textTransform: "uppercase", letterSpacing: "0.1em" }}>6 links dispatched</span>
           </div>
-          <div className="divide-y divide-[#F0F7F4]">
-            {recipients.map((r) => (
-              <div key={r.name} className="flex items-center gap-3 px-5 py-3.5">
-                <div className={`w-8 h-8 rounded-full ${r.color} flex items-center justify-center text-white text-[11px] font-semibold flex-shrink-0`}>
-                  {r.initials}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-[12px] font-medium text-[#002117]" style={{fontFamily:"'Work Sans',sans-serif"}}>{r.name}</div>
-                  <div className="text-[11px] text-[#6BAF8A] truncate" style={{fontFamily:"'Work Sans',sans-serif"}}>{r.email} · {r.role}</div>
-                </div>
-                <CheckCircle size={14} className="text-[#2DAF85] flex-shrink-0" />
+          {recipients.map((r, i) => (
+            <div key={r.name} style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 20px", borderBottom: i < recipients.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
+              <div style={{ width: 34, height: 34, borderRadius: "50%", background: r.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: "#fff", flexShrink: 0 }}>
+                {r.initials}
               </div>
-            ))}
-            <div className="px-5 py-3 text-[11px] text-[#6BAF8A]" style={{fontFamily:"'Work Sans',sans-serif"}}>+ 18 more team members</div>
-          </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#fff" }}>{r.name}</div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)" }}>{r.email} · {r.role}</div>
+              </div>
+              <CheckCircle2 size={15} color="#52796F" />
+            </div>
+          ))}
         </div>
 
-        <div className="bg-[#F0F7F4] border border-[#CCE0D6] rounded-lg p-4 mb-6">
-          <p className="text-[12px] text-[#003527] leading-relaxed" style={{fontFamily:"'Work Sans',sans-serif"}}>
-            <strong>What happens next:</strong> Each team member clicks their magic link, sets a password, and is instantly routed to their personalised dashboard. Links expire in 48 hours.
+        {/* Info box */}
+        <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 16, border: "1px solid rgba(255,255,255,0.07)", padding: "16px 20px", marginBottom: 28 }}>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", lineHeight: 1.65 }}>
+            <strong style={{ color: "#fff" }}>What happens next:</strong> Each team member clicks their link, verifies via OTP, sets a password, and lands directly in their personalised dashboard. Links expire in 24 hours.
           </p>
         </div>
 
-        <div className="flex flex-col gap-3">
+        {/* CTAs */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <button
             onClick={() => navigate("/onboarding/magic-link-landing")}
-            className="flex items-center justify-center gap-2 w-full py-3 bg-[#064E3B] text-white text-[13px] font-semibold rounded hover:bg-[#003527] transition-colors"
-            style={{fontFamily:"'Work Sans',sans-serif"}}
+            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, width: "100%", padding: "14px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer" }}
           >
-            Preview: Sipho's magic link experience
+            Preview Sipho's magic link experience
             <ArrowRight size={15} />
           </button>
           <button
             onClick={() => navigate("/dashboard/fm")}
-            className="text-[12px] text-[#6BAF8A] hover:text-[#064E3B] transition-colors text-center"
-            style={{fontFamily:"'Work Sans',sans-serif"}}
+            style={{ background: "none", border: "none", color: "rgba(255,255,255,0.45)", fontSize: 13, cursor: "pointer", padding: "8px" }}
           >
             Skip to FM Dashboard →
           </button>

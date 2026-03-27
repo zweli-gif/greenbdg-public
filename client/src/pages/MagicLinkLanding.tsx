@@ -1,49 +1,116 @@
+/**
+ * Magic Link Landing — Botanical dark design
+ * Sipho Khumalo's invite landing page (Building Manager, Sandton Towers)
+ * Dark forest green background, expiry timer, OTP verification
+ */
+import { useState } from "react";
 import { useLocation } from "wouter";
-import { ArrowRight, Shield } from "lucide-react";
+import { ArrowRight, Shield, Clock } from "lucide-react";
 
 export default function MagicLinkLanding() {
   const [, navigate] = useLocation();
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+
+  const handleOtpChange = (val: string, idx: number) => {
+    const next = [...otp];
+    next[idx] = val.slice(-1);
+    setOtp(next);
+    if (val && idx < 5) {
+      const nextInput = document.getElementById(`otp-${idx + 1}`);
+      nextInput?.focus();
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-[#F9F9F8] flex items-center justify-center px-6 py-12">
-      <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-full bg-[#F0F7F4] flex items-center justify-center mx-auto mb-4">
-            <Shield size={24} className="text-[#064E3B]" />
+    <div style={{ minHeight: "100vh", background: "#2C3E33", fontFamily: "'DM Sans', sans-serif", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 24px" }}>
+      <div style={{ maxWidth: 460, width: "100%" }}>
+
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 36 }}>
+          <div style={{ width: 32, height: 32, background: "rgba(255,255,255,0.1)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill="white" opacity="0.9"/></svg>
           </div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F0F7F4] border border-[#CCE0D6] mb-4">
-            <div className="w-2 h-2 rounded-full bg-[#2DAF85]" />
-            <span className="text-[11px] text-[#064E3B] font-medium" style={{fontFamily:"'Work Sans',sans-serif"}}>Secure magic link · Single use</span>
-          </div>
-          <h1 className="text-3xl font-bold text-[#002117] mb-2" style={{fontFamily:"'Libre Baskerville',serif"}}>Welcome, Sipho.</h1>
-          <p className="text-[13px] text-[#5A8A6A]" style={{fontFamily:"'Work Sans',sans-serif"}}>
-            You've been invited to GreenBDG Africa as <strong>Facilities Manager</strong> at Waterfall Corporate Estate.
-          </p>
+          <span style={{ fontWeight: 700, fontSize: 14 }}>GreenBDG Africa</span>
         </div>
 
-        <div className="bg-white border border-[#E8F0EC] rounded-xl p-6 mb-6">
-          <div className="space-y-3">
+        {/* Security badge */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 16px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 20 }}>
+            <Shield size={13} color="#84A98C" />
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Secure magic link · Single use</span>
+            <div style={{ width: 1, height: 12, background: "rgba(255,255,255,0.15)" }} />
+            <Clock size={12} color="#84A98C" />
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Expires in 23:47:12</span>
+          </div>
+        </div>
+
+        {/* Welcome card */}
+        <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: 24, border: "1px solid rgba(255,255,255,0.09)", padding: "32px 28px", marginBottom: 20 }}>
+          <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: 30, color: "#fff", marginBottom: 8 }}>
+            Welcome, Sipho.
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>
+            You've been invited to GreenBDG Africa as <strong style={{ color: "#fff" }}>Building Manager</strong> at Sandton Towers.
+          </p>
+
+          {/* Details */}
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 20, marginBottom: 24 }}>
             {[
-              { label: "Name", value: "Sipho Mthembu" },
-              { label: "Email", value: "s.mthembu@growthpoint.co.za" },
-              { label: "Role", value: "Facilities Manager" },
-              { label: "Building", value: "Waterfall Corporate Estate" },
-            ].map((f) => (
-              <div key={f.label} className="flex justify-between items-center py-2 border-b border-[#F0F7F4] last:border-0">
-                <span className="text-[11px] text-[#6BAF8A] font-medium uppercase tracking-wider" style={{fontFamily:"'Work Sans',sans-serif"}}>{f.label}</span>
-                <span className="text-[13px] font-medium text-[#002117]" style={{fontFamily:"'Work Sans',sans-serif"}}>{f.value}</span>
+              { label: "Full name", value: "Sipho Khumalo" },
+              { label: "Email", value: "s.khumalo@growthpoint.co.za" },
+              { label: "Role", value: "Building Manager" },
+              { label: "Building", value: "Sandton Towers, Sandton" },
+              { label: "Company", value: "Growthpoint Properties" },
+            ].map((f, i) => (
+              <div key={f.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
+                <span style={{ fontSize: 11, fontWeight: 600, color: "#84A98C", textTransform: "uppercase", letterSpacing: "0.08em" }}>{f.label}</span>
+                <span style={{ fontSize: 13, fontWeight: 500, color: "#fff" }}>{f.value}</span>
               </div>
             ))}
           </div>
+
+          {/* OTP step */}
+          {!otpSent ? (
+            <button
+              onClick={() => setOtpSent(true)}
+              style={{ width: "100%", padding: "13px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer" }}
+            >
+              Verify identity — send OTP to phone
+            </button>
+          ) : (
+            <div>
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginBottom: 16 }}>
+                Enter the 6-digit code sent to <strong style={{ color: "#fff" }}>+27 82 *** 4521</strong>
+              </p>
+              <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 20 }}>
+                {otp.map((v, i) => (
+                  <input
+                    key={i}
+                    id={`otp-${i}`}
+                    type="text"
+                    maxLength={1}
+                    value={v}
+                    onChange={e => handleOtpChange(e.target.value, i)}
+                    style={{ width: 44, height: 52, textAlign: "center", background: "rgba(255,255,255,0.07)", border: "1.5px solid rgba(255,255,255,0.15)", borderRadius: 12, color: "#fff", fontSize: 20, fontWeight: 700, outline: "none" }}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={() => navigate("/onboarding/password-setup")}
+                style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer" }}
+              >
+                Verify & set password <ArrowRight size={15} />
+              </button>
+            </div>
+          )}
         </div>
 
         <button
           onClick={() => navigate("/onboarding/password-setup")}
-          className="flex items-center justify-center gap-2 w-full py-3 bg-[#064E3B] text-white text-[13px] font-semibold rounded hover:bg-[#003527] transition-colors"
-          style={{fontFamily:"'Work Sans',sans-serif"}}
+          style={{ background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontSize: 12, cursor: "pointer", width: "100%", textAlign: "center", padding: "8px" }}
         >
-          Set your password & access dashboard
-          <ArrowRight size={15} />
+          Skip OTP for demo →
         </button>
       </div>
     </div>

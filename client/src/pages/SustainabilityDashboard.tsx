@@ -1,174 +1,226 @@
 /**
- * Sustainability Dashboard — Nomsa Khumalo
- * Focus: ESG scores, carbon trajectory, GRESB/TCFD reporting
+ * Sustainability Dashboard — Operational design system
+ * Lerato Ndlovu · Growthpoint Properties
+ * Source: sustainability-dashboard.html
  */
-import { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadialBarChart, RadialBar } from "recharts";
-import { Leaf, TrendingDown, Award, FileText } from "lucide-react";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
-const navItems = [
-  { icon: "⊞", label: "Overview" },
-  { icon: "🌱", label: "Carbon Tracker" },
-  { icon: "🏆", label: "ESG Scores" },
-  { icon: "📋", label: "GRESB Report" },
-  { icon: "📊", label: "TCFD Report" },
+const C = {
+  sageBg: "#E8EDE4", white: "#FFFFFF", green: "#5A9A6E", amber: "#E8A838",
+  coral: "#E07A5F", blue: "#6B9BD1", text: "#2D3A2D", textSec: "#5A6B5A",
+  textMuted: "#8A9A8A", border: "#D8E0D5",
+};
+
+const kpis = [
+  { dot: C.green, label: "Portfolio ESG Score", value: "78/100", change: "+5 pts this quarter", sub: "GRESB aligned" },
+  { dot: C.coral, label: "Total Carbon Emissions", value: "15,420", change: "-8% vs last year", sub: "tCO₂e · Scope 1+2+3" },
+  { dot: C.blue, label: "Net Zero Target", value: "2030", change: "On track", sub: "6 years remaining" },
+  { dot: C.amber, label: "GRESB Rating", value: "4-Star", change: "Up from 3-star", sub: "Global benchmark" },
 ];
 
 const carbonTrajectory = [
-  { year: "2022", actual: 28400, target: 28000 },
-  { year: "2023", actual: 26800, target: 25200 },
-  { year: "2024", actual: 24200, target: 22400 },
-  { year: "2025", actual: 21600, target: 19600 },
-  { year: "2026", actual: 19800, target: 16800 },
-  { year: "2027", actual: null, target: 14000 },
-  { year: "2028", actual: null, target: 11200 },
-  { year: "2029", actual: null, target: 8400 },
-  { year: "2030", actual: null, target: 5600 },
+  { year: "2022", actual: 18200, target: 18000 },
+  { year: "2023", actual: 17100, target: 16500 },
+  { year: "2024", actual: 16200, target: 15000 },
+  { year: "2025", actual: 15420, target: 13500 },
+  { year: "2026", actual: null, target: 12000 },
+  { year: "2027", actual: null, target: 10000 },
+  { year: "2028", actual: null, target: 7500 },
+  { year: "2029", actual: null, target: 4000 },
+  { year: "2030", actual: null, target: 0 },
 ];
 
-const esgScores = [
-  { pillar: "Environmental", score: 72, max: 100, color: "#064E3B" },
-  { pillar: "Social", score: 65, max: 100, color: "#1A8C6A" },
-  { pillar: "Governance", score: 81, max: 100, color: "#2DAF85" },
+const buildings = [
+  { name: "Sandton Towers", city: "Johannesburg, 45,000 m²", epc: "A", energy: 98, carbon: 245, status: "Optimal", sc: C.green },
+  { name: "Waterfront Plaza", city: "Cape Town, 32,000 m²", epc: "B", energy: 125, carbon: 312, status: "Good", sc: C.green },
+  { name: "Midrand Industrial Park", city: "Midrand, 78,000 m²", epc: "C", energy: 178, carbon: 892, status: "Review", sc: C.amber },
+  { name: "Umhlanga Business Centre", city: "Durban, 28,500 m²", epc: "B", energy: 115, carbon: 267, status: "Good", sc: C.green },
+  { name: "Menlyn Corporate Park", city: "Pretoria, 52,000 m²", epc: "D", energy: 215, carbon: 1124, status: "Action Required", sc: C.coral },
 ];
 
-const certifications = [
-  { name: "GBCSA Green Star", rating: "5 Star", count: "14 buildings", color: "bg-[#064E3B] text-white" },
-  { name: "EDGE Certified", rating: "Advanced", count: "8 buildings", color: "bg-[#1A8C6A] text-white" },
-  { name: "BREEAM", rating: "Excellent", count: "3 buildings", color: "bg-[#2DAF85] text-white" },
-  { name: "ISO 50001", rating: "Certified", count: "22 buildings", color: "bg-[#E8A838] text-white" },
+const certs = [
+  { name: "GRESB", score: "78/100", rating: "4-Star", status: "Submitted", color: C.green },
+  { name: "TCFD", score: "Aligned", rating: "Full disclosure", status: "Published", color: C.blue },
+  { name: "Green Star SA", score: "31 buildings", rating: "4-6 Star", status: "Active", color: C.green },
+  { name: "NABERS SA", score: "Pilot", rating: "In progress", status: "2025", color: C.amber },
+];
+
+const actions = [
+  { task: "Schedule HVAC audit — Menlyn Park", due: "Tomorrow", priority: "High", color: C.coral },
+  { task: "Review LED retrofit proposal", due: "3 days", priority: "Med", color: C.amber },
+  { task: "Update EPC certificates (3 buildings)", due: "1 week", priority: "Med", color: C.amber },
+  { task: "Quarterly sustainability report", due: "2 weeks", priority: "High", color: C.coral },
+];
+
+const esgPillars = [
+  { pillar: "Environmental", score: 78 },
+  { pillar: "Social", score: 71 },
+  { pillar: "Governance", score: 84 },
 ];
 
 export default function SustainabilityDashboard() {
-  const [activeNav, setActiveNav] = useState("Overview");
-
   return (
-    <DashboardLayout
-      userName="Nomsa Khumalo"
-      userInitials="NK"
-      userRole="Sustainability Manager"
-      navItems={navItems}
-      activeNav={activeNav}
-      onNavChange={setActiveNav}
-      notificationCount={1}
-    >
-      <div className="p-6 lg:p-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-[#002117] mb-1" style={{fontFamily:"'Libre Baskerville',serif"}}>Good morning, Nomsa.</h2>
-          <p className="text-[13px] text-[#6BAF8A]" style={{fontFamily:"'Work Sans',sans-serif"}}>Thursday, 27 March 2026 · Sustainability Manager · Portfolio ESG Overview</p>
+    <DashboardLayout role="Sustainability Manager" user="Lerato Ndlovu" initials="LN">
+      <div style={{ padding: "28px 32px", maxWidth: 1400, margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 22 }}>
+          <div>
+            <h1 style={{ fontSize: 24, fontWeight: 700, color: C.text, marginBottom: 3 }}>Sustainability & ESG Overview</h1>
+            <p style={{ fontSize: 13, color: C.textSec }}>Growthpoint Properties · FY 2025/26 · Last updated: 5 min ago</p>
+          </div>
+          <div style={{ display: "flex", gap: 8 }}>
+            {["Export GRESB Report", "Download TCFD", "Set Alerts"].map(a => (
+              <button key={a} style={{ padding: "9px 16px", background: C.white, border: `1px solid ${C.border}`, borderRadius: 10, fontSize: 13, fontWeight: 500, color: C.textSec, cursor: "pointer" }}>{a}</button>
+            ))}
+          </div>
         </div>
 
-        {/* KPI cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 card-stagger">
-          {[
-            { label: "Portfolio ESG Score", value: "B+", sub: "72/100 · Up 6pts YoY", icon: <Award size={16} className="text-[#E8A838]" />, accent: "border-l-4 border-l-[#E8A838]" },
-            { label: "Carbon Intensity", value: "38.2", sub: "kgCO2e/m² · -12% YoY", icon: <TrendingDown size={16} className="text-[#2DAF85]" />, accent: "border-l-4 border-l-[#2DAF85]" },
-            { label: "Net Zero Target", value: "2030", sub: "On track · SA NDC aligned", icon: <Leaf size={16} className="text-[#064E3B]" />, accent: "border-l-4 border-l-[#064E3B]" },
-            { label: "GRESB Score", value: "74", sub: "Top quartile · 2025", icon: <FileText size={16} className="text-[#1A8C6A]" />, accent: "border-l-4 border-l-[#1A8C6A]" },
-          ].map((s) => (
-            <div key={s.label} className={`bg-white rounded-lg p-5 shadow-sm ${s.accent}`}>
-              <div className="flex items-start justify-between mb-3">
-                <span className="text-[11px] font-semibold text-[#6BAF8A] uppercase tracking-wider" style={{fontFamily:"'Work Sans',sans-serif"}}>{s.label}</span>
-                {s.icon}
+        {/* KPIs */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 20 }}>
+          {kpis.map(k => (
+            <div key={k.label} style={{ background: C.white, borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", cursor: "pointer" }}
+              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.08)")}
+              onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.04)")}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 12 }}>
+                <div style={{ width: 9, height: 9, borderRadius: "50%", background: k.dot }} />
+                <span style={{ fontSize: 12, color: C.textSec, fontWeight: 500 }}>{k.label}</span>
               </div>
-              <div className="stat-numeral text-[#002117]">{s.value}</div>
-              <div className="text-[11px] text-[#8BBFA0] mt-1" style={{fontFamily:"'Work Sans',sans-serif"}}>{s.sub}</div>
+              <div style={{ fontSize: 28, fontWeight: 700, color: C.text, marginBottom: 5 }}>{k.value}</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: C.green, marginBottom: 2 }}>{k.change}</div>
+              <div style={{ fontSize: 11, color: C.textMuted }}>{k.sub}</div>
             </div>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Carbon trajectory chart */}
-          <div className="lg:col-span-2 bg-white rounded-lg shadow-sm p-5">
-            <h3 className="text-[14px] font-semibold text-[#002117] mb-1" style={{fontFamily:"'Work Sans',sans-serif"}}>Carbon Trajectory to Net Zero 2030</h3>
-            <p className="text-[11px] text-[#8BBFA0] mb-5" style={{fontFamily:"'Work Sans',sans-serif"}}>tCO2e · Scope 1 & 2 emissions · SA NDC pathway</p>
-            <ResponsiveContainer width="100%" height={220}>
+        {/* Row 1 */}
+        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 16, marginBottom: 16 }}>
+          {/* Carbon trajectory */}
+          <div style={{ background: C.white, borderRadius: 16, padding: "22px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+            <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 4 }}>Carbon Trajectory to Net Zero 2030</h3>
+            <p style={{ fontSize: 12, color: C.textSec, marginBottom: 16 }}>tCO₂e · Actual vs science-based target</p>
+            <ResponsiveContainer width="100%" height={200}>
               <AreaChart data={carbonTrajectory}>
                 <defs>
                   <linearGradient id="actualGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#064E3B" stopOpacity={0.15}/>
-                    <stop offset="95%" stopColor="#064E3B" stopOpacity={0}/>
+                    <stop offset="5%" stopColor={C.coral} stopOpacity={0.2} />
+                    <stop offset="95%" stopColor={C.coral} stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="targetGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#2DAF85" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#2DAF85" stopOpacity={0}/>
+                    <stop offset="5%" stopColor={C.green} stopOpacity={0.2} />
+                    <stop offset="95%" stopColor={C.green} stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#F0F7F4" />
-                <XAxis dataKey="year" tick={{fontSize: 11, fill: "#8BBFA0", fontFamily: "Work Sans"}} axisLine={false} tickLine={false} />
-                <YAxis tick={{fontSize: 11, fill: "#8BBFA0", fontFamily: "Work Sans"}} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v/1000).toFixed(0)}k`} />
-                <Tooltip
-                  contentStyle={{background: "#fff", border: "1px solid #E8F0EC", borderRadius: 6, fontSize: 11, fontFamily: "Work Sans"}}
-                  formatter={(v: number) => [`${v?.toLocaleString()} tCO2e`]}
-                />
-                <Area type="monotone" dataKey="actual" name="Actual" stroke="#064E3B" strokeWidth={2} fill="url(#actualGrad)" connectNulls={false} />
-                <Area type="monotone" dataKey="target" name="Net Zero Target" stroke="#2DAF85" strokeWidth={2} strokeDasharray="5 3" fill="url(#targetGrad)" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#F0F4EE" />
+                <XAxis dataKey="year" tick={{ fontSize: 10, fill: C.textMuted }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 10, fill: C.textMuted }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 1000).toFixed(0)}k`} />
+                <Tooltip contentStyle={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 11 }} />
+                <Area type="monotone" dataKey="actual" name="Actual" stroke={C.coral} fill="url(#actualGrad)" strokeWidth={2} connectNulls={false} />
+                <Area type="monotone" dataKey="target" name="Target" stroke={C.green} fill="url(#targetGrad)" strokeWidth={2} strokeDasharray="5 3" />
               </AreaChart>
             </ResponsiveContainer>
-            <div className="flex gap-4 mt-3">
-              <div className="flex items-center gap-1.5"><div className="w-4 h-0.5 bg-[#064E3B]" /><span className="text-[11px] text-[#8BBFA0]" style={{fontFamily:"'Work Sans',sans-serif"}}>Actual</span></div>
-              <div className="flex items-center gap-1.5"><div className="w-4 h-0.5 bg-[#2DAF85] border-dashed" style={{borderTop: "2px dashed #2DAF85"}} /><span className="text-[11px] text-[#8BBFA0]" style={{fontFamily:"'Work Sans',sans-serif"}}>Net Zero Pathway</span></div>
+            <div style={{ display: "flex", gap: 16, marginTop: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 16, height: 3, background: C.coral, borderRadius: 2 }} /><span style={{ fontSize: 11, color: C.textMuted }}>Actual</span></div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 16, height: 3, background: C.green, borderRadius: 2 }} /><span style={{ fontSize: 11, color: C.textMuted }}>SBT Target</span></div>
             </div>
           </div>
 
-          {/* ESG pillars */}
-          <div className="space-y-4">
-            <div className="bg-white rounded-lg shadow-sm p-5">
-              <h3 className="text-[14px] font-semibold text-[#002117] mb-4" style={{fontFamily:"'Work Sans',sans-serif"}}>ESG Pillar Scores</h3>
-              <div className="space-y-4">
-                {esgScores.map((e) => (
-                  <div key={e.pillar}>
-                    <div className="flex justify-between items-center mb-1.5">
-                      <span className="text-[12px] font-medium text-[#002117]" style={{fontFamily:"'Work Sans',sans-serif"}}>{e.pillar}</span>
-                      <span className="text-[13px] font-bold text-[#002117]" style={{fontFamily:"'Work Sans',sans-serif"}}>{e.score}</span>
-                    </div>
-                    <div className="h-2 bg-[#F0F7F4] rounded-full overflow-hidden">
-                      <div className="h-full rounded-full transition-all duration-700" style={{width: `${e.score}%`, background: e.color}} />
-                    </div>
+          {/* ESG Pillars + Certifications */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div style={{ background: C.white, borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+              <h3 style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 14 }}>ESG Pillar Scores</h3>
+              {esgPillars.map(e => (
+                <div key={e.pillar} style={{ marginBottom: 12 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
+                    <span style={{ fontSize: 12, color: C.textSec }}>{e.pillar}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{e.score}</span>
                   </div>
-                ))}
-              </div>
-              <div className="mt-4 pt-4 border-t border-[#E8F0EC]">
-                <div className="flex justify-between items-center">
-                  <span className="text-[12px] font-semibold text-[#002117]" style={{fontFamily:"'Work Sans',sans-serif"}}>Overall ESG</span>
-                  <span className="text-[16px] font-bold text-[#064E3B]" style={{fontFamily:"'Work Sans',sans-serif"}}>72 / 100</span>
+                  <div style={{ height: 8, background: C.sageBg, borderRadius: 4, overflow: "hidden" }}>
+                    <div style={{ height: "100%", width: `${e.score}%`, background: C.green, borderRadius: 4 }} />
+                  </div>
                 </div>
+              ))}
+              <div style={{ borderTop: `1px solid ${C.border}`, marginTop: 12, paddingTop: 12, display: "flex", justifyContent: "space-between" }}>
+                <span style={{ fontSize: 12, fontWeight: 600, color: C.text }}>Overall ESG</span>
+                <span style={{ fontSize: 16, fontWeight: 700, color: C.green }}>78 / 100</span>
               </div>
             </div>
-
-            {/* Certifications */}
-            <div className="bg-white rounded-lg shadow-sm p-5">
-              <h3 className="text-[14px] font-semibold text-[#002117] mb-3" style={{fontFamily:"'Work Sans',sans-serif"}}>Certifications</h3>
-              <div className="space-y-2">
-                {certifications.map((c) => (
-                  <div key={c.name} className="flex items-center justify-between">
-                    <div>
-                      <div className="text-[11px] font-medium text-[#002117]" style={{fontFamily:"'Work Sans',sans-serif"}}>{c.name}</div>
-                      <div className="text-[10px] text-[#8BBFA0]" style={{fontFamily:"'Work Sans',sans-serif"}}>{c.count}</div>
-                    </div>
-                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded ${c.color}`}>{c.rating}</span>
+            <div style={{ background: C.white, borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", flex: 1 }}>
+              <h3 style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 12 }}>Reporting & Certifications</h3>
+              {certs.map(cert => (
+                <div key={cert.name} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                  <div style={{ width: 32, height: 32, background: `${cert.color}20`, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: cert.color }}>{cert.name[0]}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: C.text }}>{cert.name}</div>
+                    <div style={{ fontSize: 11, color: C.textSec }}>{cert.rating}</div>
                   </div>
-                ))}
-              </div>
+                  <span style={{ padding: "2px 8px", background: `${cert.color}20`, color: cert.color, fontSize: 10, fontWeight: 600, borderRadius: 20 }}>{cert.status}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Reporting section */}
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {[
-            { title: "GRESB 2025 Report", status: "Submitted", date: "Oct 2025", score: "74/100", color: "bg-[#064E3B]" },
-            { title: "TCFD Climate Disclosure", status: "In Progress", date: "Due Jun 2026", score: "68% complete", color: "bg-[#E8A838]" },
-          ].map((r) => (
-            <div key={r.title} className="bg-white rounded-lg shadow-sm p-5 flex items-center justify-between">
-              <div>
-                <div className="text-[13px] font-semibold text-[#002117] mb-1" style={{fontFamily:"'Work Sans',sans-serif"}}>{r.title}</div>
-                <div className="text-[11px] text-[#8BBFA0]" style={{fontFamily:"'Work Sans',sans-serif"}}>{r.date} · Score: {r.score}</div>
-              </div>
-              <span className={`text-[10px] font-bold px-2.5 py-1 rounded text-white ${r.color}`}>{r.status}</span>
+        {/* Row 2 */}
+        <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 16 }}>
+          {/* Building performance table */}
+          <div style={{ background: C.white, borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+            <div style={{ padding: "16px 22px", borderBottom: `1px solid ${C.border}` }}>
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text }}>Building Performance</h3>
+              <p style={{ fontSize: 12, color: C.textSec, marginTop: 2 }}>EPC ratings, energy intensity, carbon emissions</p>
             </div>
-          ))}
+            <div style={{ padding: "10px 22px", background: "#FFF8E1", borderBottom: `1px solid ${C.border}`, display: "flex", gap: 10, alignItems: "flex-start" }}>
+              <span>⚠️</span>
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "#856404" }}>Critical Alert: Menlyn Corporate Park</div>
+                <div style={{ fontSize: 11, color: "#856404" }}>Energy consumption 34% above benchmark. HVAC inefficiency detected. Immediate assessment recommended.</div>
+              </div>
+            </div>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ borderBottom: `1px solid ${C.border}` }}>
+                  {["Building", "EPC", "Energy (kWh/m²)", "Carbon (tCO₂e)", "Status"].map(h => (
+                    <th key={h} style={{ padding: "10px 16px", textAlign: "left", fontSize: 11, fontWeight: 600, color: C.textMuted, textTransform: "uppercase", letterSpacing: "0.07em" }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {buildings.map(b => (
+                  <tr key={b.name} style={{ borderBottom: `1px solid ${C.sageBg}` }}>
+                    <td style={{ padding: "12px 16px" }}>
+                      <div style={{ fontWeight: 600, fontSize: 13 }}>{b.name}</div>
+                      <div style={{ fontSize: 11, color: C.textMuted }}>{b.city}</div>
+                    </td>
+                    <td style={{ padding: "12px 16px" }}>
+                      <span style={{ padding: "2px 8px", background: b.epc === "A" ? "#E8F5E9" : b.epc === "B" ? "#E3F2FD" : b.epc === "C" ? "#FFF8E1" : "#FFEBEE", color: b.epc === "A" ? "#2E7D32" : b.epc === "B" ? "#1565C0" : b.epc === "C" ? "#F57F17" : "#C62828", fontSize: 11, fontWeight: 700, borderRadius: 6 }}>{b.epc}</span>
+                    </td>
+                    <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 500 }}>{b.energy}</td>
+                    <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 500 }}>{b.carbon.toLocaleString()}</td>
+                    <td style={{ padding: "12px 16px" }}>
+                      <span style={{ padding: "3px 10px", background: `${b.sc}20`, color: b.sc, fontSize: 11, fontWeight: 600, borderRadius: 20 }}>{b.status}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Action items */}
+          <div style={{ background: C.white, borderRadius: 16, padding: "22px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+            <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 16 }}>Action Items</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {actions.map(a => (
+                <div key={a.task} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 14px", background: C.sageBg, borderRadius: 12 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: a.color, marginTop: 4, flexShrink: 0 }} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 13, fontWeight: 500, color: C.text }}>{a.task}</div>
+                    <div style={{ fontSize: 11, color: C.textMuted }}>Due: {a.due}</div>
+                  </div>
+                  <span style={{ padding: "2px 8px", background: `${a.color}20`, color: a.color, fontSize: 10, fontWeight: 600, borderRadius: 20, flexShrink: 0 }}>{a.priority}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </DashboardLayout>

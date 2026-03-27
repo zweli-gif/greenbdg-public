@@ -2,17 +2,8 @@
  * FM Dashboard — Sipho Mthembu, Facilities Manager
  * Crisp Plush: white canvas, forest green sidebar, bento stat cards
  */
-import { useState } from "react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { AlertTriangle, CheckCircle, Clock, Wrench, Zap, Thermometer, Droplets } from "lucide-react";
-
-const navItems = [
-  { icon: "⊞", label: "Overview" },
-  { icon: "🎫", label: "Tickets" },
-  { icon: "🔧", label: "PPM Schedule" },
-  { icon: "📊", label: "Systems" },
-  { icon: "📋", label: "Reports" },
-];
 
 const tickets = [
   { id: "T-1082", title: "Access reader offline Level 3", priority: "CRITICAL", time: "2h ago", building: "Waterfall Corporate Estate" },
@@ -37,18 +28,8 @@ const priorityStyles: Record<string, string> = {
 };
 
 export default function FMDashboard() {
-  const [activeNav, setActiveNav] = useState("Overview");
-
   return (
-    <DashboardLayout
-      userName="Sipho Mthembu"
-      userInitials="SM"
-      userRole="Facilities Manager"
-      navItems={navItems}
-      activeNav={activeNav}
-      onNavChange={setActiveNav}
-      notificationCount={3}
-    >
+    <DashboardLayout role="Facilities Manager" user="Sipho Mthembu" initials="SM">
       <div className="p-6 lg:p-8">
         {/* Welcome header */}
         <div className="mb-8">
