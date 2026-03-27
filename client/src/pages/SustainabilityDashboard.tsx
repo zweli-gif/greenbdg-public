@@ -7,9 +7,12 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const C = {
-  sageBg: "#E8EDE4", white: "#FFFFFF", green: "#5A9A6E", amber: "#E8A838",
-  coral: "#E07A5F", blue: "#6B9BD1", text: "#2D3A2D", textSec: "#5A6B5A",
-  textMuted: "#8A9A8A", border: "#D8E0D5",
+  sageBg: "#F0F5F2", white: "#FFFFFF", green: "#10B981", amber: "#E8A838",
+  coral: "#EF4444", blue: "#3B82F6", text: "#002117", textSec: "#4B5563",
+  textMuted: "#9CA3AF", border: "rgba(0,33,23,0.1)",
+  serif: "'Libre Baskerville', Georgia, serif",
+  sans: "'Work Sans', sans-serif",
+  mono: "'DM Mono', monospace",
 };
 
 const kpis = [
@@ -61,11 +64,11 @@ const esgPillars = [
 
 export default function SustainabilityDashboard() {
   return (
-    <DashboardLayout role="Sustainability Manager" user="Lerato Ndlovu" initials="LN">
-      <div style={{ padding: "28px 32px", maxWidth: 1400, margin: "0 auto" }}>
+    <DashboardLayout role="Sustainability Manager" user="Lerato Ndlovu" initials="LN" accentColor="#10B981">
+      <div style={{ padding: "32px 40px", maxWidth: 1400, margin: "0 auto", fontFamily: C.sans }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 22 }}>
           <div>
-            <h1 style={{ fontSize: 24, fontWeight: 700, color: C.text, marginBottom: 3 }}>Sustainability & ESG Overview</h1>
+            <h1 style={{ fontSize: 24, fontWeight: 700, color: C.text, marginBottom: 3, fontFamily: C.serif }}>Sustainability & ESG Overview</h1>
             <p style={{ fontSize: 13, color: C.textSec }}>Growthpoint Properties · FY 2025/26 · Last updated: 5 min ago</p>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
@@ -97,7 +100,7 @@ export default function SustainabilityDashboard() {
         <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 16, marginBottom: 16 }}>
           {/* Carbon trajectory */}
           <div style={{ background: C.white, borderRadius: 16, padding: "22px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
-            <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 4 }}>Carbon Trajectory to Net Zero 2030</h3>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: C.text, marginBottom: 4, fontFamily: C.serif }}>Carbon Trajectory to Net Zero 2030</h3>
             <p style={{ fontSize: 12, color: C.textSec, marginBottom: 16 }}>tCO₂e · Actual vs science-based target</p>
             <ResponsiveContainer width="100%" height={200}>
               <AreaChart data={carbonTrajectory}>
@@ -128,7 +131,7 @@ export default function SustainabilityDashboard() {
           {/* ESG Pillars + Certifications */}
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div style={{ background: C.white, borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
-              <h3 style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 14 }}>ESG Pillar Scores</h3>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 14, fontFamily: C.serif }}>ESG Pillar Scores</h3>
               {esgPillars.map(e => (
                 <div key={e.pillar} style={{ marginBottom: 12 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
@@ -146,7 +149,7 @@ export default function SustainabilityDashboard() {
               </div>
             </div>
             <div style={{ background: C.white, borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", flex: 1 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 12 }}>Reporting & Certifications</h3>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 12, fontFamily: C.serif }}>Reporting & Certifications</h3>
               {certs.map(cert => (
                 <div key={cert.name} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
                   <div style={{ width: 32, height: 32, background: `${cert.color}20`, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: cert.color }}>{cert.name[0]}</div>
@@ -166,7 +169,7 @@ export default function SustainabilityDashboard() {
           {/* Building performance table */}
           <div style={{ background: C.white, borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
             <div style={{ padding: "16px 22px", borderBottom: `1px solid ${C.border}` }}>
-              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text }}>Building Performance</h3>
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: C.text, fontFamily: C.serif }}>Building Performance</h3>
               <p style={{ fontSize: 12, color: C.textSec, marginTop: 2 }}>EPC ratings, energy intensity, carbon emissions</p>
             </div>
             <div style={{ padding: "10px 22px", background: "#FFF8E1", borderBottom: `1px solid ${C.border}`, display: "flex", gap: 10, alignItems: "flex-start" }}>
@@ -207,7 +210,7 @@ export default function SustainabilityDashboard() {
 
           {/* Action items */}
           <div style={{ background: C.white, borderRadius: 16, padding: "22px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
-            <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 16 }}>Action Items</h3>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: C.text, marginBottom: 16, fontFamily: C.serif }}>Action Items</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {actions.map(a => (
                 <div key={a.task} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 14px", background: C.sageBg, borderRadius: 12 }}>

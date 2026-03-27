@@ -1,15 +1,18 @@
 /**
  * Tenant Fault Reporting — 3-step fault submission flow
  * Source: tenant-fault-reporting.html
- * Design: Operational system (Inter, sage bg, white cards)
+ * Design: PLUSH (Libre Baskerville, Work Sans, deep forest green)
  */
 import { useState } from "react";
 import { useLocation } from "wouter";
 
 const C = {
-  sageBg: "#E8EDE4", white: "#FFFFFF", green: "#5A9A6E", amber: "#E8A838",
-  coral: "#E07A5F", text: "#2D3A2D", textSec: "#5A6B5A", textMuted: "#8A9A8A",
-  border: "#D8E0D5", dark: "#002117",
+  sageBg: "#F0F5F2", white: "#FFFFFF", green: "#10B981", amber: "#E8A838",
+  coral: "#EF4444", text: "#002117", textSec: "#4B5563", textMuted: "#9CA3AF",
+  border: "rgba(0,33,23,0.1)", dark: "#002117",
+  serif: "'Libre Baskerville', Georgia, serif",
+  sans: "'Work Sans', sans-serif",
+  mono: "'DM Mono', monospace",
 };
 
 const categories = [
@@ -46,7 +49,7 @@ export default function TenantFaultReporting() {
 
   if (submitted) {
     return (
-      <div style={{ minHeight: "100vh", background: C.sageBg, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Inter', sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: C.sageBg, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: C.sans }}>
         <div style={{ background: C.white, borderRadius: 20, padding: "60px 48px", textAlign: "center", maxWidth: 480, boxShadow: "0 8px 32px rgba(0,0,0,0.08)" }}>
           <div style={{ width: 72, height: 72, background: `${C.green}20`, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px" }}>
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -64,17 +67,21 @@ export default function TenantFaultReporting() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: C.sageBg, fontFamily: "'Inter', sans-serif", color: C.text }}>
+    <div style={{ minHeight: "100vh", background: C.sageBg, fontFamily: C.sans, color: C.text }}>
       {/* Header */}
-      <header style={{ background: C.white, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 3px rgba(0,0,0,0.05)", position: "sticky", top: 0, zIndex: 100, height: 64 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 42, height: 42, background: C.green, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: 18, fontWeight: 700 }}>G</div>
-          <div>
-            <div style={{ fontSize: 16, fontWeight: 700 }}>GreenBDG</div>
-            <div style={{ fontSize: 11, color: C.textSec, letterSpacing: "0.15em", textTransform: "uppercase" }}>Tenant Portal</div>
+      <header style={{ background: C.dark, padding: "0 40px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 100, height: 64, borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ width: 34, height: 34, background: C.green, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="16" height="16" viewBox="0 0 19 19" fill="none">
+              <rect x="2" y="7.5" width="3.5" height="11" fill="white" rx="0.4"/>
+              <rect x="7" y="3" width="3.5" height="15.5" fill="white" rx="0.4"/>
+              <rect x="12" y="5.5" width="3.5" height="13" fill="white" rx="0.4"/>
+              <line x1="2" y1="3" x2="16" y2="3" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
           </div>
+          <span style={{ fontFamily: C.serif, fontWeight: 700, fontSize: 14, color: "#FFFFFF" }}>GreenBDG Africa</span>
         </div>
-        <button onClick={() => navigate("/dashboard/tenant")} style={{ padding: "9px 20px", background: "transparent", color: C.textSec, border: `1px solid ${C.border}`, borderRadius: 10, fontSize: 13, fontWeight: 500, cursor: "pointer" }}>
+        <button onClick={() => navigate("/dashboard/tenant")} style={{ padding: "9px 20px", background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: C.sans }}>
           ← Back to Portal
         </button>
       </header>
@@ -82,7 +89,7 @@ export default function TenantFaultReporting() {
       <div style={{ padding: "40px 32px", maxWidth: 680, margin: "0 auto" }}>
         {/* Title */}
         <div style={{ marginBottom: 32 }}>
-          <h1 style={{ fontSize: 28, fontWeight: 700, color: C.text, marginBottom: 8 }}>Report a Fault</h1>
+          <h1 style={{ fontSize: 28, fontWeight: 700, color: C.text, marginBottom: 8, fontFamily: C.serif }}>Report a Fault</h1>
           <p style={{ fontSize: 14, color: C.textSec }}>African Corp Holdings · Sandton Heights · Floors 14–16</p>
         </div>
 
@@ -142,7 +149,7 @@ export default function TenantFaultReporting() {
               <label style={{ fontSize: 13, fontWeight: 600, color: C.text, display: "block", marginBottom: 8 }}>Location</label>
               <input value={location} onChange={e => setLocation(e.target.value)}
                 placeholder="e.g. Floor 15, Meeting Room B, near the east window"
-                style={{ width: "100%", padding: "12px 14px", border: `1px solid ${C.border}`, borderRadius: 10, fontSize: 14, fontFamily: "'Inter', sans-serif", color: C.text, outline: "none", boxSizing: "border-box" }} />
+                style={{ width: "100%", padding: "12px 14px", border: `1px solid ${C.border}`, borderRadius: 10, fontSize: 14, fontFamily: C.sans, color: C.text, outline: "none", boxSizing: "border-box" }} />
             </div>
 
             <div style={{ marginBottom: 20 }}>
@@ -150,7 +157,7 @@ export default function TenantFaultReporting() {
               <textarea value={description} onChange={e => setDescription(e.target.value)}
                 placeholder="Describe the fault in detail — what you see, hear, or smell, and when it started..."
                 rows={4}
-                style={{ width: "100%", padding: "12px 14px", border: `1px solid ${C.border}`, borderRadius: 10, fontSize: 14, fontFamily: "'Inter', sans-serif", color: C.text, outline: "none", resize: "vertical", boxSizing: "border-box" }} />
+                style={{ width: "100%", padding: "12px 14px", border: `1px solid ${C.border}`, borderRadius: 10, fontSize: 14, fontFamily: C.sans, color: C.text, outline: "none", resize: "vertical", boxSizing: "border-box" }} />
             </div>
 
             <div style={{ marginBottom: 24 }}>

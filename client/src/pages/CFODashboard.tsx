@@ -8,15 +8,18 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
 
 const C = {
-  sageBg: "#E8EDE4",
+  sageBg: "#F0F5F2",
   white: "#FFFFFF",
-  green: "#5A9A6E",
+  green: "#10B981",
   amber: "#E8A838",
-  coral: "#E07A5F",
-  text: "#2D3A2D",
-  textSec: "#5A6B5A",
-  textMuted: "#8A9A8A",
-  border: "#D8E0D5",
+  coral: "#EF4444",
+  text: "#002117",
+  textSec: "#4B5563",
+  textMuted: "#9CA3AF",
+  border: "rgba(0,33,23,0.1)",
+  serif: "'Libre Baskerville', Georgia, serif",
+  sans: "'Work Sans', sans-serif",
+  mono: "'DM Mono', monospace",
 };
 
 const kpis = [
@@ -56,12 +59,12 @@ const insights = [
 
 export default function CFODashboard() {
   return (
-    <DashboardLayout role="CFO" user="Amahle Dube" initials="AD">
-      <div style={{ padding: "28px 32px", maxWidth: 1400, margin: "0 auto" }}>
+    <DashboardLayout role="CFO" user="Amahle Dube" initials="AD" accentColor="#E8A838">
+      <div style={{ padding: "32px 40px", maxWidth: 1400, margin: "0 auto", fontFamily: C.sans }}>
         {/* Page header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 22 }}>
           <div>
-            <h1 style={{ fontSize: 24, fontWeight: 700, color: C.text, marginBottom: 3 }}>Financial ESG Overview</h1>
+            <h1 style={{ fontSize: 24, fontWeight: 700, color: C.text, marginBottom: 3, fontFamily: C.serif }}>Financial ESG Overview</h1>
             <p style={{ fontSize: 13, color: C.textSec }}>Growthpoint Properties · FY 2025/26 · Last updated: 2 min ago</p>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
@@ -95,7 +98,7 @@ export default function CFODashboard() {
           {/* Carbon Tax Breakdown */}
           <div style={{ background: C.white, borderRadius: 16, padding: "22px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
             <div style={{ marginBottom: 16 }}>
-              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.text }}>Carbon Tax Breakdown</h3>
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: C.text, fontFamily: C.serif }}>Carbon Tax Breakdown</h3>
               <p style={{ fontSize: 12, color: C.textSec, marginTop: 2 }}>Top 10 emitters by building (tCO₂e)</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 18 }}>
@@ -127,7 +130,7 @@ export default function CFODashboard() {
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {/* Depreciation */}
             <div style={{ background: C.white, borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", flex: 1 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 14 }}>Asset Depreciation</h3>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 14, fontFamily: C.serif }}>Asset Depreciation</h3>
               {[
                 { l: "Gross Asset Value", v: "R5.8B", c: C.text },
                 { l: "Accumulated Depreciation", v: "-R1.6B", c: C.coral },
@@ -151,7 +154,7 @@ export default function CFODashboard() {
 
             {/* Income Statement */}
             <div style={{ background: C.white, borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", flex: 1 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 14 }}>Income Statement (YTD)</h3>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 14, fontFamily: C.serif }}>Income Statement (YTD)</h3>
               {[
                 { l: "Gross Rental Income", v: "R298M", c: C.green },
                 { l: "Operating Expenses", v: "-R104M", c: C.coral },
@@ -177,7 +180,7 @@ export default function CFODashboard() {
 
           {/* AI Insights */}
           <div style={{ background: C.white, borderRadius: 16, padding: "20px 22px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
-            <h3 style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 16 }}>AI Insights</h3>
+            <h3 style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 16, fontFamily: C.serif }}>AI Insights</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 18 }}>
               {insights.map((ins, i) => (
                 <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>

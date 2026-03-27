@@ -1,18 +1,30 @@
 /**
- * Staff Upload & Role Assignment — Botanical design system
- * 6 staff members from source HTML: Thabo, Lerato, James, Sipho, Maria, David
- * Roles: CFO, Sustainability Mgr, Portfolio Mgr, Building Mgr, FM, Tenant Admin
- * Animated magic link send button
+ * Staff Upload & Role Assignment — PLUSH design system
+ * Deep forest green #002117, crisp white, Libre Baskerville serif
+ * 6 staff members: Amahle, Lerato, James, Sipho, Maria, David
+ * Content kept exactly as source HTML
  */
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { ArrowLeft, ArrowRight, Upload, CheckCircle2, Users, Send, Mail } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Send, Mail } from "lucide-react";
+
+const DEEP = "#002117";
+const FOREST = "#064E3B";
+const ACCENT = "#10B981";
+const GOLD = "#E8A838";
+const WHITE = "#FFFFFF";
+const OFF_WHITE = "#F8FAF9";
+const BORDER = "rgba(0,33,23,0.1)";
+const MUTED = "#6B7280";
+const serif = "'Libre Baskerville', Georgia, serif";
+const sans = "'Work Sans', sans-serif";
+const mono = "'DM Mono', monospace";
 
 const staff = [
-  { name: "Amahle Dube", email: "a.dube@growthpoint.co.za", role: "CFO", building: "Portfolio-wide", initials: "AD", accent: "#E8A838", dashPath: "/dashboard/cfo" },
-  { name: "Lerato Ndlovu", email: "l.ndlovu@growthpoint.co.za", role: "Sustainability Manager", building: "Portfolio-wide", initials: "LN", accent: "#2DAF85", dashPath: "/dashboard/sustainability" },
-  { name: "James Molefe", email: "j.molefe@growthpoint.co.za", role: "Portfolio Manager", building: "Portfolio-wide", initials: "JM", accent: "#0A6B4F", dashPath: "/dashboard/portfolio" },
-  { name: "Sipho Khumalo", email: "s.khumalo@growthpoint.co.za", role: "Building Manager", building: "Sandton Towers", initials: "SK", accent: "#064E3B", dashPath: "/dashboard/building" },
+  { name: "Amahle Dube", email: "a.dube@growthpoint.co.za", role: "CFO", building: "Portfolio-wide", initials: "AD", accent: GOLD, dashPath: "/dashboard/cfo" },
+  { name: "Lerato Ndlovu", email: "l.ndlovu@growthpoint.co.za", role: "Sustainability Manager", building: "Portfolio-wide", initials: "LN", accent: ACCENT, dashPath: "/dashboard/sustainability" },
+  { name: "James Molefe", email: "j.molefe@growthpoint.co.za", role: "Portfolio Manager", building: "Portfolio-wide", initials: "JM", accent: FOREST, dashPath: "/dashboard/portfolio" },
+  { name: "Sipho Khumalo", email: "s.khumalo@growthpoint.co.za", role: "Building Manager", building: "Sandton Towers", initials: "SK", accent: DEEP, dashPath: "/dashboard/building" },
   { name: "Maria Peters", email: "m.peters@growthpoint.co.za", role: "Facilities Manager", building: "Sandton Towers", initials: "MP", accent: "#1A8C6A", dashPath: "/dashboard/fm" },
   { name: "David Kgosi", email: "d.kgosi@africanholdings.co.za", role: "Tenant Admin", building: "African Corp Holdings", initials: "DK", accent: "#2DAF85", dashPath: "/dashboard/tenant" },
 ];
@@ -31,7 +43,6 @@ type Phase = "upload" | "assign" | "send";
 export default function OnboardingStaff() {
   const [, navigate] = useLocation();
   const [phase, setPhase] = useState<Phase>("assign");
-  const [uploaded, setUploaded] = useState(true);
   const [sending, setSending] = useState(false);
   const [sentCount, setSentCount] = useState(0);
   const [allSent, setAllSent] = useState(false);
@@ -50,151 +61,137 @@ export default function OnboardingStaff() {
     }, 400);
   };
 
+  const phases = [
+    { id: "upload" as Phase, label: "Upload CSV" },
+    { id: "assign" as Phase, label: "Assign roles" },
+    { id: "send" as Phase, label: "Send magic links" },
+  ];
+
   return (
-    <div style={{ minHeight: "100vh", background: "#F7FAF7", fontFamily: "'DM Sans', sans-serif", color: "#354F52" }}>
-      {/* Header */}
-      <header style={{ background: "#fff", borderBottom: "1px solid rgba(132,169,140,0.15)", padding: "14px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 40 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <button onClick={() => navigate("/onboarding/buildings")} style={{ display: "flex", alignItems: "center", gap: 6, color: "#52796F", background: "none", border: "none", fontSize: 13, fontWeight: 500, cursor: "pointer" }}>
+    <div style={{ minHeight: "100vh", background: OFF_WHITE, fontFamily: sans, color: DEEP }}>
+      {/* ── HEADER ── */}
+      <header style={{
+        background: DEEP, borderBottom: "1px solid rgba(255,255,255,0.08)",
+        padding: "0 40px", height: 64,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        position: "sticky", top: 0, zIndex: 40,
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          <button onClick={() => navigate("/onboarding/buildings")} style={{ display: "flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.55)", background: "none", border: "none", fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: sans }}>
             <ArrowLeft size={14} /> Building upload
           </button>
-          <div style={{ width: 1, height: 20, background: "rgba(132,169,140,0.2)" }} />
+          <div style={{ width: 1, height: 20, background: "rgba(255,255,255,0.12)" }} />
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 32, height: 32, background: "#52796F", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg viewBox="0 0 24 24" fill="none" style={{ width: 16, height: 16 }}><path d="M12 2L4 7v10l8 5 8-5V7L12 2z" fill="white" opacity="0.9"/></svg>
+            <div style={{ width: 32, height: 32, background: ACCENT, borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="16" height="16" viewBox="0 0 19 19" fill="none">
+                <rect x="2" y="7.5" width="3.5" height="11" fill="white" rx="0.4"/>
+                <rect x="7" y="3" width="3.5" height="15.5" fill="white" rx="0.4"/>
+                <rect x="12" y="5.5" width="3.5" height="13" fill="white" rx="0.4"/>
+                <line x1="2" y1="3" x2="16" y2="3" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
             </div>
-            <span style={{ fontWeight: 700, fontSize: 14 }}>GreenBDG Africa</span>
+            <span style={{ fontFamily: serif, fontWeight: 700, fontSize: 14, color: WHITE }}>GreenBDG Africa</span>
           </div>
         </div>
+        {/* Step indicator */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {["Buildings", "Staff", "Go live"].map((s, i) => (
+            <div key={s} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <div style={{ width: 22, height: 22, borderRadius: "50%", background: i === 1 ? ACCENT : i === 0 ? "rgba(16,185,129,0.3)" : "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: i === 1 ? DEEP : i === 0 ? ACCENT : "rgba(255,255,255,0.4)" }}>
+                  {i === 0 ? "✓" : i + 1}
+                </div>
+                <span style={{ fontFamily: mono, fontSize: 11, color: i === 1 ? WHITE : i === 0 ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.08em" }}>{s}</span>
+              </div>
+              {i < 2 && <div style={{ width: 24, height: 1, background: "rgba(255,255,255,0.15)" }} />}
+            </div>
+          ))}
+        </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 28, height: 28, background: "rgba(132,169,140,0.2)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: "#52796F" }}>SD</div>
-          <span style={{ fontSize: 13, fontWeight: 500 }}>Songo Didiza</span>
+          <div style={{ width: 30, height: 30, background: ACCENT, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, color: DEEP }}>SD</div>
+          <span style={{ fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.7)", fontFamily: sans }}>Songo Didiza</span>
         </div>
       </header>
 
-      {/* Progress steps */}
-      <div style={{ background: "#fff", borderBottom: "1px solid rgba(132,169,140,0.15)", padding: "0 32px" }}>
-        <div style={{ display: "flex", maxWidth: 900, margin: "0 auto" }}>
-          {([
-            { id: "upload" as Phase, label: "📤  Upload CSV" },
-            { id: "assign" as Phase, label: "🎯  Assign roles" },
-            { id: "send" as Phase, label: "✉️  Send magic links" },
-          ]).map(t => (
-            <button
-              key={t.id}
-              onClick={() => { if (uploaded || t.id === "upload") setPhase(t.id); }}
-              style={{
-                display: "flex", alignItems: "center", gap: 6,
-                padding: "14px 20px", fontSize: 13, fontWeight: 500,
-                color: phase === t.id ? "#354F52" : "#84A98C",
-                background: "none",
-                borderBottom: phase === t.id ? "2px solid #52796F" : "2px solid transparent",
-                cursor: "pointer", transition: "color 0.2s",
-              }}
-            >
-              {t.label}
+      {/* ── PHASE TABS ── */}
+      <div style={{ background: WHITE, borderBottom: `1px solid ${BORDER}`, padding: "0 40px" }}>
+        <div style={{ display: "flex", gap: 0 }}>
+          {phases.map(p => (
+            <button key={p.id} onClick={() => setPhase(p.id)} style={{
+              padding: "16px 20px", background: "none",
+              border: "none", borderBottom: phase === p.id ? `2.5px solid ${DEEP}` : "2.5px solid transparent",
+              fontSize: 13, fontWeight: phase === p.id ? 600 : 400,
+              color: phase === p.id ? DEEP : MUTED, cursor: "pointer", fontFamily: sans,
+            }}>
+              {p.label}
             </button>
           ))}
         </div>
       </div>
 
-      <main style={{ maxWidth: 900, margin: "0 auto", padding: "40px 24px" }}>
+      <main style={{ maxWidth: 900, margin: "0 auto", padding: "40px 40px" }}>
 
         {/* ── UPLOAD PHASE ── */}
         {phase === "upload" && (
           <div>
-            <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: 28, color: "#354F52", marginBottom: 8 }}>Upload staff list</h1>
-            <p style={{ color: "#7A9A82", fontSize: 14, marginBottom: 28 }}>Upload your team CSV with names, emails, roles, and building assignments.</p>
-
-            {!uploaded ? (
-              <div>
-                <div
-                  onClick={() => setUploaded(true)}
-                  style={{ border: "2px dashed rgba(132,169,140,0.4)", borderRadius: 20, padding: "56px 32px", textAlign: "center", cursor: "pointer", marginBottom: 20 }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = "#52796F")}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(132,169,140,0.4)")}
-                >
-                  <div style={{ width: 56, height: 56, background: "rgba(82,121,111,0.1)", borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
-                    <Users size={24} color="#52796F" />
-                  </div>
-                  <div style={{ fontWeight: 600, fontSize: 16, marginBottom: 6 }}>Drop staff CSV here or click to browse</div>
-                  <div style={{ color: "#84A98C", fontSize: 13 }}>Required: Name, Email, Role, Building Assignment</div>
-                </div>
-                <button onClick={() => setUploaded(true)} style={{ padding: "14px 28px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-                  Simulate upload (6 staff)
-                </button>
-              </div>
-            ) : (
-              <div>
-                <div style={{ background: "#fff", borderRadius: 20, border: "1px solid rgba(132,169,140,0.15)", padding: 24, marginBottom: 20, borderLeft: "4px solid #52796F" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                    <CheckCircle2 size={18} color="#52796F" />
-                    <span style={{ fontWeight: 600, fontSize: 14 }}>growthpoint_staff.csv uploaded — 6 team members detected</span>
-                  </div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                    {staff.map(s => (
-                      <div key={s.name} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", background: "#F7FAF7", borderRadius: 20, border: "1px solid rgba(132,169,140,0.15)" }}>
-                        <div style={{ width: 24, height: 24, borderRadius: "50%", background: s.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: "#fff" }}>{s.initials}</div>
-                        <span style={{ fontSize: 12, fontWeight: 500 }}>{s.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <button onClick={() => setPhase("assign")} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-                  Review role assignments <ArrowRight size={15} />
-                </button>
-              </div>
-            )}
+            <h1 style={{ fontFamily: serif, fontWeight: 700, fontSize: 28, color: DEEP, marginBottom: 8 }}>Upload your team</h1>
+            <p style={{ color: MUTED, fontSize: 14, marginBottom: 32 }}>Upload a CSV with staff names, emails, and roles. GreenBDG will create accounts and send magic links.</p>
+            <div style={{ background: WHITE, borderRadius: 16, border: `2px dashed ${BORDER}`, padding: "56px 40px", textAlign: "center", marginBottom: 24 }}>
+              <h3 style={{ fontFamily: serif, fontSize: 18, fontWeight: 700, color: DEEP, marginBottom: 8 }}>Drop your staff CSV here</h3>
+              <p style={{ color: MUTED, fontSize: 13, marginBottom: 20 }}>or click to browse</p>
+              <button onClick={() => setPhase("assign")} style={{ padding: "12px 28px", background: DEEP, color: WHITE, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: sans }}>
+                Choose file
+              </button>
+            </div>
+            <button onClick={() => setPhase("assign")} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", background: DEEP, color: WHITE, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: sans }}>
+              Simulate upload (6 staff) <ArrowRight size={15} />
+            </button>
           </div>
         )}
 
         {/* ── ASSIGN PHASE ── */}
         {phase === "assign" && (
           <div>
-            <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: 28, color: "#354F52", marginBottom: 8 }}>Confirm role assignments</h1>
-            <p style={{ color: "#7A9A82", fontSize: 14, marginBottom: 28 }}>Each role unlocks a specific dashboard view. Review and confirm before sending magic links.</p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
+            <h1 style={{ fontFamily: serif, fontWeight: 700, fontSize: 28, color: DEEP, marginBottom: 6 }}>Assign roles & access</h1>
+            <p style={{ color: MUTED, fontSize: 14, marginBottom: 32 }}>6 team members imported. Each role gives access to specific dashboards and data.</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {staff.map(s => (
-                <div key={s.name} style={{ background: "#fff", borderRadius: 20, padding: "20px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", display: "flex", alignItems: "flex-start", gap: 16 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: "50%", background: s.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: "#fff", flexShrink: 0 }}>
+                <div key={s.name} style={{ background: WHITE, borderRadius: 16, border: `1px solid ${BORDER}`, padding: "20px 24px", display: "flex", alignItems: "center", gap: 20 }}>
+                  <div style={{ width: 44, height: 44, borderRadius: "50%", background: s.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: WHITE, flexShrink: 0 }}>
                     {s.initials}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-                      <span style={{ fontWeight: 700, fontSize: 14 }}>{s.name}</span>
-                      <span style={{ padding: "2px 10px", background: `${s.accent}20`, color: s.accent, fontSize: 11, fontWeight: 600, borderRadius: 20 }}>{s.role}</span>
-                    </div>
-                    <div style={{ fontSize: 12, color: "#84A98C", marginBottom: 8 }}>{s.email} · {s.building}</div>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                    <div style={{ fontFamily: serif, fontWeight: 700, fontSize: 15, color: DEEP, marginBottom: 2 }}>{s.name}</div>
+                    <div style={{ fontSize: 12, color: MUTED }}>{s.email} · {s.building}</div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <span style={{ padding: "4px 12px", background: `${s.accent}18`, color: s.accent, fontSize: 12, fontWeight: 600, borderRadius: 20, fontFamily: mono }}>{s.role}</span>
+                    <div style={{ marginTop: 8, display: "flex", gap: 4, flexWrap: "wrap", justifyContent: "flex-end" }}>
                       {(roleAccess[s.role] || []).map(a => (
-                        <span key={a} style={{ padding: "3px 10px", background: "#F7FAF7", border: "1px solid rgba(132,169,140,0.2)", color: "#52796F", fontSize: 11, borderRadius: 20 }}>{a}</span>
+                        <span key={a} style={{ padding: "2px 8px", background: "rgba(0,33,23,0.06)", color: MUTED, fontSize: 10, borderRadius: 10, fontFamily: mono }}>{a}</span>
                       ))}
                     </div>
-                  </div>
-                  <div style={{ flexShrink: 0 }}>
-                    <CheckCircle2 size={18} color="#52796F" />
                   </div>
                 </div>
               ))}
             </div>
-
-            <button onClick={() => setPhase("send")} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-              Confirm & send magic links <ArrowRight size={15} />
-            </button>
+            <div style={{ marginTop: 28 }}>
+              <button onClick={() => setPhase("send")} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", background: DEEP, color: WHITE, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: sans }}>
+                Continue to magic links <ArrowRight size={15} />
+              </button>
+            </div>
           </div>
         )}
 
         {/* ── SEND PHASE ── */}
         {phase === "send" && (
           <div>
-            <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, fontSize: 28, color: "#354F52", marginBottom: 8 }}>Send magic links</h1>
-            <p style={{ color: "#7A9A82", fontSize: 14, marginBottom: 28 }}>
+            <h1 style={{ fontFamily: serif, fontWeight: 700, fontSize: 28, color: DEEP, marginBottom: 6 }}>Send magic links</h1>
+            <p style={{ color: MUTED, fontSize: 14, marginBottom: 28 }}>
               Each team member receives a personalised email with a secure magic link. They click it, verify their identity, set a password, and land directly in their dashboard.
             </p>
-
             {/* Info card */}
-            <div style={{ background: "#fff", borderRadius: 20, border: "1px solid rgba(132,169,140,0.15)", padding: "20px 24px", marginBottom: 24 }}>
+            <div style={{ background: WHITE, borderRadius: 16, border: `1px solid ${BORDER}`, padding: "20px 24px", marginBottom: 24 }}>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
                 {[
                   { icon: "🔐", label: "Secure token", desc: "24-hour expiry, single-use" },
@@ -203,38 +200,37 @@ export default function OnboardingStaff() {
                 ].map(f => (
                   <div key={f.label} style={{ textAlign: "center", padding: "12px 8px" }}>
                     <div style={{ fontSize: 24, marginBottom: 6 }}>{f.icon}</div>
-                    <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>{f.label}</div>
-                    <div style={{ fontSize: 12, color: "#84A98C" }}>{f.desc}</div>
+                    <div style={{ fontFamily: serif, fontWeight: 600, fontSize: 13, color: DEEP, marginBottom: 2 }}>{f.label}</div>
+                    <div style={{ fontSize: 12, color: MUTED }}>{f.desc}</div>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* Staff rows with send status */}
-            <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", marginBottom: 24 }}>
+            {/* Staff rows */}
+            <div style={{ background: WHITE, borderRadius: 16, overflow: "hidden", border: `1px solid ${BORDER}`, marginBottom: 24 }}>
               {staff.map((s, i) => {
                 const isSent = sentCount > i;
                 return (
-                  <div key={s.name} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 24px", borderBottom: i < staff.length - 1 ? "1px solid rgba(132,169,140,0.08)" : "none" }}>
-                    <div style={{ width: 36, height: 36, borderRadius: "50%", background: s.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#fff" }}>
+                  <div key={s.name} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 24px", borderBottom: i < staff.length - 1 ? `1px solid ${BORDER}` : "none" }}>
+                    <div style={{ width: 36, height: 36, borderRadius: "50%", background: s.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: WHITE }}>
                       {s.initials}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: 600, fontSize: 13 }}>{s.name}</div>
-                      <div style={{ fontSize: 12, color: "#84A98C" }}>{s.email}</div>
+                      <div style={{ fontFamily: serif, fontWeight: 600, fontSize: 13, color: DEEP }}>{s.name}</div>
+                      <div style={{ fontSize: 12, color: MUTED }}>{s.email}</div>
                     </div>
-                    <span style={{ padding: "2px 10px", background: `${s.accent}20`, color: s.accent, fontSize: 11, fontWeight: 600, borderRadius: 20 }}>{s.role}</span>
+                    <span style={{ padding: "3px 10px", background: `${s.accent}18`, color: s.accent, fontSize: 11, fontWeight: 600, borderRadius: 20, fontFamily: mono }}>{s.role}</span>
                     <div style={{ width: 80, textAlign: "right" }}>
                       {sending ? (
                         isSent ? (
-                          <span style={{ display: "flex", alignItems: "center", gap: 4, justifyContent: "flex-end", color: "#52796F", fontSize: 12, fontWeight: 600 }}>
+                          <span style={{ display: "flex", alignItems: "center", gap: 4, justifyContent: "flex-end", color: ACCENT, fontSize: 12, fontWeight: 600 }}>
                             <CheckCircle2 size={14} /> Sent
                           </span>
                         ) : (
-                          <span style={{ color: "#84A98C", fontSize: 12 }}>Queued…</span>
+                          <span style={{ color: MUTED, fontSize: 12 }}>Queued…</span>
                         )
                       ) : (
-                        <span style={{ display: "flex", alignItems: "center", gap: 4, justifyContent: "flex-end", color: "#84A98C", fontSize: 12 }}>
+                        <span style={{ display: "flex", alignItems: "center", gap: 4, justifyContent: "flex-end", color: MUTED, fontSize: 12 }}>
                           <Mail size={13} /> Ready
                         </span>
                       )}
@@ -243,23 +239,22 @@ export default function OnboardingStaff() {
                 );
               })}
             </div>
-
             {!sending ? (
               <button
                 onClick={handleSendLinks}
-                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", background: "#52796F", color: "#fff", border: "none", borderRadius: 22, fontSize: 15, fontWeight: 600, cursor: "pointer" }}
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", background: DEEP, color: WHITE, border: "none", borderRadius: 8, fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: sans }}
               >
                 <Send size={16} />
                 Send 6 magic links
               </button>
             ) : allSent ? (
-              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 24px", background: "#E8F5E9", borderRadius: 16, color: "#2E7D32", fontWeight: 600, fontSize: 14 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 24px", background: "rgba(16,185,129,0.1)", borderRadius: 12, color: "#059669", fontWeight: 600, fontSize: 14, border: "1px solid rgba(16,185,129,0.2)" }}>
                 <CheckCircle2 size={18} />
                 All 6 magic links sent! Redirecting…
               </div>
             ) : (
-              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 24px", background: "#F7FAF7", borderRadius: 16, color: "#52796F", fontWeight: 600, fontSize: 14 }}>
-                <div style={{ width: 18, height: 18, border: "2px solid #52796F", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 24px", background: OFF_WHITE, borderRadius: 12, color: FOREST, fontWeight: 600, fontSize: 14, border: `1px solid ${BORDER}` }}>
+                <div style={{ width: 18, height: 18, border: `2px solid ${ACCENT}`, borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
                 Sending… {sentCount}/{staff.length}
               </div>
             )}

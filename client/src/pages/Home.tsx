@@ -141,23 +141,14 @@ export default function Home() {
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          {/* Subtle client login — platform entry */}
-          <button
-            onClick={() => navigate("/signin")}
-            style={{ background: "none", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.15)", padding: "8px 18px", borderRadius: 7, fontSize: "0.78rem", fontWeight: 500, cursor: "pointer", fontFamily: sans }}
-            onMouseEnter={e => { e.currentTarget.style.color = WHITE; e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)"; }}
-            onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.5)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}
-          >
-            Client login
-          </button>
-          {/* Primary CTA */}
+          {/* Primary CTA only — NO client login, NO platform link */}
           <button
             onClick={() => navigate("/demo")}
             style={{ background: EMERALD, color: WHITE, border: "none", padding: "9px 22px", borderRadius: 7, fontSize: "0.82rem", fontWeight: 600, cursor: "pointer", fontFamily: sans, letterSpacing: "0.01em" }}
             onMouseEnter={e => { e.currentTarget.style.background = "#059669"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={e => { e.currentTarget.style.background = EMERALD; e.currentTarget.style.transform = "none"; }}
           >
-            Request a demo →
+            See the platform →
           </button>
         </div>
       </nav>
@@ -534,25 +525,49 @@ export default function Home() {
             </div>
           </section>
 
-          {/* ── WHY GREENBDG ── */}
-          <section style={{ background: OFF_WHITE, padding: "100px 56px" }}>
+          {/* ── PROOF BAND (Brian's exact) ── */}
+          <section style={{ background: FOREST, padding: "72px 56px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 0, alignItems: "center", position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
+            <div style={{ position: "relative", zIndex: 2 }}>
+              <div style={{ fontFamily: mono, fontSize: "0.6rem", color: EMERALD, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 12 }}>Case study · Sandton · Commercial office</div>
+              <h3 style={{ fontFamily: serif, fontSize: "1.35rem", fontWeight: 700, color: WHITE, lineHeight: 1.35, marginBottom: 11 }}>25% energy reduction.<br/>14 months. One platform.</h3>
+              <p style={{ fontSize: "0.82rem", fontWeight: 300, color: "rgba(255,255,255,0.5)", lineHeight: 1.75, marginBottom: 16, maxWidth: 240 }}>GreenBDG audited the building systems, deployed smart metering, and tracked performance in real time. Carbon intensity dropped year-on-year. Green Star rating upgraded.</p>
+              <a href="#" style={{ fontFamily: mono, fontSize: "0.65rem", color: EMERALD, textDecoration: "none", borderBottom: "1px solid rgba(138,184,154,.3)" }}>Read full case study →</a>
+            </div>
+            {[{ n: "25", unit: "%", label: "Energy\nsavings" }, { n: "R58", unit: "k", label: "Saved per\nmonth" }, { n: "38", unit: "%", label: "Carbon\nreduction" }].map(s => (
+              <div key={s.n} style={{ textAlign: "center", padding: "0 18px", borderLeft: "1px solid rgba(255,255,255,.08)", position: "relative", zIndex: 2 }}>
+                <div style={{ fontFamily: serif, fontSize: "clamp(44px,5vw,62px)", fontWeight: 900, color: WHITE, lineHeight: 1, marginBottom: 6, letterSpacing: "-.02em" }}>
+                  {s.n}<span style={{ color: CLAY }}>{s.unit}</span>
+                </div>
+                <div style={{ fontFamily: mono, fontSize: "0.62rem", color: "rgba(255,255,255,.35)", textTransform: "uppercase", letterSpacing: ".08em", lineHeight: 1.5 }}>{s.label}</div>
+              </div>
+            ))}
+          </section>
+
+          {/* ── WHY GREENBDG (Brian's exact 6 cards) ── */}
+          <section style={{ background: WHITE, padding: "100px 56px" }}>
             <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-              <div style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST3, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: 16 }}>Why GreenBDG</div>
-              <h2 style={{ fontFamily: serif, fontSize: "clamp(32px,3.5vw,48px)", fontWeight: 900, color: FOREST, lineHeight: 1.1, marginBottom: 12 }}>Not another European SaaS adapted for Africa.</h2>
-              <p style={{ fontSize: "0.95rem", color: DARK_MUTED, lineHeight: 1.8, maxWidth: 600, marginBottom: 64 }}>Every global competitor was built for EU or US regulatory frameworks. GreenBDG was built from the ground up for SA's grid, certification systems, and legal environment.</p>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 32 }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: mono, fontSize: "0.65rem", fontWeight: 500, color: CLAY, textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 16 }}>
+                <span style={{ display: "block", width: 20, height: 1, background: CLAY }} />Why GreenBDG
+              </div>
+              <h2 style={{ fontFamily: serif, fontSize: "clamp(28px,3.5vw,46px)", fontWeight: 700, lineHeight: 1.12, letterSpacing: "-0.022em", color: FOREST, marginBottom: 12 }}>Not another European SaaS<br/><em style={{ fontStyle: "italic", color: CLAY }}>adapted for Africa.</em></h2>
+              <p style={{ fontSize: "0.93rem", fontWeight: 300, color: DARK_MUTED, maxWidth: 500, lineHeight: 1.8, marginBottom: 48 }}>Every global competitor was built for EU or US regulatory frameworks. GreenBDG was built from the ground up for SA's grid, certification systems, and legal environment.</p>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
                 {[
                   { num: "01", title: "Built for SA's regulatory stack", body: "Green Star V2, SANS 10400-XA, SARS carbon tax, the Carbon Budget Act — not bolted on after the fact, but the foundation. Measurabl and Deepki don't know what Eskom peak demand charges are." },
-                  { num: "02", title: "Software backed by real expertise", body: "GreenBDG's consultants have done 100+ energy audits and EPC certifications. The platform is built on that data. Not a generic SaaS with a green skin." },
-                  { num: "03", title: "One platform, not a patchwork", body: "FM, ESG, energy, certifications, tenant portal — one login, one data model, one source of truth. No integrations to manage, no data silos." },
-                  { num: "04", title: "Priced for SA portfolios", body: "Not priced for London or Amsterdam. GreenBDG is built for the SA market — accessible for a 5-building portfolio, scalable to 500." },
-                  { num: "05", title: "Onboarding in days, not months", body: "One building live in 20 minutes. A full portfolio migrated in a week with GreenBDG's assisted onboarding. No 6-month implementation projects." },
-                  { num: "06", title: "Your data, your control", body: "Hosted in SA. POPIA compliant. Your data never leaves the country. No vendor lock-in — export everything, anytime." },
+                  { num: "02", title: "Software backed by real expertise", body: "GreenBDG's consultants have done 100+ energy audits and EPC certifications. The platform is built on that data. When the software doesn't cover something, a human expert does." },
+                  { num: "03", title: "FM-first, not investor-first", body: "Global ESG platforms are built for institutional investors producing reports. GreenBDG is built for the facilities manager whose job it is to actually run the buildings. Reports are a byproduct." },
+                  { num: "04", title: "Consulting + platform = the 30%", body: "Every ESG report has 30% that software can't automate. GreenBDG's team does that. No other SaaS provider offers this without a third-party consultant." },
+                  { num: "05", title: "SA's data moat", body: "13 years of SA project data is not replicable. A European platform entering SA starts with zero local benchmarks. GreenBDG already has the SAPOA-comparable data layer. That's a 10-year head start." },
+                  { num: "06", title: "Social impact built in", body: "B-BBEE, SMME supplier spend, women and youth employment, learnerships — tracked at building level. No global platform does this. It's uniquely African and uniquely GreenBDG." },
                 ].map(w => (
-                  <div key={w.num}>
-                    <div style={{ fontFamily: mono, fontSize: "0.62rem", color: FOREST3, marginBottom: 8 }}>{w.num} —</div>
-                    <h3 style={{ fontFamily: serif, fontSize: "1.05rem", fontWeight: 700, color: FOREST, marginBottom: 10 }}>{w.title}</h3>
-                    <p style={{ fontSize: "0.88rem", color: DARK_MUTED, lineHeight: 1.75 }}>{w.body}</p>
+                  <div key={w.num} style={{ background: "#F5F0E8", border: "1px solid #E4DDD0", borderRadius: 12, padding: 26, transition: "all 0.3s" }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(-3px)"; (e.currentTarget as HTMLDivElement).style.boxShadow = "0 12px 32px rgba(27,67,50,0.1)"; (e.currentTarget as HTMLDivElement).style.background = WHITE; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = "none"; (e.currentTarget as HTMLDivElement).style.boxShadow = "none"; (e.currentTarget as HTMLDivElement).style.background = "#F5F0E8"; }}
+                  >
+                    <div style={{ fontFamily: mono, fontSize: "0.6rem", color: CLAY, letterSpacing: "0.1em", marginBottom: 12 }}>{w.num} —</div>
+                    <h3 style={{ fontFamily: serif, fontSize: "1.08rem", fontWeight: 700, color: FOREST, marginBottom: 10, lineHeight: 1.3 }}>{w.title}</h3>
+                    <p style={{ fontSize: "0.82rem", fontWeight: 300, color: DARK_MUTED, lineHeight: 1.75 }}>{w.body}</p>
                   </div>
                 ))}
               </div>
